@@ -1,9 +1,13 @@
 import React from "react";
 import "./Login.css";
+import { Link } from "react-router-dom";
 
 function LoginView() {
   return (
     <div>
+      <Link to="/">
+        <button>Back</button>
+      </Link>
       <div className="container">
         <h1 className="heading">AI-Blaze</h1>
         <input type="text" className="input" placeholder="Username" />
