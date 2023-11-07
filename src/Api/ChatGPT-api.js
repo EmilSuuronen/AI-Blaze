@@ -1,5 +1,5 @@
 const OPENAI_URL = 'https://api.openai.com/v1/chat/completions';
-const API_KEY = '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';
+const API_KEY = '';
 
 export const sendToChatGPT = async (message) => {
     try {

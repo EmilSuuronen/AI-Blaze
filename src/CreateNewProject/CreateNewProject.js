@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import './CreateNewProject_Styles.css';
 
 export default function CreateNewProject() {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -37,6 +38,7 @@ export default function CreateNewProject() {
                 flexDirection: "column",
                 alignItems: "center",
                 justifyContent: "center",
+                margin: "auto"
             }}
         >
             <h1> Create a new project</h1>

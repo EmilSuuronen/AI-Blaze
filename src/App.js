@@ -12,6 +12,7 @@ export default function App() {
                 <Route path="/loginview" element={<LoginView/>}/>
                 <Route path="/createNewProject" element={<CreateNewProject/>}/>
                 <Route path="/labelEditor" element={<LabelingView/>}/>
+                <Route path="/generate" element={<LabelingView/>}/>
             </Routes>
         </Router>
     );

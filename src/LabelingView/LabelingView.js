@@ -1,31 +1,54 @@
 import React, {useRef, useEffect, useState} from 'react';
 import {fabric} from 'fabric';
 import LabelModalMenu from "../components/LabelModalMenu/LabelModal";
-import {dropDownUIElements} from "../components/LabelModalMenu/LabelModalElements";
+import {modalUIElements} from "../components/LabelModalMenu/LabelModalElements";
 import "../components/LabelModalMenu/LabelModal.css";
+import "./LabelingView.css";
+import {Link} from "react-router-dom";
 
+
+// This component is the main view for the labeling page
 export default function LabelingView() {
     const canvasRef = useRef(null);
     const [canvas, setCanvas] = useState(null);
     const [rectangles, setRectangles] = useState([]);
     const [showDropdown, setShowDropdown] = useState(false);
-    const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
     const [currentRect, setCurrentRect] = useState(null);
 
-    // Retrieve the image data from localStorage when the component mounts
     useEffect(() => {
-        const storedImageSrc = localStorage.getItem('imageSrc');
-        if (storedImageSrc) {
-            setCanvas(new fabric.Canvas(canvasRef.current, {
-                selection: false,
-            }));
-        }
+        setCanvas(new fabric.Canvas(canvasRef.current, {
+            selection: false,
+        }));
     }, []);
 
+    // When the canvas is initialized, load the image and add event listeners
     useEffect(() => {
         if (canvas && canvasRef.current) {
+
+            // Load the background image and resize the canvas to match the image
+            fabric.Image.fromURL(localStorage.getItem('imageSrc'), (img) => {
+                // Calculate the scale for the image
+                const maxDimensions = {width: 800, height: 600};
+                const scale = Math.min(maxDimensions.width / img.width, maxDimensions.height / img.height, 1);
+
+                // Apply scale to image and set it as the background image
+                img.scale(scale);
+                canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
+                    originX: 'left', originY: 'top',
+                });
+
+                // Set the canvas dimensions to the scaled image dimensions
+                canvas.setWidth(img.getScaledWidth());
+                canvas.setHeight(img.getScaledHeight());
+                canvas.calcOffset(); // Recalculate the canvas dimensions and re-render the canvas
+
+                // Re-render the canvas
+                canvas.renderAll();
+            });
+
             let rect, isDrawing = false, origX, origY;
 
+            // When the user clicks the mouse, begin the drawing
             const handleMouseDown = (o) => {
                 if (canvas.getActiveObject()) {
                     return;
@@ -51,6 +74,7 @@ export default function LabelingView() {
                 canvas.add(rect);
             };
 
+            // While the user is dragging the mouse, update the rectangle's dimensions
             const handleMouseMove = (o) => {
                 if (!isDrawing || canvas.getActiveObject()) {
                     return;
@@ -69,6 +93,7 @@ export default function LabelingView() {
                 canvas.renderAll();
             };
 
+            // When the user releases the mouse button, save the rectangle data
             const handleMouseUp = (o) => {
                 if (isDrawing) {
                     isDrawing = false;
@@ -96,27 +121,6 @@ export default function LabelingView() {
             canvas.on('mouse:move', handleMouseMove);
             canvas.on('mouse:up', handleMouseUp);
 
-            // Load the background image and resize the canvas to match the image
-            fabric.Image.fromURL(localStorage.getItem('imageSrc'), (img) => {
-                // Calculate the scale for the image
-                const maxDimensions = {width: 800, height: 600};
-                const scale = Math.min(maxDimensions.width / img.width, maxDimensions.height / img.height, 1);
-
-                // Apply scale to image and set it as the background image
-                img.scale(scale);
-                canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
-                    originX: 'left', originY: 'top',
-                });
-
-                // Set the canvas dimensions to the scaled image dimensions
-                canvas.setWidth(img.getScaledWidth());
-                canvas.setHeight(img.getScaledHeight());
-                canvas.calcOffset(); // Recalculate the canvas dimensions and re-render the canvas
-
-                // Re-render the canvas
-                canvas.renderAll();
-            });
-
             // Clean-up function to remove canvas event listeners when the component unmounts
             return () => {
                 canvas.off('mouse:down', handleMouseDown);
@@ -125,7 +129,6 @@ export default function LabelingView() {
             };
         }
     }, [canvas]);
-
 
     // Function to handle dropdown selection
     const handleDropdownSelect = (label) => {
@@ -138,15 +141,18 @@ export default function LabelingView() {
     };
 
     return (
-        <div>
-            <canvas ref={canvasRef} />
+        <div className="main-divider">
+            <canvas ref={canvasRef}/>
             {showDropdown && (
                 <LabelModalMenu
-                    uiElements={dropDownUIElements}
+                    uiElements={modalUIElements}
                     onSelect={handleDropdownSelect}
                     onClose={() => setShowDropdown(false)}
                 />
             )}
+            <Link to="/generate">
+                <button>Generate to code</button>
+            </Link>
         </div>
     );
 }
