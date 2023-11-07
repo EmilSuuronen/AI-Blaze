@@ -1,10 +1,16 @@
 import React, {useRef, useEffect, useState} from 'react';
 import {fabric} from 'fabric';
+import LabelModalMenu from "../components/LabelModalMenu/LabelModal";
+import {dropDownUIElements} from "../components/LabelModalMenu/LabelModalElements";
+import "../components/LabelModalMenu/LabelModal.css";
 
-export default function DrawingTools() {
+export default function LabelingView() {
     const canvasRef = useRef(null);
     const [canvas, setCanvas] = useState(null);
     const [rectangles, setRectangles] = useState([]);
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0 });
+    const [currentRect, setCurrentRect] = useState(null);
 
     // Retrieve the image data from localStorage when the component mounts
     useEffect(() => {
@@ -63,7 +69,7 @@ export default function DrawingTools() {
                 canvas.renderAll();
             };
 
-            const handleMouseUp = () => {
+            const handleMouseUp = (o) => {
                 if (isDrawing) {
                     isDrawing = false;
                     const id = Date.now();
@@ -73,9 +79,12 @@ export default function DrawingTools() {
                         left: rect.left,
                         top: rect.top,
                         width: rect.width,
-                        height: rect.height
+                        height: rect.height,
+                        label: ''
                     };
 
+                    setCurrentRect(rectData);
+                    setShowDropdown(true);
                     setRectangles(prevRectangles => [...prevRectangles, rectData]);
 
                     rect.setCoords();
@@ -117,9 +126,27 @@ export default function DrawingTools() {
         }
     }, [canvas]);
 
+
+    // Function to handle dropdown selection
+    const handleDropdownSelect = (label) => {
+        setCurrentRect((prevRect) => ({ ...prevRect, label }));
+        setShowDropdown(false);
+        setRectangles((prevRectangles) =>
+            prevRectangles.map((r) => (r.id === currentRect.id ? { ...r, label } : r))
+        );
+        console.log("rectangles: " + JSON.stringify(rectangles, null, 2));
+    };
+
     return (
         <div>
-            <canvas ref={canvasRef}/>
+            <canvas ref={canvasRef} />
+            {showDropdown && (
+                <LabelModalMenu
+                    uiElements={dropDownUIElements}
+                    onSelect={handleDropdownSelect}
+                    onClose={() => setShowDropdown(false)}
+                />
+            )}
         </div>
     );
 }

@@ -2,7 +2,7 @@ import {Link, Route, BrowserRouter as Router, Routes} from "react-router-dom";
 import "./App.css";
 import LoginView from "./Login/LoginView";
 import CreateNewProject from "./CreateNewProject/CreateNewProject";
-import DrawingTools from "./script/DrawingTools";
+import LabelingView from "./LabelingView/LabelingView";
 
 export default function App() {
     return (
@@ -11,7 +11,7 @@ export default function App() {
                 <Route path="/" element={<HomeScreen/>}/>
                 <Route path="/loginview" element={<LoginView/>}/>
                 <Route path="/createNewProject" element={<CreateNewProject/>}/>
-                <Route path="/labelEditor" element={<DrawingTools/>}/>
+                <Route path="/labelEditor" element={<LabelingView/>}/>
             </Routes>
         </Router>
     );

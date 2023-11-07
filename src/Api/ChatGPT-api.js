@@ -17,12 +17,12 @@ export const sendToChatGPT = async (message) => {
                         "{\n" +
                         "  CSS: [String]\n" +
                         "}\n" +
-                        "You will be provided with the list of elements to include in the site" +
-                        "Include basic styling and coloring for the elements, And place them accoringly to a mobile view."
+                        "You will be provided with the list of components to include in the site" +
+                        "Include basic styling and coloring for the components, And place them accoringly to a mobile view."
                 },
                 {
                     role: "user",
-                    content: "List of elements to include in the site: " + message
+                    content: "List of components to include in the site: " + message
                 }
             ]
         };
