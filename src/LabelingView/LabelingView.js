@@ -155,13 +155,7 @@ export default function LabelingView() {
                     onClose={() => setShowDropdown(false)}
                 />
             )}
-            <Link to={{
-                pathname: "/generate",
-                state: { myString: "testNumberTwo" }
-            }}>
-                <button>Generate to code</button>
-            </Link>
-            <button onClick={handleNavigate}>TestState</button>
+            <button onClick={handleNavigate}>Generate to code</button>
         </div>
     );
 }

@@ -1,5 +1,7 @@
+import { OpenAI } from "openai";
+
 const OPENAI_URL = 'https://api.openai.com/v1/chat/completions';
-const API_KEY = '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';
+const API_KEY = '';
 
 export const sendToChatGPT = async (elementData) => {
 
@@ -10,20 +12,24 @@ export const sendToChatGPT = async (elementData) => {
                 {
                     role: "system",
                     content:
-                        "Your task is to generate HTML code for a website by giving HTML and CSS code in JSON format" +
-                        "Answer ONLY in the following JSON format, do not include ANYTHING else" +
-                        "HTML: {}" +
-                        "CSS: {}" +
-                        "The HTML and website code should be a single string value. Do not include /n or any other line breaks or symbols" +
-                        "You will be provided with the list of components to include in the site" +
-                        "Include basic styling and coloring for the components in the css property"
+                        "Your task is to generate HTML code for a website by giving HTML and CSS code in JSON format. " +
+                        "Answer ONLY in the following JSON format, do not include ANYTHING else. " +
+                        "{" +
+                        "HTML: (HTML code as a string here)" +
+                        "CSS: (CSS code as a string here)" +
+                        "}" +
+                        "The HTML and website code should be a single string value. Do not include newlines or any unnecessary symbols in the code. " +
+                        "You will be provided with the list of components to include in the site. " +
+                        "Include styling and include coloring for the components in the CSS property. " +
+                        "You CAN add your own components to make the site more complete. " +
+                        "Create complete elements: Include naming in text fields, buttons, etc. "
                 },
                 {
                     role: "user",
                     content: "List of components to include in the site: " + elementData
                 }
             ],
-            stream: true
+            "max_tokens": 2000,
         };
 
         const response = await fetch(OPENAI_URL, {
@@ -36,6 +42,8 @@ export const sendToChatGPT = async (elementData) => {
         });
 
         const data = await response.json();
+
+        console.log(data.choices[0].message.content)
 
         return data.choices[0].message.content;
     } catch (error) {
