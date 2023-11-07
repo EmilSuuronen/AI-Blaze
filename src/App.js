@@ -1,6 +1,7 @@
 import { Link, Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./App.css";
 import LoginView from "./Login/LoginView";
+import SignupView from "./Signup/SignupView";
 
 export default function App() {
   return (
@@ -8,6 +9,7 @@ export default function App() {
       <Routes>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/loginview" element={<LoginView />} />
+        <Route path="/signupview" element={<SignupView />} />
       </Routes>
     </Router>
   );

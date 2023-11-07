@@ -8,12 +8,20 @@
     flex-direction: column;
     align-items: center;
     margin: 50px;
+    height: 400px;
   }
 
   .container2 {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .container_s {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 50px;
   }
 
   .or-container {
@@ -67,7 +75,7 @@
   
   .google {
     font-size: 1em;
-    margin-top: 20%;
+    margin-top: 50%;
     color: #323232;
     width: max-content;
     background-color: transparent;
