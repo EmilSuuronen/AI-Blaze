@@ -3,6 +3,7 @@ import "./App.css";
 import LoginView from "./Login/LoginView";
 import CreateNewProject from "./CreateNewProject/CreateNewProject";
 import LabelingView from "./LabelingView/LabelingView";
+import GenerateView from "./GenerateView/GenerateView";
 
 export default function App() {
     return (
@@ -12,7 +13,7 @@ export default function App() {
                 <Route path="/loginview" element={<LoginView/>}/>
                 <Route path="/createNewProject" element={<CreateNewProject/>}/>
                 <Route path="/labelEditor" element={<LabelingView/>}/>
-                <Route path="/generate" element={<LabelingView/>}/>
+                <Route path="/generate" element={<GenerateView/>}/>
             </Routes>
         </Router>
     );

@@ -5,7 +5,7 @@ import {modalUIElements} from "../components/LabelModalMenu/LabelModalElements";
 import "../components/LabelModalMenu/LabelModal.css";
 import "./LabelingView.css";
 import {Link} from "react-router-dom";
-
+import { useNavigate } from 'react-router-dom';
 
 // This component is the main view for the labeling page
 export default function LabelingView() {
@@ -28,7 +28,7 @@ export default function LabelingView() {
             // Load the background image and resize the canvas to match the image
             fabric.Image.fromURL(localStorage.getItem('imageSrc'), (img) => {
                 // Calculate the scale for the image
-                const maxDimensions = {width: 800, height: 600};
+                const maxDimensions = {width: 600, height: 400};
                 const scale = Math.min(maxDimensions.width / img.width, maxDimensions.height / img.height, 1);
 
                 // Apply scale to image and set it as the background image
@@ -137,7 +137,12 @@ export default function LabelingView() {
         setRectangles((prevRectangles) =>
             prevRectangles.map((r) => (r.id === currentRect.id ? { ...r, label } : r))
         );
-        console.log("rectangles: " + JSON.stringify(rectangles, null, 2));
+    };
+
+    const navigate = useNavigate();
+
+    const handleNavigate = () => {
+        navigate('/generate', { state: { objectData: rectangles } });
     };
 
     return (
@@ -150,9 +155,13 @@ export default function LabelingView() {
                     onClose={() => setShowDropdown(false)}
                 />
             )}
-            <Link to="/generate">
+            <Link to={{
+                pathname: "/generate",
+                state: { myString: "testNumberTwo" }
+            }}>
                 <button>Generate to code</button>
             </Link>
+            <button onClick={handleNavigate}>TestState</button>
         </div>
     );
 }
