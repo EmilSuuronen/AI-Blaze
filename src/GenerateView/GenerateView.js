@@ -2,6 +2,7 @@ import {sendToChatGPT} from "../Api/ChatGPT-api";
 import React, {useEffect, useMemo, useState} from 'react';
 import {useLocation} from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import "./GenerateView.css";
 
 export default function GenerateView() {
 
@@ -71,6 +72,9 @@ export default function GenerateView() {
             align-content: center;
             justify-content: space-evenly;
             flex-direction: column;
+            min-height: 40vh;
+            background-color: #5d5d5d;
+            padding: 8px;
         }
           ${parsedResponse.CSS}
         </style>
@@ -83,14 +87,12 @@ export default function GenerateView() {
     }, [isLoading, parsedResponse]);
 
     return (
-        <div className="generate-view-div">
+        <div className="generate-view-main">
             {isLoading ? (
                 <p>Loading...</p> // Show loading text while waiting for response
             ) : (
                 <iframe
                     srcDoc={htmlContent || 'about:blank'} // Use htmlContent or 'about:blank' if htmlContent is null
-                    width="100%"
-                    height="100%"
                     frameBorder="0"
                     sandbox="allow-scripts"
                 ></iframe>
