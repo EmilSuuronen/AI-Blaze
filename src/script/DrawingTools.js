@@ -1,82 +1,126 @@
-import React, { useRef, useEffect, useState } from 'react';
-import { fabric } from 'fabric'; // Ensure fabric is imported correctly
+import React, {useRef, useEffect, useState} from 'react';
+import {fabric} from 'fabric';
 
-export default function DrawingTools({ imageSrc }) {
+export default function DrawingTools() {
     const canvasRef = useRef(null);
     const [canvas, setCanvas] = useState(null);
-    const [startPoint, setStartPoint] = useState({ x: 0, y: 0 });
+    const [rectangles, setRectangles] = useState([]);
+
+    // Retrieve the image data from localStorage when the component mounts
+    useEffect(() => {
+        const storedImageSrc = localStorage.getItem('imageSrc');
+        if (storedImageSrc) {
+            setCanvas(new fabric.Canvas(canvasRef.current, {
+                selection: false,
+            }));
+        }
+    }, []);
 
     useEffect(() => {
-        // Set the dimensions for the canvas
-        const canvasElement = canvasRef.current;
-        canvasElement.width = 200;  // Set the width of the canvas
-        canvasElement.height = 400; // Set the height of the canvas
+        if (canvas && canvasRef.current) {
+            let rect, isDrawing = false, origX, origY;
 
-        // Initialize Fabric.js canvas
-        const newCanvas = new fabric.Canvas(canvasElement, {
-            selection: true,
-        });
+            const handleMouseDown = (o) => {
+                if (canvas.getActiveObject()) {
+                    return;
+                }
+                isDrawing = true;
 
-        // Set the canvas to the state
-        setCanvas(newCanvas);
-
-        // Add an event listener for mouse down to start drawing
-        newCanvas.on('mouse:down', (o) => {
-            const pointer = newCanvas.getPointer(o.e);
-            setStartPoint(pointer);
-
-            // Create a rectangle (with no dimensions yet)
-            const rect = new fabric.Rect({
-                left: pointer.x,
-                top: pointer.y,
-                width: 0,
-                height: 0,
-                fill: 'transparent',
-                stroke: 'red',
-                strokeWidth: 4,
-            });
-
-            newCanvas.add(rect);
-            newCanvas.setActiveObject(rect);
-        });
-
-        // Add an event listener for mouse move to update the dimensions of the box
-        newCanvas.on('mouse:move', (o) => {
-            if (!newCanvas.getActiveObject()) {
-                return;
-            }
-            const pointer = newCanvas.getPointer(o.e);
-            const activeObject = newCanvas.getActiveObject();
-
-            if (activeObject && activeObject.type === 'rect') {
-                activeObject.set({
-                    width: Math.abs(pointer.x - startPoint.x),
-                    height: Math.abs(pointer.y - startPoint.y),
-                    left: pointer.x < startPoint.x ? pointer.x : startPoint.x,
-                    top: pointer.y < startPoint.y ? pointer.y : startPoint.y,
+                const pointer = canvas.getPointer(o.e);
+                origX = pointer.x;
+                origY = pointer.y;
+                rect = new fabric.Rect({
+                    left: origX,
+                    top: origY,
+                    originX: 'left',
+                    originY: 'top',
+                    width: pointer.x - origX,
+                    height: pointer.y - origY,
+                    fill: 'transparent',
+                    stroke: 'red',
+                    strokeWidth: 2,
+                    selectable: true,
                 });
-                newCanvas.renderAll();
-            }
-        });
 
-        // Add an event listener for mouse up to finalize the box
-        newCanvas.on('mouse:up', () => {
-            newCanvas.off('mouse:down');
-            newCanvas.off('mouse:move');
-        });
+                canvas.add(rect);
+            };
 
-        // Load the background image
-        fabric.Image.fromURL(imageSrc, (img) => {
-            newCanvas.setBackgroundImage(img, newCanvas.renderAll.bind(newCanvas), {
-                scaleX: newCanvas.width / img.width,
-                scaleY: newCanvas.height / img.height,
+            const handleMouseMove = (o) => {
+                if (!isDrawing || canvas.getActiveObject()) {
+                    return;
+                }
+                const pointer = canvas.getPointer(o.e);
+                const width = Math.abs(origX - pointer.x);
+                const height = Math.abs(origY - pointer.y);
+
+                rect.set({
+                    width: width,
+                    height: height,
+                    left: origX - (origX > pointer.x ? width : 0),
+                    top: origY - (origY > pointer.y ? height : 0),
+                });
+
+                canvas.renderAll();
+            };
+
+            const handleMouseUp = () => {
+                if (isDrawing) {
+                    isDrawing = false;
+                    const id = Date.now();
+
+                    const rectData = {
+                        id: id,
+                        left: rect.left,
+                        top: rect.top,
+                        width: rect.width,
+                        height: rect.height
+                    };
+
+                    setRectangles(prevRectangles => [...prevRectangles, rectData]);
+
+                    rect.setCoords();
+                }
+            };
+
+            // Register mouse event listeners
+            canvas.on('mouse:down', handleMouseDown);
+            canvas.on('mouse:move', handleMouseMove);
+            canvas.on('mouse:up', handleMouseUp);
+
+            // Load the background image and resize the canvas to match the image
+            fabric.Image.fromURL(localStorage.getItem('imageSrc'), (img) => {
+                // Calculate the scale for the image
+                const maxDimensions = {width: 800, height: 600};
+                const scale = Math.min(maxDimensions.width / img.width, maxDimensions.height / img.height, 1);
+
+                // Apply scale to image and set it as the background image
+                img.scale(scale);
+                canvas.setBackgroundImage(img, canvas.renderAll.bind(canvas), {
+                    originX: 'left', originY: 'top',
+                });
+
+                // Set the canvas dimensions to the scaled image dimensions
+                canvas.setWidth(img.getScaledWidth());
+                canvas.setHeight(img.getScaledHeight());
+                canvas.calcOffset(); // Recalculate the canvas dimensions and re-render the canvas
+
+                // Re-render the canvas
+                canvas.renderAll();
             });
-        });
-    }, [imageSrc]);
+
+            // Clean-up function to remove canvas event listeners when the component unmounts
+            return () => {
+                canvas.off('mouse:down', handleMouseDown);
+                canvas.off('mouse:move', handleMouseMove);
+                canvas.off('mouse:up', handleMouseUp);
+            };
+        }
+    }, [canvas]);
 
     return (
         <div>
-            <canvas ref={canvasRef} width="800" height="600"/>
+            <canvas ref={canvasRef}/>
         </div>
     );
 }
+

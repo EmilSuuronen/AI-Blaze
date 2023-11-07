@@ -1,7 +1,5 @@
-import {Link} from "react-router-dom";
-import {useState} from "react";
-import './CreateNewProject_Styles.css';
-import DrawingTools from "../script/DrawingTools";
+import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function CreateNewProject() {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -11,7 +9,6 @@ export default function CreateNewProject() {
         const file = e.target.files[0];
         setSelectedFile(file);
 
-        // Display a preview of the selected image
         const reader = new FileReader();
         reader.onload = () => {
             setImagePreview(reader.result);
@@ -19,11 +16,14 @@ export default function CreateNewProject() {
         reader.readAsDataURL(file);
     };
 
+    const handleNavigate = () => {
+        // Store the image data in localStorage before navigating
+        localStorage.setItem('imageSrc', imagePreview);
+    };
+
     // Function to handle file upload
     const handleFileUpload = () => {
-        // You can implement your upload logic here
         if (selectedFile) {
-            // For a temporary display, you don't need to upload anywhere
             alert('File uploaded temporarily');
         } else {
             alert('Please select a file to upload');
@@ -45,9 +45,12 @@ export default function CreateNewProject() {
             {imagePreview && (
                 <div>
                     <h2>Preview</h2>
-                    <DrawingTools imageSrc={imagePreview}/>
+                    <img src={imagePreview} alt="Selected" className="file-preview-img" />
+                    <Link to="/labelEditor" onClick={handleNavigate}>
+                        <button>Label editor</button>
+                    </Link>
                 </div>
-                )}
+            )}
         </div>
     );
 }
