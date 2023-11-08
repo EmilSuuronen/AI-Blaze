@@ -16,19 +16,31 @@ export default function LabelingView() {
     const [showDropdown, setShowDropdown] = useState(false);
     const [currentRect, setCurrentRect] = useState(null);
 
+    const imageSrc = localStorage.getItem('imageSrc');
+
+    // Variable to check if the canvas is loaded. This is used to prevent the useEffect from running multiple times
+    const canvasLoaded = useRef(false);
+    // Initializing the canvas on page load
     useEffect(() => {
-        console.log("Code run, canvas created")
-        setCanvas(new fabric.Canvas(canvasRef.current, {
-            selection: false,
-        }));
+        console.log("canvas loaded")
+        if(canvasLoaded.current === false) {
+            setCanvas(new fabric.Canvas(canvasRef.current, {
+                selection: false,
+            }));
+        }
+
+        // Cleanup function to correct the effect change
+        return () => {
+            canvasLoaded.current = true
+        };
     }, []);
+
 
     // When the canvas is initialized, load the image and add event listeners
     useEffect(() => {
-        if (canvas && canvasRef.current) {
 
-            // Load the background image and resize the canvas to match the image
-            fabric.Image.fromURL(localStorage.getItem('imageSrc'), (img) => {
+        if (canvas && canvasRef.current) {
+            fabric.Image.fromURL(imageSrc, (img) => {
                 // Calculate the scale for the image
                 const maxDimensions = {width: 600, height: 400};
                 const scale = Math.min(maxDimensions.width / img.width, maxDimensions.height / img.height, 1);
@@ -47,6 +59,8 @@ export default function LabelingView() {
                 // Re-render the canvas
                 canvas.renderAll();
             });
+
+            // Load the background image and resize the canvas to match the image
 
             let rect, isDrawing = false, origX, origY;
 
@@ -130,7 +144,7 @@ export default function LabelingView() {
                 canvas.off('mouse:up', handleMouseUp);
             };
         }
-    }, [canvas]);
+    }, [canvas, imageSrc]);
 
     // Function to handle dropdown selection
     const handleDropdownSelect = (label) => {
