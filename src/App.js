@@ -8,23 +8,15 @@ import GenerateView from "./GenerateView/GenerateView";
 import NewProject from "./NewProject/NewProject";
 
 export default function App() {
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element={<HomeScreen/>}/>
-                <Route path="/loginview" element={<LoginView/>}/>
-                <Route path="/createNewProject" element={<CreateNewProject/>}/>
-                <Route path="/labelEditor" element={<LabelingView/>}/>
-                <Route path="/generate" element={<GenerateView/>}/>
-            </Routes>
-        </Router>
-    );
   return (
     <Router>
       <Routes>
         <Route path="/" element={<HomeScreen />} />
         <Route path="/loginview" element={<LoginView />} />
-        <Route path="/newprojectview" element={<NewProject />} />
+          <Route path="/generate" element={<GenerateView/>}/>
+          <Route path="/createNewProject" element={<CreateNewProject/>}/>
+          <Route path="/labelEditor" element={<LabelingView/>}/>
+          <Route path="/newprojectview" element={<NewProject />} />
         <Route path="/editview" element={<EditView />} />
       </Routes>
     </Router>
@@ -32,25 +24,6 @@ export default function App() {
 }
 
 function HomeScreen() {
-    return (
-        <div
-            style={{
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-                justifyContent: "center",
-                height: "100vh",
-            }}
-        >
-            <h1>Home</h1>
-            <Link to="/loginview">
-                <button>Login</button>
-            </Link>
-            <Link to="/createNewProject">
-                <button>Create new project</button>
-            </Link>
-        </div>
-    );
   return (
     <div
       style={{
@@ -68,6 +41,9 @@ function HomeScreen() {
       <Link to="/newprojectview">
         <button>NewProject</button>
       </Link>
+        <Link to="/createNewProject">
+            <button>create a new project</button>
+        </Link>
       <Link to="/editview">
         <button>Edit</button>
       </Link>
