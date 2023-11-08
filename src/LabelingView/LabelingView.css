@@ -1,14 +1,19 @@
+body {
+    background-color: #FFFFFA;
+}
+
 .main-divider {
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+    background-color: #4F518C;
 }
 
 .canvas-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
 }
 
 canvas {

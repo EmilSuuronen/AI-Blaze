@@ -6,6 +6,7 @@ import "../components/LabelModalMenu/LabelModal.css";
 import "./LabelingView.css";
 import {Link} from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import HeaderBar from "../components/Header/HeaderBar";
 
 // This component is the main view for the labeling page
 export default function LabelingView() {
@@ -42,7 +43,7 @@ export default function LabelingView() {
         if (canvas && canvasRef.current) {
             fabric.Image.fromURL(imageSrc, (img) => {
                 // Calculate the scale for the image
-                const maxDimensions = {width: 600, height: 400};
+                const maxDimensions = {width: 800, height: 800};
                 const scale = Math.min(maxDimensions.width / img.width, maxDimensions.height / img.height, 1);
 
                 // Apply scale to image and set it as the background image
@@ -163,6 +164,7 @@ export default function LabelingView() {
 
     return (
         <div className="main-divider">
+            <HeaderBar/>
             <canvas ref={canvasRef}/>
             {showDropdown && (
                 <LabelModalMenu
