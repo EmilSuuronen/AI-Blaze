@@ -1,5 +1,6 @@
 import {Link, Route, BrowserRouter as Router, Routes} from "react-router-dom";
 import "./App.css";
+import EditView from "./Edit/EditView";
 import LoginView from "./Login/LoginView";
 import CreateNewProject from "./CreateNewProject/CreateNewProject";
 import LabelingView from "./LabelingView/LabelingView";
@@ -24,6 +25,7 @@ export default function App() {
         <Route path="/" element={<HomeScreen />} />
         <Route path="/loginview" element={<LoginView />} />
         <Route path="/newprojectview" element={<NewProject />} />
+        <Route path="/editview" element={<EditView />} />
       </Routes>
     </Router>
   );
@@ -65,6 +67,9 @@ function HomeScreen() {
       </Link>
       <Link to="/newprojectview">
         <button>NewProject</button>
+      </Link>
+      <Link to="/editview">
+        <button>Edit</button>
       </Link>
     </div>
   );
