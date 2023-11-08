@@ -1,6 +1,7 @@
 import React from 'react';
 import {useLocation, Link} from "react-router-dom";
 import './HeaderBar.css';
+import {BiLogIn} from "react-icons/bi";
 
 const HeaderBar = () => {
     const location = useLocation();
@@ -15,6 +16,12 @@ const HeaderBar = () => {
             </div>
             <div className="header-item">
                 {locationName}
+            </div>
+            <div className="header-item">
+                <Link to="/loginView" className="header-item-main-link" >
+                    Login
+                    <BiLogIn />
+                </Link>
             </div>
         </header>
     );

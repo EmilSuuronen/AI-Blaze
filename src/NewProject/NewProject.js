@@ -7,13 +7,14 @@ import {BsFillCameraFill} from "react-icons/bs";
 import {IconContext} from "react-icons";
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import HeaderBar from "../components/Header/HeaderBar";
 
 function NewProject() {
     // upload image by camera icon
     function getImageFileObject(imageFile) {
         console.log({ imageFile })
     }
-    
+
     // delete image by delete icon
     function runAfterImageDelete(file) {
         console.log({ file })
@@ -25,8 +26,9 @@ function NewProject() {
     };
 
     return (
-        <div className="container">
-            <ImageUploader
+    <div className="container">
+        <HeaderBar/>
+        <ImageUploader
                 style={{ 
                     height: 500, 
                     width: 400, 

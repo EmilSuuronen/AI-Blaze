@@ -6,47 +6,48 @@ import CreateNewProject from "./CreateNewProject/CreateNewProject";
 import LabelingView from "./LabelingView/LabelingView";
 import GenerateView from "./GenerateView/GenerateView";
 import NewProject from "./NewProject/NewProject";
+import HeaderBar from "./components/Header/HeaderBar";
 
 export default function App() {
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomeScreen />} />
-        <Route path="/loginview" element={<LoginView />} />
-          <Route path="/generate" element={<GenerateView/>}/>
-          <Route path="/createNewProject" element={<CreateNewProject/>}/>
-          <Route path="/labelEditor" element={<LabelingView/>}/>
-          <Route path="/newprojectview" element={<NewProject />} />
-        <Route path="/editview" element={<EditView />} />
-      </Routes>
-    </Router>
-  );
+    return (
+        <Router>
+            <Routes>
+                <Route path="/" element={<HomeScreen/>}/>
+                <Route path="/loginView" element={<LoginView/>}/>
+                <Route path="/generate" element={<GenerateView/>}/>
+                <Route path="/createNewProject" element={<CreateNewProject/>}/>
+                <Route path="/labelEditor" element={<LabelingView/>}/>
+                <Route path="/newProjectView" element={<NewProject/>}/>
+                <Route path="/editView" element={<EditView/>}/>
+            </Routes>
+        </Router>
+    );
 }
 
 function HomeScreen() {
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh",
-      }}
-    >
-      <h1>Home</h1>
-      <Link to="/loginview">
-        <button>Login</button>
-      </Link>
-      <Link to="/newprojectview">
-        <button>NewProject</button>
-      </Link>
-        <Link to="/createNewProject">
-            <button>create a new project</button>
-        </Link>
-      <Link to="/editview">
-        <button>Edit</button>
-      </Link>
-    </div>
-  );
+    return (
+        <div
+            style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+            }}
+        >
+            <HeaderBar/>
+            <h1>Home</h1>
+            <Link to="/loginView">
+                <button>Login</button>
+            </Link>
+            <Link to="/newProjectView">
+                <button>Create a new project</button>
+            </Link>
+            <Link to="/createNewProject">
+                <button>Create a new project (TEST)</button>
+            </Link>
+            <Link to="/editView">
+                <button>Edit</button>
+            </Link>
+        </div>
+    );
 }
