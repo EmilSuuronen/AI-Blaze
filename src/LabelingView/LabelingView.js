@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 
 // This component is the main view for the labeling page
 export default function LabelingView() {
+
     const canvasRef = useRef(null);
     const [canvas, setCanvas] = useState(null);
     const [rectangles, setRectangles] = useState([]);
@@ -16,6 +17,7 @@ export default function LabelingView() {
     const [currentRect, setCurrentRect] = useState(null);
 
     useEffect(() => {
+        console.log("Code run, canvas created")
         setCanvas(new fabric.Canvas(canvasRef.current, {
             selection: false,
         }));
