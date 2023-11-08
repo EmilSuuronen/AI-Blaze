@@ -1,0 +1,36 @@
+.container {
+    margin: 20px;
+    display: flex; 
+    flex-direction: column; 
+    background-color: aqua;
+    border-radius: 10px;
+    align-items: center; 
+    justify-content: center; 
+}
+
+.text_container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.help_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal_container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    padding: 16px;
+    background-color: white;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #000;
+    box-shadow: 24px;
+}
