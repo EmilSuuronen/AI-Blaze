@@ -4,6 +4,7 @@ import LoginView from "./Login/LoginView";
 import CreateNewProject from "./CreateNewProject/CreateNewProject";
 import LabelingView from "./LabelingView/LabelingView";
 import GenerateView from "./GenerateView/GenerateView";
+import NewProject from "./NewProject/NewProject";
 
 export default function App() {
     return (
@@ -17,6 +18,15 @@ export default function App() {
             </Routes>
         </Router>
     );
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomeScreen />} />
+        <Route path="/loginview" element={<LoginView />} />
+        <Route path="/newprojectview" element={<NewProject />} />
+      </Routes>
+    </Router>
+  );
 }
 
 function HomeScreen() {
@@ -39,4 +49,23 @@ function HomeScreen() {
             </Link>
         </div>
     );
+  return (
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        justifyContent: "center",
+        height: "100vh",
+      }}
+    >
+      <h1>Home</h1>
+      <Link to="/loginview">
+        <button>Login</button>
+      </Link>
+      <Link to="/newprojectview">
+        <button>NewProject</button>
+      </Link>
+    </div>
+  );
 }
