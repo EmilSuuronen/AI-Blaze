@@ -8,12 +8,14 @@ import GenerateView from "./GenerateView/GenerateView";
 import NewProject from "./NewProject/NewProject";
 import SignupView from "./Signup/SignupView";
 import MainScreen from "./HomeScreen/MainScreen";
+import LandingPage from "./LandingPageView/LandingPage";
 
 export default function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<LoginView/>}/>
+                <Route path="/" element={<LandingPage/>}/>
+                <Route path="/loginView" element={<LoginView/>}/>
                 <Route path="/generate" element={<GenerateView/>}/>
                 <Route path="/createNewProject" element={<CreateNewProject/>}/>
                 <Route path="/labelEditor" element={<LabelingView/>}/>
@@ -26,7 +28,7 @@ export default function App() {
     );
 }
 
-/** 
+/**
 function HomeScreen() {
     return (
         <div

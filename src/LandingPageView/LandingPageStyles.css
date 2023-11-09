@@ -1,0 +1,136 @@
+.div-main-landing-page {
+    background: linear-gradient(175deg,
+    rgba(255,255,255,1) 0%,
+    rgba(79,81,140,1) 49%,
+    rgba(44,42,74,1) 67%,
+    rgba(6,3,36,1) 100%);
+    animation: gradient 10s ease infinite;
+    background-size: 400% 400%;
+    height: 100vh;
+    margin: 0px;
+    display: flex;
+    justify-content: center;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.div-title {
+    font-size: 60px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.text-features-title {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+.div-main-container-get-started {
+    margin: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80%;
+    width: 60%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0px 0px 15px 10px rgba(0,0,0,0.1);
+}
+
+.div-landing-page-details {
+    margin: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    width: 100%;
+}
+
+.div-landing-page-details-image {
+    margin: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.text-description-landing-page {
+    width: 100%;
+}
+
+.text-image-description-landing-page {
+    width: 100%;
+    text-align: center;
+}
+
+.div-login-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    margin: 12px;
+}
+
+.button-login, .button-sign-up {
+    background: rgba(79,81,140,1);
+    border: rgba(79,81,140,1) 2px solid;
+    color: white;
+    padding: 16px;
+    border-radius: 50px;
+    margin: 8px;
+}
+
+.button-sign-up {
+    background: rgba(0, 0, 0, 0);
+}
+
+.button-login:hover, .button-sign-up:hover {
+    background: rgb(124, 126, 218);
+    cursor: pointer;
+}
+
+img {
+    max-width: 80%;
+    max-height: 300px;
+    margin: 12px;
+    box-shadow: 0px 0px 15px 10px rgba(0,0,0,0.1);
+    border-radius: 16px;
+}
+
+@media only screen and (max-width: 600px) {
+    .div-main-container-get-started {
+        flex-direction: column;
+        width: 90%;
+        min-height: 100%;
+    }
+
+    .div-landing-page-details {
+        padding: 0px;
+        margin: 12px;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .div-title {
+        font-size: 35px;
+    }
+
+    .div-login-buttons {
+        margin: 0px;
+        justify-content: center;
+    }
+}
+
