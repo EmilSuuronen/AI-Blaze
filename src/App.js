@@ -8,6 +8,7 @@ import GenerateView from "./GenerateView/GenerateView";
 import NewProject from "./NewProject/NewProject";
 import HeaderBar from "./components/Header/HeaderBar";
 import SignupView from "./Signup/SignupView";
+import MainScreen from "./HomeScreen/MainScreen";
 
 export default function App() {
     return (
@@ -21,6 +22,7 @@ export default function App() {
                 <Route path="/newProjectView" element={<NewProject/>}/>
                 <Route path="/editView" element={<EditView/>}/>
                 <Route path="/signupview" element={<SignupView />} />
+                <Route path="/mainscreen" element={<MainScreen />} />
             </Routes>
         </Router>
     );
@@ -49,6 +51,9 @@ function HomeScreen() {
             </Link>
             <Link to="/editView">
                 <button>Edit</button>
+            </Link>
+            <Link to="/mainscreen">
+                <button>Home</button>
             </Link>
         </div>
     );
