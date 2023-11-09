@@ -1,6 +1,4 @@
-import React from "react";
-import "./Login.css";
-import { Link } from "react-router-dom";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
 import {
   Button,
   FormControl,
@@ -10,9 +8,11 @@ import {
   OutlinedInput,
   TextField,
 } from "@mui/material";
-import { Visibility, VisibilityOff } from "@mui/icons-material";
+import "../Login/Login.css";
+import React from "react";
+import { Link } from "react-router-dom";
 
-function LoginView() {
+const SignupView = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
 
@@ -22,9 +22,17 @@ function LoginView() {
 
   return (
     <div>
-      <div className="container">
+      <div className="container_s">
         <h1 className="heading">AI-Blaze</h1>
         <TextField
+          sx={{ m: 1 }}
+          fullWidth
+          id="outlined-basic"
+          label="Email"
+          variant="outlined"
+        />
+        <TextField
+          sx={{ m: 1 }}
           fullWidth
           id="outlined-basic"
           label="Username"
@@ -52,23 +60,45 @@ function LoginView() {
             label="Password"
           />
         </FormControl>
-        <Button sx={{ marginTop: 5 }} size="large" fullWidth variant="contained">
+        <FormControl fullWidth sx={{ m: 1 }} variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-password">
+            Repeat Password
+          </InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type={showPassword ? "text" : "password"}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Password"
+          />
+        </FormControl>
+        <Button
+          sx={{ marginTop: 5 }}
+          size="large"
+          fullWidth
+          variant="contained"
+        >
           Login
         </Button>
       </div>
       <div>
         <hr></hr>
-      </div>
-      <div className="container2">
-        <Link to="/signupview">
-          <Button sx={{ marginTop: 10 , marginBottom: 5 }}>Need an account? SIGN UP</Button>
-        </Link>
-        <Link to="/">
-          <Button variant="contained">Back</Button>
+        <Link to="/loginview">
+          <Button sx={{ marginTop: 10 }} variant="contained">Back</Button>
         </Link>
       </div>
     </div>
   );
-}
+};
 
-export default LoginView;
+export default SignupView;

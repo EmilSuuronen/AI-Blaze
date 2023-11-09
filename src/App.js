@@ -6,6 +6,7 @@ import CreateNewProject from "./CreateNewProject/CreateNewProject";
 import LabelingView from "./LabelingView/LabelingView";
 import GenerateView from "./GenerateView/GenerateView";
 import NewProject from "./NewProject/NewProject";
+import SignupView from "./Signup/SignupView";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
           <Route path="/labelEditor" element={<LabelingView/>}/>
           <Route path="/newprojectview" element={<NewProject />} />
         <Route path="/editview" element={<EditView />} />
+        <Route path="/signupview" element={<SignupView />} />
       </Routes>
     </Router>
   );

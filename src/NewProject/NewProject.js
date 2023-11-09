@@ -25,7 +25,7 @@ function NewProject() {
     };
 
     return (
-        <div className="container">
+        <div className="container1">
             <ImageUploader
                 style={{ 
                     height: 500, 
