@@ -10,6 +10,7 @@
     margin: 0px;
     display: flex;
     justify-content: center;
+    padding: 16px;
 }
 
 @keyframes gradient {
@@ -131,6 +132,10 @@ img {
     .div-login-buttons {
         margin: 0px;
         justify-content: center;
+    }
+
+    .div-main-landing-page {
+        height: 100%;
     }
 }
 
