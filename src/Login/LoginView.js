@@ -52,19 +52,25 @@ function LoginView() {
             label="Password"
           />
         </FormControl>
-        <Button sx={{ marginTop: 5 }} size="large" fullWidth variant="contained">
-          Login
-        </Button>
+        <Link to="/mainscreen">
+          <Button
+            sx={{ marginTop: 5 }}
+            size="large"
+            fullWidth
+            variant="contained"
+          >
+            Login
+          </Button>
+        </Link>
       </div>
       <div>
         <hr></hr>
       </div>
       <div className="container2">
         <Link to="/signupview">
-          <Button sx={{ marginTop: 10 , marginBottom: 5 }}>Need an account? SIGN UP</Button>
-        </Link>
-        <Link to="/">
-          <Button variant="contained">Back</Button>
+          <Button sx={{ marginTop: 10, marginBottom: 5 }}>
+            Need an account? SIGN UP
+          </Button>
         </Link>
       </div>
     </div>

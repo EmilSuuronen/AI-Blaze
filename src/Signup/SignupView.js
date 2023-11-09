@@ -88,12 +88,12 @@ const SignupView = () => {
           fullWidth
           variant="contained"
         >
-          Login
+          Sign up
         </Button>
       </div>
       <div>
         <hr></hr>
-        <Link to="/loginview">
+        <Link to="/">
           <Button sx={{ marginTop: 10 }} variant="contained">Back</Button>
         </Link>
       </div>

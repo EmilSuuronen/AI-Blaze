@@ -42,7 +42,7 @@ const HeaderBar = () => {
     return (
         <header>
             <div className="header-item-main">
-                <Link to="/" className="header-item-main-link">
+                <Link to="/mainscreen" className="header-item-main-link">
                     AI.Blaze
                 </Link>
             </div>

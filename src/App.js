@@ -1,4 +1,4 @@
-import {Link, Route, BrowserRouter as Router, Routes} from "react-router-dom";
+import {Route, BrowserRouter as Router, Routes} from "react-router-dom";
 import "./App.css";
 import EditView from "./Edit/EditView";
 import LoginView from "./Login/LoginView";
@@ -6,7 +6,6 @@ import CreateNewProject from "./CreateNewProject/CreateNewProject";
 import LabelingView from "./LabelingView/LabelingView";
 import GenerateView from "./GenerateView/GenerateView";
 import NewProject from "./NewProject/NewProject";
-import HeaderBar from "./components/Header/HeaderBar";
 import SignupView from "./Signup/SignupView";
 import MainScreen from "./HomeScreen/MainScreen";
 
@@ -14,8 +13,7 @@ export default function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<HomeScreen/>}/>
-                <Route path="/loginView" element={<LoginView/>}/>
+                <Route path="/" element={<LoginView/>}/>
                 <Route path="/generate" element={<GenerateView/>}/>
                 <Route path="/createNewProject" element={<CreateNewProject/>}/>
                 <Route path="/labelEditor" element={<LabelingView/>}/>
@@ -28,6 +26,7 @@ export default function App() {
     );
 }
 
+/** 
 function HomeScreen() {
     return (
         <div
@@ -58,3 +57,4 @@ function HomeScreen() {
         </div>
     );
 }
+*/
