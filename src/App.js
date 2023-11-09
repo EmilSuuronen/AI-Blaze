@@ -20,23 +20,10 @@ export default function App() {
                 <Route path="/labelEditor" element={<LabelingView/>}/>
                 <Route path="/newProjectView" element={<NewProject/>}/>
                 <Route path="/editView" element={<EditView/>}/>
+                <Route path="/signupview" element={<SignupView />} />
             </Routes>
         </Router>
     );
-  return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<HomeScreen />} />
-        <Route path="/loginview" element={<LoginView />} />
-          <Route path="/generate" element={<GenerateView/>}/>
-          <Route path="/createNewProject" element={<CreateNewProject/>}/>
-          <Route path="/labelEditor" element={<LabelingView/>}/>
-          <Route path="/newprojectview" element={<NewProject />} />
-        <Route path="/editview" element={<EditView />} />
-        <Route path="/signupview" element={<SignupView />} />
-      </Routes>
-    </Router>
-  );
 }
 
 function HomeScreen() {
