@@ -49,7 +49,10 @@ export default function CreateNewProject() {
                     <h2>Preview</h2>
                     <img src={imagePreview} alt="Selected" className="file-preview-img" />
                     <Link to="/labelEditor" onClick={handleNavigate}>
-                        <button>Label editor</button>
+                        <button>Label your own data</button>
+                    </Link>
+                    <Link to="/generate" onClick={handleNavigate}>
+                        <button>Auto generate from image</button>
                     </Link>
                 </div>
             )}

@@ -5,7 +5,39 @@ import {BiLogIn} from "react-icons/bi";
 
 const HeaderBar = () => {
     const location = useLocation();
-    const locationName = location.pathname.split("/")[1];
+    const locationName = location.pathname;
+
+    const getHeaderText = (pathname) => {
+        let headerText = '';
+
+        switch (pathname) {
+            case '/':
+                headerText = '';
+                break;
+            case '/loginView':
+                headerText = 'Login';
+                break;
+            case '/generate':
+                headerText = 'Generate';
+                break;
+            case '/createNewProject':
+                headerText = 'Create New Project';
+                break;
+            case '/labelEditor':
+                headerText = 'Label Editor';
+                break;
+            case '/newProjectView':
+                headerText = 'New Project';
+                break;
+            case '/editView':
+                headerText = 'Edit Project';
+                break;
+            // Add more cases as needed for other paths
+            default:
+                headerText = ''; // This is a fallback for unrecognized paths
+        }
+        return headerText;
+    };
 
     return (
         <header>
@@ -15,7 +47,7 @@ const HeaderBar = () => {
                 </Link>
             </div>
             <div className="header-item">
-                {locationName}
+                {getHeaderText(locationName)}
             </div>
             <div className="header-item">
                 <Link to="/loginView" className="header-item-main-link" >

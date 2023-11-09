@@ -1,32 +1,37 @@
 import {sendToChatGPT} from "../Api/ChatGPT-api";
 import React, {useEffect, useMemo, useState} from 'react';
 import {useLocation} from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 import "./GenerateView.css";
 import {sendToChatGPTVision} from "../Api/ChatGPT-vision-api";
+import HeaderBar from "../components/Header/HeaderBar";
+import Button from "@mui/material/Button";
+import { quantum } from 'ldrs'
+
 
 export default function GenerateView() {
 
     const location = useLocation();
     const elementData = location.state?.objectData;
-
-    const labels = elementData.map(element => element.label);
-
-    console.log("labels: " + JSON.stringify(labels, null, 2));
+    const [labels, setLabels] = useState(null);
 
     const [responseData, setResponseData] = useState('no data yet');
     const [parsedResponse, setParsedResponse] = useState({});
     const [isLoading, setIsLoading] = useState(false);
+    quantum.register()
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (elementData == null) {
-            handleNavigate();
+        if (elementData != null) {
+            setLabels(elementData.map(element => element.label));
+            // ChatGPT disabled for testing purposes
+            //handleSendToChatGPT();
+        } else {
+            // ChatGPT disabled for testing purposes
+            //handleSendToChatGPTVision();
         }
-        //handleSendToChatGPT();
-        //handleSendToChatGPTVision();
-    }, []);
+    }, [elementData]);
 
     const handleNavigate = () => {
         navigate('/createNewProject');
@@ -92,7 +97,7 @@ export default function GenerateView() {
             justify-content: space-evenly;
             flex-direction: column;
             min-height: 40vh;
-            background-color: #5d5d5d;
+            background-color: #cbcbcb;
             padding: 8px;
         }
           ${testJson.CSS}
@@ -107,17 +112,36 @@ export default function GenerateView() {
 
     return (
         <div className="generate-view-main">
+            <HeaderBar/>
             {isLoading ? (
-                <p>Loading...</p> // Show loading text while waiting for response
+                    <div className="div-loader">
+                        <l-quantum
+                            size="45"
+                            speed="1.75"
+                            color="#4F518C"
+                        ></l-quantum>
+                        <h3 className="h3-loading-title">Generating your website...</h3>
+                    </div>
             ) : (
-                <iframe
-                    srcDoc={htmlContent || 'about:blank'} // Use htmlContent or 'about:blank' if htmlContent is null
-                    frameBorder="0"
-                    sandbox="allow-scripts"
-                ></iframe>
+                <div className="div-generation-editor">
+                    <div>
+                        <h2>Your application</h2>
+                    </div>
+                    <iframe
+                        srcDoc={htmlContent || 'about:blank'} // Use htmlContent or 'about:blank' if htmlContent is null
+                        frameBorder="0"
+                        sandbox="allow-scripts"
+                    ></iframe>
+                    <div>
+                        <Button id="button-generate" variant="contained" onClick={handleSendToChatGPTVision}>
+                            Regenerate
+                        </Button>
+                        <Button id="button-generate" variant="contained">
+                            Save project
+                        </Button>
+                    </div>
+                </div>
             )}
-            <h2>Response: </h2>
-            <p>{responseData}</p>
         </div>
     );
 }
