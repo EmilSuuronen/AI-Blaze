@@ -6,6 +6,8 @@ import "../components/LabelModalMenu/LabelModal.css";
 import "./LabelingView.css";
 import {Link} from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import HeaderBar from "../components/Header/HeaderBar";
+import Button from "@mui/material/Button";
 
 // This component is the main view for the labeling page
 export default function LabelingView() {
@@ -163,15 +165,29 @@ export default function LabelingView() {
 
     return (
         <div className="main-divider">
-            <canvas ref={canvasRef}/>
-            {showDropdown && (
-                <LabelModalMenu
-                    uiElements={modalUIElements}
-                    onSelect={handleDropdownSelect}
-                    onClose={() => setShowDropdown(false)}
-                />
-            )}
-            <button onClick={handleNavigate}>Generate to code</button>
+            <HeaderBar/>
+            <div className="div-canvas-editor">
+                <div>
+                    <h3>
+                        Label your objects
+                    </h3>
+                    <p>Draw boxes on top of your elements and label them accordingly</p>
+                </div>
+                <canvas ref={canvasRef}/>
+                {showDropdown && (
+                    <LabelModalMenu
+                        uiElements={modalUIElements}
+                        onSelect={handleDropdownSelect}
+                        onClose={() => setShowDropdown(false)}
+                    />
+                )}
+                <Button
+                    id="button-generate"
+                    variant="contained"
+                    onClick={handleNavigate}>
+                    Generate
+                </Button>
+            </div>
         </div>
     );
 }
