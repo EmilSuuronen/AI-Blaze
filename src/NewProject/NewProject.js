@@ -27,10 +27,8 @@ function NewProject() {
 
     return (
         <div className="container1">
+            <HeaderBar />
             <ImageUploader
-    <div className="container">
-        <HeaderBar/>
-        <ImageUploader
                 style={{
                     height: 500, 
                     width: 400, 
