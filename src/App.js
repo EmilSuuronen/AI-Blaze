@@ -8,12 +8,14 @@ import GenerateView from "./GenerateView/GenerateView";
 import NewProject from "./NewProject/NewProject";
 import HeaderBar from "./components/Header/HeaderBar";
 import SignupView from "./Signup/SignupView";
+import LandingPage from "./LandingPageView/LandingPage";
 
 export default function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<HomeScreen/>}/>
+                <Route path="/" element={<LandingPage/>}/>
+                <Route path="/home" element={<HomeScreen/>}/>
                 <Route path="/loginView" element={<LoginView/>}/>
                 <Route path="/generate" element={<GenerateView/>}/>
                 <Route path="/createNewProject" element={<CreateNewProject/>}/>
