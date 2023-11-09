@@ -1,0 +1,31 @@
+
+header {
+    background-color: #2C2A4A;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    color: white;
+    text-underline: none;
+    top: 0;
+    width: 100%;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.75);
+}
+
+.header-item-main {
+    margin: 12px;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.header-item-main-link{
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-item {
+    margin: 12px;
+    font-size: 16px;
+}
