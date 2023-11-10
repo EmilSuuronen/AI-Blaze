@@ -9,10 +9,12 @@ import NewProject from "./NewProject/NewProject";
 import SignupView from "./Signup/SignupView";
 import MainScreen from "./HomeScreen/MainScreen";
 import LandingPage from "./LandingPageView/LandingPage";
+import { AuthContextProvider } from './context/AuthContext';
 
 export default function App() {
     return (
-        <Router>
+        <AuthContextProvider>
+            <Router>
             <Routes>
                 <Route path="/" element={<LandingPage/>}/>
                 <Route path="/loginView" element={<LoginView/>}/>
@@ -24,7 +26,9 @@ export default function App() {
                 <Route path="/signupview" element={<SignupView />} />
                 <Route path="/mainscreen" element={<MainScreen />} />
             </Routes>
-        </Router>
+            </Router>
+        </AuthContextProvider>
+        
     );
 }
 
@@ -56,6 +60,12 @@ function HomeScreen() {
             <Link to="/mainscreen">
                 <button>Home</button>
             </Link>
+            <Link to="/newprojectview">
+        <button>NewProject</button>
+      </Link>
+      <Link to="/editview">
+        <button>Edit</button>
+      </Link>
         </div>
     );
 }

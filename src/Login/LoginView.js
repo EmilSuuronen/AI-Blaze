@@ -1,6 +1,6 @@
-import React from "react";
+import React, {useEffect} from "react";
 import "./Login.css";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Button,
   FormControl,
@@ -11,14 +11,32 @@ import {
   TextField,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { GoogleButton } from 'react-google-button';
+import { UserAuth } from '../context/AuthContext';
 
 function LoginView() {
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const {googleSignIn, user} = UserAuth();
+  const navigate = useNavigate();
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await googleSignIn();
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
   };
+
+  useEffect(() => {
+    if (user != null) {
+      navigate("/mainscreen")
+    }
+  }, [user]);
 
   return (
     <div>
@@ -54,7 +72,7 @@ function LoginView() {
         </FormControl>
         <Link to="/mainscreen">
           <Button
-            sx={{ marginTop: 5 }}
+            sx={{ margin: 5 }}
             size="large"
             fullWidth
             variant="contained"
@@ -62,6 +80,7 @@ function LoginView() {
             Login
           </Button>
         </Link>
+        <GoogleButton onClick={handleGoogleSignIn} />
       </div>
       <div>
         <hr></hr>

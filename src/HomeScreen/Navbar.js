@@ -1,9 +1,19 @@
 import React, { useState } from "react";
 import "./Navbar.css";
 import { Link } from "react-router-dom";
+import {UserAuth} from '../context/AuthContext';
 
 function Navbar() {
   const [dropdownVisible, setDropdownVisible] = useState(false);
+  const {user, logOut} = UserAuth();
+
+  const handleSignOut = async () => {
+    try {
+      await logOut()
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <div className="navbar">
@@ -28,7 +38,7 @@ function Navbar() {
             <button onClick={() => console.log("Edit View")}>Edit</button>
           </Link>
           <Link to="/">
-            <button onClick={() => console.log("Signout")}>Signout</button>
+            <button onClick={handleSignOut}>Signout</button>
           </Link>
         </div>
       )}
