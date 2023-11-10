@@ -46,16 +46,8 @@
     margin-bottom: 10px;
   }
   
-  .button {
-    font-size: 1.125em;
-    margin-top: 20px;
-    width: 90%;
-    margin-bottom: 100px;
-    background-color: #2C2A4A; 
-    color: white; 
-    border: none;
-    border-radius: 5px;
-    padding: 10px 20px;
+  .loginButton {
+    width: 240px;
   }
   
   .or {
@@ -74,13 +66,13 @@
     position: relative;
   }
   
-  .google {
+  /* .google {
     font-size: 1em;
     margin-top: 50%;
     color: #323232;
     width: max-content;
     background-color: transparent;
     border: transparent;
-  }
+  } */
 
   

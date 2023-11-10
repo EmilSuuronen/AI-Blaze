@@ -70,16 +70,16 @@ function LoginView() {
             label="Password"
           />
         </FormControl>
-        <Link to="/mainscreen">
+        {/* <Link to="/mainscreen"> */}
           <Button
             sx={{ margin: 5 }}
             size="large"
-            fullWidth
             variant="contained"
+            className="loginButton"
           >
             Login
           </Button>
-        </Link>
+        {/* </Link> */}
         <GoogleButton onClick={handleGoogleSignIn} />
       </div>
       <div>

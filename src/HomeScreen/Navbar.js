@@ -5,7 +5,7 @@ import {UserAuth} from '../context/AuthContext';
 
 function Navbar() {
   const [dropdownVisible, setDropdownVisible] = useState(false);
-  const {user, logOut} = UserAuth();
+  const {logOut} = UserAuth();
 
   const handleSignOut = async () => {
     try {
