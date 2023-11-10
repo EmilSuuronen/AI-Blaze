@@ -1,16 +1,32 @@
-.main-divider {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+body {
+    background-color: #FFFFFA;
 }
 
-.canvas-container {
+.main-divider {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
 }
 
+.div-canvas-editor {
+    margin: 20px;
+    padding: 20px;
+    width: 80%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    background-color: #4F518C;
+    border-radius: 16px;
+    color: white;
+}
+
 canvas {
     border: 1px solid #000;
+}
+
+#button-generate {
+    margin: 20px;
+    background-color: #2C2A4A;
 }

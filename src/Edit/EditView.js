@@ -13,7 +13,7 @@ function EditView() {
     const handleClose = () => setOpen(false);
 
     return (
-        <div className="container">
+        <div className="container5">
             <div className="text_container">
                 <Typography variant="h6" component="h2">
                     Here is your UI based on your wireframe.

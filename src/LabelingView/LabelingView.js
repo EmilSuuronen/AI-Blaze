@@ -6,27 +6,43 @@ import "../components/LabelModalMenu/LabelModal.css";
 import "./LabelingView.css";
 import {Link} from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
+import HeaderBar from "../components/Header/HeaderBar";
+import Button from "@mui/material/Button";
 
 // This component is the main view for the labeling page
 export default function LabelingView() {
+
     const canvasRef = useRef(null);
     const [canvas, setCanvas] = useState(null);
     const [rectangles, setRectangles] = useState([]);
     const [showDropdown, setShowDropdown] = useState(false);
     const [currentRect, setCurrentRect] = useState(null);
 
+    const imageSrc = localStorage.getItem('imageSrc');
+
+    // Variable to check if the canvas is loaded. This is used to prevent the useEffect from running multiple times
+    const canvasLoaded = useRef(false);
+    // Initializing the canvas on page load
     useEffect(() => {
-        setCanvas(new fabric.Canvas(canvasRef.current, {
-            selection: false,
-        }));
+        console.log("canvas loaded")
+        if(canvasLoaded.current === false) {
+            setCanvas(new fabric.Canvas(canvasRef.current, {
+                selection: false,
+            }));
+        }
+
+        // Cleanup function to correct the effect change
+        return () => {
+            canvasLoaded.current = true
+        };
     }, []);
+
 
     // When the canvas is initialized, load the image and add event listeners
     useEffect(() => {
-        if (canvas && canvasRef.current) {
 
-            // Load the background image and resize the canvas to match the image
-            fabric.Image.fromURL(localStorage.getItem('imageSrc'), (img) => {
+        if (canvas && canvasRef.current) {
+            fabric.Image.fromURL(imageSrc, (img) => {
                 // Calculate the scale for the image
                 const maxDimensions = {width: 600, height: 400};
                 const scale = Math.min(maxDimensions.width / img.width, maxDimensions.height / img.height, 1);
@@ -45,6 +61,8 @@ export default function LabelingView() {
                 // Re-render the canvas
                 canvas.renderAll();
             });
+
+            // Load the background image and resize the canvas to match the image
 
             let rect, isDrawing = false, origX, origY;
 
@@ -128,7 +146,7 @@ export default function LabelingView() {
                 canvas.off('mouse:up', handleMouseUp);
             };
         }
-    }, [canvas]);
+    }, [canvas, imageSrc]);
 
     // Function to handle dropdown selection
     const handleDropdownSelect = (label) => {
@@ -147,15 +165,29 @@ export default function LabelingView() {
 
     return (
         <div className="main-divider">
-            <canvas ref={canvasRef}/>
-            {showDropdown && (
-                <LabelModalMenu
-                    uiElements={modalUIElements}
-                    onSelect={handleDropdownSelect}
-                    onClose={() => setShowDropdown(false)}
-                />
-            )}
-            <button onClick={handleNavigate}>Generate to code</button>
+            <HeaderBar/>
+            <div className="div-canvas-editor">
+                <div>
+                    <h3>
+                        Label your objects
+                    </h3>
+                    <p>Draw boxes on top of your elements and label them accordingly</p>
+                </div>
+                <canvas ref={canvasRef}/>
+                {showDropdown && (
+                    <LabelModalMenu
+                        uiElements={modalUIElements}
+                        onSelect={handleDropdownSelect}
+                        onClose={() => setShowDropdown(false)}
+                    />
+                )}
+                <Button
+                    id="button-generate"
+                    variant="contained"
+                    onClick={handleNavigate}>
+                    Generate
+                </Button>
+            </div>
         </div>
     );
 }

@@ -1,41 +1,95 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect} from "react";
 import "./Login.css";
-import {auth, provider} from "../GoogleSignin/config";
-import {signInWithPopup} from "firebase/auth";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import {
+  Button,
+  FormControl,
+  IconButton,
+  InputAdornment,
+  InputLabel,
+  OutlinedInput,
+  TextField,
+} from "@mui/material";
+import { Visibility, VisibilityOff } from "@mui/icons-material";
+import { GoogleButton } from 'react-google-button';
+import { UserAuth } from '../context/AuthContext';
 
 function LoginView() {
-  const [value, setValue] = useState('')
+  const [showPassword, setShowPassword] = React.useState(false);
+  const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const {googleSignIn, user} = UserAuth();
+  const navigate = useNavigate();
 
-  const handleClick = () => {
-    signInWithPopup(auth, provider).then((data)=>{
-      setValue(data.user.email)
-      localStorage.setItem("email", data.user.email)
-    })
+  const handleGoogleSignIn = async () => {
+    try {
+      await googleSignIn();
+    } catch (error) {
+      console.log(error);
+    }
   }
 
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
+
   useEffect(() => {
-    setValue(localStorage.getItem("email"))
-  })
+    if (user != null) {
+      navigate("/mainscreen")
+    }
+  }, [user]);
 
   return (
     <div>
       <div className="container">
         <h1 className="heading">AI-Blaze</h1>
-        <input type="text" className="input" placeholder="Username" />
-        <input type="password" className="input" placeholder="Password" />
-        <button className="button">Login</button>
-        <button onClick={handleClick}>Signin with Google</button>
-        {value}
+        <TextField
+          fullWidth
+          id="outlined-basic"
+          label="Username"
+          variant="outlined"
+        />
+        <FormControl fullWidth sx={{ m: 1 }} variant="outlined">
+          <InputLabel htmlFor="outlined-adornment-password">
+            Password
+          </InputLabel>
+          <OutlinedInput
+            id="outlined-adornment-password"
+            type={showPassword ? "text" : "password"}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={handleClickShowPassword}
+                  onMouseDown={handleMouseDownPassword}
+                  edge="end"
+                >
+                  {showPassword ? <VisibilityOff /> : <Visibility />}
+                </IconButton>
+              </InputAdornment>
+            }
+            label="Password"
+          />
+        </FormControl>
+        <Link to="/mainscreen">
+          <Button
+            sx={{ margin: 5 }}
+            size="large"
+            fullWidth
+            variant="contained"
+          >
+            Login
+          </Button>
+        </Link>
+        <GoogleButton onClick={handleGoogleSignIn} />
       </div>
       <div>
-        <hr className="hr" />
-        <p className="or">OR</p>
+        <hr></hr>
       </div>
       <div className="container2">
-        <button className="google">Need an account? SIGN UP</button>
-        <Link to="/">
-          <button>Back</button>
+        <Link to="/signupview">
+          <Button sx={{ marginTop: 10, marginBottom: 5 }}>
+            Need an account? SIGN UP
+          </Button>
         </Link>
       </div>
     </div>
