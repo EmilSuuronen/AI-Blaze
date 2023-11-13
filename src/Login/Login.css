@@ -45,6 +45,13 @@
     border-radius: 20px;
     margin-bottom: 10px;
   }
+
+  .formContainer {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
   
   .loginButton {
     width: 240px;

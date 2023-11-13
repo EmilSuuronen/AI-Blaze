@@ -9,12 +9,40 @@ import {
   TextField,
 } from "@mui/material";
 import "../Login/Login.css";
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { createUserWithEmailAndPassword } from "@firebase/auth";
+import { auth } from '../firebaseConfig';
 
 const SignupView = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const handleClickShowPassword = () => setShowPassword((show) => !show);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState(false)
+  const [passwordError, setPasswordError] = useState(false)
+
+  const handleSignUp = (event) => {
+    event.preventDefault();
+
+    if (email === '') {
+      setEmailError(true)
+    }
+    if (password === '') {
+      setPasswordError(true)
+    }
+
+    if (email && password) {
+      console.log(email, password)
+    }
+
+    createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        console.log(userCredential)
+      }).catch((error) => {
+        console.log(error)
+      })
+}
 
   const handleMouseDownPassword = (event) => {
     event.preventDefault();
@@ -24,27 +52,33 @@ const SignupView = () => {
     <div>
       <div className="container_s">
         <h1 className="heading">AI-Blaze</h1>
-        <TextField
-          sx={{ m: 1 }}
-          fullWidth
-          id="outlined-basic"
-          label="Email"
-          variant="outlined"
-        />
-        <TextField
-          sx={{ m: 1 }}
-          fullWidth
-          id="outlined-basic"
-          label="Username"
-          variant="outlined"
-        />
-        <FormControl fullWidth sx={{ m: 1 }} variant="outlined">
+        <form 
+          autoComplete="off" 
+          onSubmit={handleSignUp}
+          className="formContainer"
+          >
+          <TextField 
+            label="Email"
+            onChange={e => setEmail(e.target.value)}
+            required
+            variant="outlined"
+            type="email"
+            sx={{mb: 3}}
+            fullWidth
+            value={email}
+            error={emailError}
+          />
+          <FormControl fullWidth variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">
             Password
           </InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
+            onChange={e => setPassword(e.target.value)}
+            fullWidth
+            error={passwordError}
+            label="Password"
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -57,16 +91,19 @@ const SignupView = () => {
                 </IconButton>
               </InputAdornment>
             }
-            label="Password"
           />
-        </FormControl>
-        <FormControl fullWidth sx={{ m: 1 }} variant="outlined">
+           </FormControl>
+           <FormControl fullWidth variant="outlined">
           <InputLabel htmlFor="outlined-adornment-password">
             Repeat Password
           </InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
-            type={showPassword ? "text" : "password"}
+            type={showPassword ? 'text' : 'password'}
+            onChange={e => setPassword(e.target.value)}
+            fullWidth
+            error={passwordError}
+            label="Password"
             endAdornment={
               <InputAdornment position="end">
                 <IconButton
@@ -79,17 +116,18 @@ const SignupView = () => {
                 </IconButton>
               </InputAdornment>
             }
-            label="Password"
           />
-        </FormControl>
-        <Button
-          sx={{ marginTop: 5 }}
-          size="large"
-          fullWidth
-          variant="contained"
-        >
-          Sign up
-        </Button>
+           </FormControl>
+          <Button
+            sx={{ margin: 5 }}
+            size="large"
+            variant="contained"
+            className="loginButton"
+            type="submit"
+          >
+            Sign Up
+          </Button>
+        </form>
       </div>
       <div>
         <hr></hr>
