@@ -74,6 +74,7 @@ const SignupView = () => {
           </InputLabel>
           <OutlinedInput
             id="outlined-adornment-password"
+            className="passwordContainer"
             type={showPassword ? 'text' : 'password'}
             onChange={e => setPassword(e.target.value)}
             fullWidth
@@ -131,8 +132,12 @@ const SignupView = () => {
       </div>
       <div>
         <hr></hr>
-        <Link to="/">
-          <Button sx={{ marginTop: 10 }} variant="contained">Back</Button>
+      </div>
+      <div className="container2">
+        <Link to="/loginview">
+          <Button sx={{ marginTop: 10, marginBottom: 5 }}>
+            Already had the account? Log In
+          </Button>
         </Link>
       </div>
     </div>

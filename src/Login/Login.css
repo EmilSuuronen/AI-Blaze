@@ -52,6 +52,10 @@
     flex-direction: column;
     align-items: center;
   }
+
+  .passwordContainer {
+    margin-bottom: 24px;
+  }
   
   .loginButton {
     width: 240px;
