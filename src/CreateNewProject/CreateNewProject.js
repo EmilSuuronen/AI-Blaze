@@ -1,10 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './CreateNewProject_Styles.css';
+import {onAuthStateChanged} from 'firebase/auth';
+import {auth} from '../firebaseConfig';
 
 export default function CreateNewProject() {
     const [selectedFile, setSelectedFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
+
+    useEffect(() => {
+        onAuthStateChanged(auth, (user) => {
+          if (user) {
+            const uid = user.uid;
+            console.log("uid", uid);
+          } 
+        });
+      }, [])
 
     const handleFileSelect = (e) => {
         const file = e.target.files[0];
