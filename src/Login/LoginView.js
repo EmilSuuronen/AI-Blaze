@@ -75,6 +75,7 @@ function LoginView() {
       <div className="login_base">
         <div className="login_container">
           <h1 className="login_heading">AI-Blaze</h1>
+          <h2 className="login_subheading">Login</h2>
           <form
             autoComplete="off"
             onSubmit={handleLogin}
@@ -132,7 +133,7 @@ function LoginView() {
           </form>
         </div>
         <div className="login_container2">
-          <GoogleButton onClick={handleGoogleSignIn} />
+          <GoogleButton className="login_google" onClick={handleGoogleSignIn} />
           <Link to="/signupview">
             <Button>Sign up manually</Button>
           </Link>

@@ -56,6 +56,7 @@ const SignupView = () => {
       <div className="signup_base">
         <div className="signup_container">
           <h1 className="signup_heading">AI-Blaze</h1>
+          <h2 className="signup_subheading">Sign Up</h2>
           <form autoComplete="off" onSubmit={handleSignUp} className="signup_formContainer">
             <TextField
               label="Email"

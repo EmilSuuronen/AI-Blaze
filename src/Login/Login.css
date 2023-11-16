@@ -28,8 +28,14 @@
 
 .login_heading {
   font-size: 2.5em;
-  margin-bottom: 40px;
+  margin-bottom: 1%;
   color: #fffffa;
+  font-family: 'Arial', sans-serif;
+}
+
+.login_subheading {
+  color: #fffffa;
+  margin-bottom: 15%;
   font-family: 'Arial', sans-serif;
 }
 
@@ -72,5 +78,9 @@
 }
 
 .login_container2 button:hover {
-  background-color: #2980b9;
+  background-color: #575757;
+}
+
+.login_google {
+  padding: 1%;
 }
