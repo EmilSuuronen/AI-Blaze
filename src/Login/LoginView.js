@@ -121,7 +121,7 @@ function LoginView() {
               style={{
                 backgroundColor: "rgba(79,81,140,1)",
                 color: "#fffffa",
-                marginTop: "10%",
+                marginTop: "5%",
               }}
               size="large"
               variant="contained"
