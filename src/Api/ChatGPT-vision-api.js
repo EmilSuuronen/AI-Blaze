@@ -1,5 +1,5 @@
 const OPENAI_URL = 'https://api.openai.com/v1/chat/completions';
-const API_KEY = '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';
+const API_KEY = process.env.REACT_APP_CHATGPT_API_KEY;
 
 export const sendToChatGPTVision = async () => {
 
@@ -20,7 +20,9 @@ export const sendToChatGPTVision = async () => {
                         " " +
                         "The HTML and website code should be a single string value. Do not include newlines or any unnecessary symbols in the code. " +
                         "Include styling and include coloring for the components in the CSS property. " +
-                        "Create complete elements: Include naming in text fields, buttons, etc. "
+                        "Create complete elements: Include naming in text fields, buttons, etc. " +
+                        "Use this link: https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Placeholder_view_vector.svg/310px-Placeholder_view_vector.svg.png" +
+                        "for source for images in the page."
                 },
                 {
                     role: "user",

@@ -9,7 +9,6 @@ import Button from "@mui/material/Button";
 import { quantum } from 'ldrs';
 import ColorPicker from '../components/ColorPicker/ColorPicker.js';
 
-
 export default function GenerateView() {
 
     const location = useLocation();
@@ -22,18 +21,15 @@ export default function GenerateView() {
     const [isLoading, setIsLoading] = useState(false);
     quantum.register()
 
-    const [selectedElement, setSelectedElement] = useState(null);
-    const [elementStyle, setElementStyle] = useState({});
-
     const navigate = useNavigate();
+
+    const [previewBackgroundColor, setPreviewBackgroundColor] = useState('#cbcbcb');
 
     useEffect(() => {
         if (elementData != null) {
             setLabels(elementData.map(element => element.label));
-            // ChatGPT disabled for testing purposes
             //handleSendToChatGPT();
         } else {
-            // ChatGPT disabled for testing purposes
             //handleSendToChatGPTVision();
         }
     }, [elementData]);
@@ -98,7 +94,7 @@ export default function GenerateView() {
             justify-content: space-evenly;
             flex-direction: column;
             min-height: 40vh;
-            background-color: #cbcbcb;
+            background-color: ${previewBackgroundColor};
             padding: 8px;
         }
           ${testJson.CSS}
@@ -110,6 +106,10 @@ export default function GenerateView() {
       </html>
     `;
     }, [isLoading, parsedResponse]);
+
+    function checkColor() {
+        console.log("previewBackgroundColor: " + previewBackgroundColor)
+    }
 
     return (
         <div className="generate-view-main">
@@ -125,28 +125,44 @@ export default function GenerateView() {
                     </div>
             ) : (
                 <div className="div-generation-editor">
-                    <div>
-                        <h2>Your application</h2>
-                    </div>
                     <div className="div-editor-row">
-                        <iframe
-                            id="iframe-code-preview"
-                            srcDoc={htmlContent || 'about:blank'} // Use htmlContent or 'about:blank' if htmlContent is null
-                            frameBorder="0"
-                            sandbox="allow-scripts allow-same-origin"
-                        >Iframe</iframe>
-                        <div className="div-editor-options">
-                            <div>Background color
-                                <ColorPicker />
-                            </div>
-                            <div>Button sizing</div>
+                        <div className="div-preview-iframe-container">
                             <div>
-                                <Button id="button-generate" variant="contained" onClick={handleSendToChatGPTVision}>
-                                    Regenerate
-                                </Button>
-                                <Button id="button-generate" variant="contained">
-                                    Save project
-                                </Button>
+                                <h2 style={{color: 'black'}}>Your application</h2>
+                            </div>
+                            <iframe
+                                id="iframe-code-preview"
+                                srcDoc={htmlContent || 'about:blank'} // Use htmlContent or 'about:blank' if htmlContent is null
+                                frameBorder="0"
+                                sandbox="allow-scripts allow-same-origin"
+                            >Iframe</iframe>
+                        </div>
+                        <div className="div-editor-flex-column">
+                            <div className="div-editor-options">
+                                <div>Background color
+                                    <ColorPicker color={previewBackgroundColor} onColorChange={setPreviewBackgroundColor}/>
+                                </div>
+                            </div>
+                            <div className="div-editor-options">
+                                <div>Button sizing</div>
+                            </div>
+                            <div className="div-editor-options">
+                                <div>
+                                    Text content
+                                </div>
+                            </div>
+                            <div className="div-editor-options">
+                                <div>
+                                    <Button id="button-generate" variant="contained" onClick={handleSendToChatGPTVision}>
+                                        Regenerate
+                                    </Button>
+                                    <Button id="button-generate" variant="contained">
+                                        Save project
+                                    </Button>
+                                    <Button id="button-generate" variant="contained" onClick={checkColor}>
+                                        log color
+                                    </Button>
+                                </div>
                             </div>
                         </div>
                     </div>
