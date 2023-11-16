@@ -1,5 +1,8 @@
 const OPENAI_URL = 'https://api.openai.com/v1/chat/completions';
-const API_KEY = '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';
+// Emil's key
+// const API_KEY = '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';
+// Juha's key
+// const API_KEY = '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';
 
 export const sendToChatGPTVision = async () => {
 

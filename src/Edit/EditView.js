@@ -6,6 +6,7 @@ import {Image} from "@mui/icons-material";
 import Button from '@mui/material/Button';
 import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
+import HeaderBar from "../components/Header/HeaderBar";
 
 function EditView() {
     const [open, setOpen] = React.useState(false);
@@ -13,21 +14,22 @@ function EditView() {
     const handleClose = () => setOpen(false);
 
     return (
-        <div className="container5">
-            <div className="text_container">
+        <Box className="container5">
+            <HeaderBar />
+            <Box className="text_container">
                 <Typography variant="h6" component="h2">
                     Here is your UI based on your wireframe.
                 </Typography>
                 <Typography variant="h6" component="h2">
                     You can regenerate the UI or edit it to your liking.
                 </Typography>
-            </div>
-            <div className="help_container">
+            </Box>
+            <Box  className="help_container">
                 <Typography variant="h6" component="h2" className="text_container">
                     See instructions on how to edit your computer.
                 </Typography>
                 <Icon onClick={handleOpen}>help_outline</Icon>
-            </div>
+            </Box>
             <Image 
                 style={{ 
                     height: 500, 
@@ -62,7 +64,7 @@ function EditView() {
                     </Typography>
                 </Box>
             </Modal>
-        </div>
+        </Box>
     );
 };
 
