@@ -24,6 +24,8 @@ export default function GenerateView() {
     const navigate = useNavigate();
 
     const [previewBackgroundColor, setPreviewBackgroundColor] = useState('#cbcbcb');
+    const [previewButtonColor, setPreviewButtonColor] = useState('#cbcbcb');
+    const [previewDivColor, setPreviewDivColor] = useState('#cbcbcb');
 
     useEffect(() => {
         if (elementData != null) {
@@ -97,7 +99,13 @@ export default function GenerateView() {
             background-color: ${previewBackgroundColor};
             padding: 8px;
         }
-          ${testJson.CSS}
+        button{
+        background-color: ${previewButtonColor};
+        }
+        div{
+        background-color: ${previewDivColor};
+        }
+        ${testJson.CSS}
         </style>
       </head>
       <body>
@@ -105,11 +113,7 @@ export default function GenerateView() {
       </body>
       </html>
     `;
-    }, [isLoading, parsedResponse]);
-
-    function checkColor() {
-        console.log("previewBackgroundColor: " + previewBackgroundColor)
-    }
+    }, [previewBackgroundColor, previewButtonColor, previewDivColor, testJson.CSS, testJson.HTML]);
 
     return (
         <div className="generate-view-main">
@@ -138,9 +142,15 @@ export default function GenerateView() {
                             >Iframe</iframe>
                         </div>
                         <div className="div-editor-flex-column">
-                            <div className="div-editor-options">
+                            <div className="div-editor-options" id="div-color-options">
                                 <div>Background color
                                     <ColorPicker color={previewBackgroundColor} onColorChange={setPreviewBackgroundColor}/>
+                                </div>
+                                <div>Button color
+                                    <ColorPicker color={previewButtonColor} onColorChange={setPreviewButtonColor}/>
+                                </div>
+                                <div>Div colors
+                                    <ColorPicker color={previewDivColor} onColorChange={setPreviewDivColor}/>
                                 </div>
                             </div>
                             <div className="div-editor-options">
@@ -158,9 +168,6 @@ export default function GenerateView() {
                                     </Button>
                                     <Button id="button-generate" variant="contained">
                                         Save project
-                                    </Button>
-                                    <Button id="button-generate" variant="contained" onClick={checkColor}>
-                                        log color
                                     </Button>
                                 </div>
                             </div>

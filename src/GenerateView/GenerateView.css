@@ -69,6 +69,11 @@ iframe {
     color: black;
 }
 
+#div-color-options {
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
 @media only screen and (max-width: 600px) {
     .generate-view-main {
         width: 100%;
