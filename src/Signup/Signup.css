@@ -1,5 +1,5 @@
 .signup_base {
-    min-height: 100vh;
+    height: 100vh;
     background: linear-gradient(175deg,
     rgba(255,255,255,1) 0%,
     rgba(79,81,140,1) 49%,
@@ -20,10 +20,8 @@
     align-items: center;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    margin-left: 10%;
-    margin-right: 10%;
-    padding: 15% 5% 15% 5%;
-    width: 300px;
+    padding: 0 5% 2% 5%;
+    width: 50%;
   }
   
   .signup_heading {
@@ -32,10 +30,10 @@
     color: #fffffa;
     font-family: 'Arial', sans-serif;
   }
-
+  
   .signup_subheading {
     color: #fffffa;
-    margin-bottom: 15%;
+    margin-bottom: 10%;
     font-family: 'Arial', sans-serif;
   }
   
@@ -60,14 +58,13 @@
   }
   
   .signup_container2 {
-    margin-top: 5%;
+    margin-top: 2%;
     display: flex;
     flex-direction: column;
   }
   
   .signup_container2 button {
     background-color: transparent;
-    margin-top: 10%;
     color: #fffffa;
     font-size: 1em;
     cursor: pointer;
@@ -77,3 +74,15 @@
     background-color: #575757;
   }
   
+  @media only screen and (max-width: 600px) {
+    /* Add your mobile-specific styles here */
+    .signup_container {
+      margin: 5%;
+      padding: 10% 5% 10% 5%;
+      width: 80%;
+    }
+  
+    .signup_container2 {
+      margin-top: 5%;
+    }
+  }
