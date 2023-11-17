@@ -1,10 +1,33 @@
-import React, { useState } from 'react';
-import { SketchPicker } from 'react-color';
+import React, {useEffect, useRef, useState} from 'react';
+import { ChromePicker } from 'react-color';
 
 function ColorPicker({ color, onColorChange }) {
     const [pickerVisible, setPickerVisible] = useState(false);
+    const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
+
+    const colorPickerRef = useRef(null);
+
+    useEffect(() => {
+        // Function to call when clicking outside of color picker
+        const handleClickOutside = (event) => {
+            if (colorPickerRef.current && !colorPickerRef.current.contains(event.target)) {
+                setPickerVisible(false);
+            }
+        };
+        // Add event listener when the color picker is visible
+        if (pickerVisible) {
+            document.addEventListener('mousedown', handleClickOutside);
+        }
+        // Cleanup
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [pickerVisible]); // Only re-run the effect if pickerVisible changes
 
     const togglePicker = () => {
+        // eslint-disable-next-line no-restricted-globals
+        const { clientX, clientY } = event;
+        setClickPosition({ x: clientX, y: clientY });
         setPickerVisible(!pickerVisible);
     };
 
@@ -12,10 +35,20 @@ function ColorPicker({ color, onColorChange }) {
         onColorChange(color.hex);
     };
 
+
+    const pickerStyle = {
+        position: 'absolute',
+        left: `${clickPosition.x}px`,
+        top: `${clickPosition.y}px`,
+        zIndex: 1000
+    };
+
     return (
         <div>
             {pickerVisible && (
-                <SketchPicker color={color} onChangeComplete={handleChangeComplete} />
+                <div style={pickerStyle} ref={colorPickerRef} >
+                    <ChromePicker color={color} onChangeComplete={handleChangeComplete} disableAlpha={true}/>
+                </div>
             )}
             <div
                 style={{
