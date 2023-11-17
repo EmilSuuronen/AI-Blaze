@@ -11,22 +11,28 @@ import ColorPicker from '../components/ColorPicker/ColorPicker.js';
 
 export default function GenerateView() {
 
+    //location of the page and the data passed from the previous page
     const location = useLocation();
     const elementData = location.state?.objectData;
     const [labels, setLabels] = useState(null);
 
+    //response data from the ChatGPT API
     const [responseData, setResponseData] = useState('no data yet');
     const [parsedResponse, setParsedResponse] = useState({});
 
+    //Loading animation states
     const [isLoading, setIsLoading] = useState(false);
     quantum.register()
 
+    //Navigation
     const navigate = useNavigate();
 
+    //State variables for editing values
     const [previewBackgroundColor, setPreviewBackgroundColor] = useState('#cbcbcb');
     const [previewButtonColor, setPreviewButtonColor] = useState('#cbcbcb');
     const [previewDivColor, setPreviewDivColor] = useState('#cbcbcb');
 
+    //Get values from labeling view and map them. If no values are passed, use vision API to generate design
     useEffect(() => {
         if (elementData != null) {
             setLabels(elementData.map(element => element.label));
@@ -40,6 +46,7 @@ export default function GenerateView() {
         navigate('/createNewProject');
     };
 
+    //Send data to ChatGPT API
     const handleSendToChatGPT = async () => {
         console.log("Generation started");
         setIsLoading(true);
@@ -55,6 +62,7 @@ export default function GenerateView() {
         }
     };
 
+    //Send image data to chatGPT vision API
     const handleSendToChatGPTVision = async () => {
         console.log("Generation with vision started");
         setIsLoading(true);
@@ -95,7 +103,6 @@ export default function GenerateView() {
             align-content: center;
             justify-content: space-evenly;
             flex-direction: column;
-            min-height: 40vh;
             background-color: ${previewBackgroundColor};
             padding: 8px;
         }
@@ -129,10 +136,14 @@ export default function GenerateView() {
                     </div>
             ) : (
                 <div className="div-generation-editor">
+                    <div className="div-editor-info-text">
+                            <h2>Edit and save</h2>
+                            <p> Here you can edit, save or regenerate your design.</p>
+                    </div>
                     <div className="div-editor-row">
                         <div className="div-preview-iframe-container">
-                            <div>
-                                <h2 style={{color: 'black'}}>Your application</h2>
+                            <div className="title-editor-top-bar-container" id="title-editor-top-bar-container-iframe">
+                                Preview
                             </div>
                             <iframe
                                 id="iframe-code-preview"
@@ -142,32 +153,45 @@ export default function GenerateView() {
                             >Iframe</iframe>
                         </div>
                         <div className="div-editor-flex-column">
-                            <div className="div-editor-options" id="div-color-options">
-                                <div>Background color
-                                    <ColorPicker color={previewBackgroundColor} onColorChange={setPreviewBackgroundColor}/>
+                            <div className="div-editor-options">
+                                <div className="title-editor-top-bar-container">
+                                    Edit Colors
                                 </div>
-                                <div>Button color
-                                    <ColorPicker color={previewButtonColor} onColorChange={setPreviewButtonColor}/>
-                                </div>
-                                <div>Div colors
-                                    <ColorPicker color={previewDivColor} onColorChange={setPreviewDivColor}/>
+                                <div className="div-editor-options-content-container">
+                                    <div>Background color
+                                        <ColorPicker color={previewBackgroundColor} onColorChange={setPreviewBackgroundColor}/>
+                                    </div>
+                                    <div>Button color
+                                        <ColorPicker color={previewButtonColor} onColorChange={setPreviewButtonColor}/>
+                                    </div>
+                                    <div>Div colors
+                                        <ColorPicker color={previewDivColor} onColorChange={setPreviewDivColor}/>
+                                    </div>
                                 </div>
                             </div>
                             <div className="div-editor-options">
-                                <div>Button sizing</div>
+                                <div className="title-editor-top-bar-container">
+                                    Element sizing
+                                </div>
                             </div>
                             <div className="div-editor-options">
-                                <div>
+                                <div className="title-editor-top-bar-container">
                                     Text content
                                 </div>
                             </div>
                             <div className="div-editor-options">
-                                <div>
-                                    <Button id="button-generate" variant="contained" onClick={handleSendToChatGPTVision}>
+                                <div className="title-editor-top-bar-container">
+                                    Save and regenerate
+                                </div>
+                                <div className="div-editor-options-content-container">
+                                    <Button id="button-generate" variant="outlined" onClick={handleSendToChatGPTVision}>
                                         Regenerate
                                     </Button>
+                                    <Button id="button-generate" variant="outlined">
+                                        Preview
+                                    </Button>
                                     <Button id="button-generate" variant="contained">
-                                        Save project
+                                        Save
                                     </Button>
                                 </div>
                             </div>

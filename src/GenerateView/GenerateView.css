@@ -8,28 +8,43 @@
 }
 
 .div-generation-editor {
-    width: 90%;
-    margin: 20px;
-    padding: 12px;
-    display: flex;
-    flex-direction: column;
+    margin: 12px;
+    width: 80%;
     border: 1px #cdcdcd solid;
     border-radius: 16px;
     color: white;
 }
 
-iframe {
-    min-height: 800px;
+.div-editor-info-text {
+    color: black;
     width: 100%;
+    padding: 16px;
+}
+
+iframe {
+    min-height: 820px;
+    width: 100%;
+    border-radius: 0 0 16px 16px;
 }
 
 .div-preview-iframe-container {
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: black 0px 0px 2px;
-    background-color: white;
-    width: 50%;
     margin: 8px;
+    box-shadow: black 0px 0px 4px;
+    background-color: white;
+    flex: 1;
+    border-radius: 16px;
+}
+
+.title-editor-top-bar-container {
+    color: white;
+    background-color: #2C2A4A;
+    font-size: 18px;
+    padding: 12px;
+    border-radius: 16px 16px 0 0;
+}
+
+#title-editor-top-bar-container-iframe {
+    font-size: 24px;
 }
 
 .div-loader {
@@ -57,20 +72,19 @@ iframe {
 }
 
 .div-editor-options {
-    padding: 20px;
-    margin: 4px;
-    display: flex;
+    margin: 8px;
+    box-shadow: black 0px 0px 4px;
+    background-color: white;
     flex: 1;
-    flex-direction: column;
-    align-items: center;
     border-radius: 16px;
-    background-color: #ececec;
-    box-shadow: black 0px 0px 2px;
     color: black;
 }
 
-#div-color-options {
+.div-editor-options-content-container {
+    display: flex;
     flex-direction: row;
+    width: 100%;
+    padding: 8px;
     justify-content: space-evenly;
 }
 
@@ -80,7 +94,6 @@ iframe {
     }
     .div-generation-editor {
         width: 100%;
-        margin: 0;
     }
     .div-editor-row {
         flex-direction: column;
