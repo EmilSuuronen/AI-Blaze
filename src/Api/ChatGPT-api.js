@@ -1,7 +1,8 @@
 import { OpenAI } from "openai";
 
 const OPENAI_URL = 'https://api.openai.com/v1/chat/completions';
-const API_KEY = '';
+const API_KEY = process.env.REACT_APP_CHAT_GPTAPI_KEY;
+
 
 export const sendToChatGPT = async (elementData) => {
 
