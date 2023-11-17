@@ -24,10 +24,6 @@ export default function GenerateView() {
     const [isLoading, setIsLoading] = useState(false);
     quantum.register()
 
-    const [responseData, setResponseData] = useState("no data yet");
-    const [parsedResponse, setParsedResponse] = useState({});
-    const [isLoading, setIsLoading] = useState(false);
-
     //Navigation
     const navigate = useNavigate();
 
