@@ -8,6 +8,7 @@ import HeaderBar from "../components/Header/HeaderBar";
 import Button from "@mui/material/Button";
 import { quantum } from "ldrs";
 import ColorPicker from '../components/ColorPicker/ColorPicker.js';
+import fetchImageData from '../script/FetchImageData.js';
 
 export default function GenerateView() {
 
@@ -32,13 +33,24 @@ export default function GenerateView() {
     const [previewButtonColor, setPreviewButtonColor] = useState('#cbcbcb');
     const [previewDivColor, setPreviewDivColor] = useState('#cbcbcb');
 
+    // get the Image ID from parameters
+    const docId = location.state?.id;
+    // State variable to save the image data to
+    const [imageData, setImageData] = useState(null);
+
+    useEffect(() => {
+        if (docId) {
+            fetchImageData(docId).then(data => setImageData(data));
+        }
+    }, [docId]);
+
     //Get values from labeling view and map them. If no values are passed, use vision API to generate design
     useEffect(() => {
         if (elementData != null) {
             setLabels(elementData.map(element => element.label));
-            //handleSendToChatGPT();
+            handleSendToChatGPT();
         } else {
-            //handleSendToChatGPTVision();
+            handleSendToChatGPTVision();
         }
     }, [elementData]);
 
@@ -67,7 +79,7 @@ export default function GenerateView() {
         console.log("Generation with vision started");
         setIsLoading(true);
         try {
-            const response = await sendToChatGPTVision();
+            const response = await sendToChatGPTVision(imageData.imageUrl);
             const data = await response;
             setResponseData(data);
             setParsedResponse(JSON.parse(data));
@@ -112,16 +124,22 @@ export default function GenerateView() {
         div{
         background-color: ${previewDivColor};
         }
-        ${testJson.CSS}
+        ${parsedResponse.CSS}
         </style>
       </head>
       <body>
-        ${testJson.HTML}
+        ${parsedResponse.HTML}
       </body>
       </html>
     `;
     }, [previewBackgroundColor, previewButtonColor, previewDivColor, testJson.CSS, testJson.HTML]);
 
+
+    function handleTestImageData() {
+        console.log("Image ID from param: " + docId);
+        console.log("Imagedata state var: " + imageData);
+        console.log("imageData from firebase: " + imageData.imageUrl);
+    }
     return (
         <div className="generate-view-main">
             <HeaderBar/>

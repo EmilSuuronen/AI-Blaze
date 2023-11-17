@@ -4,6 +4,7 @@ import { storage } from "./firebaseConfig";
 import Button from "@mui/material/Button";
 import Input from "@mui/material/Input";
 import { styled } from "@mui/system";
+import HeaderBar from "./components/Header/HeaderBar";
 
 const StyledInput = styled("input")({
   display: "none",
