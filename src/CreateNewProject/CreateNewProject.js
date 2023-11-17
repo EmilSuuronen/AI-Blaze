@@ -1,21 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import './CreateNewProject_Styles.css';
-import {onAuthStateChanged} from 'firebase/auth';
-import {auth} from '../firebaseConfig';
+import { UserAuth } from '../context/AuthContext';
+import { collection, addDoc } from 'firebase/firestore';
+import { db } from "../firebaseConfig";
+import { useNavigate } from 'react-router-dom';
 
 export default function CreateNewProject() {
     const [selectedFile, setSelectedFile] = useState(null);
     const [imagePreview, setImagePreview] = useState(null);
-
-    useEffect(() => {
-        onAuthStateChanged(auth, (user) => {
-          if (user) {
-            const uid = user.uid;
-            console.log("uid", uid);
-          } 
-        });
-      }, [])
+    const {user} = UserAuth();
+    const wireframeCollectionRef = collection(db, "wireframe");
+    const [docId, setDocId] = useState(null);
+    const navigate = useNavigate();
+    
+    // navigate to labeling view with docId
+    const handleNavigate = () => {
+        navigate("/labelEditor", {
+            state: {
+                id: docId
+            }
+        })
+    }
 
     const handleFileSelect = (e) => {
         const file = e.target.files[0];
@@ -28,17 +34,23 @@ export default function CreateNewProject() {
         reader.readAsDataURL(file);
     };
 
-    const handleNavigate = () => {
-        // Store the image data in localStorage before navigating
-        localStorage.setItem('imageSrc', imagePreview);
-    };
-
-    // Function to handle file upload
-    const handleFileUpload = () => {
-        if (selectedFile) {
-            alert('File uploaded temporarily');
+    // Function to handle image saving to firestore
+    const handleFileUpload = async () => {
+        if (selectedFile == null)  {
+            return;
         } else {
-            alert('Please select a file to upload');
+            const imageObject = {
+                file: selectedFile,
+                dataUrl: URL.createObjectURL(selectedFile)
+            }
+
+            try {
+                const docRef = await addDoc(wireframeCollectionRef, {imageUrl: imageObject.dataUrl, imageName: imageObject.file.name, uid: user.uid})
+                setDocId(docRef.id);
+                console.log("File saved to firestore", docRef.id)
+            } catch (error) {
+                console.error("Failed to upload file:", error)
+            }
         }
     };
 
@@ -59,14 +71,33 @@ export default function CreateNewProject() {
                 <div>
                     <h2>Preview</h2>
                     <img src={imagePreview} alt="Selected" className="file-preview-img" />
-                    <Link to="/labelEditor" onClick={handleNavigate}>
-                        <button>Label your own data</button>
-                    </Link>
-                    <Link to="/generate" onClick={handleNavigate}>
-                        <button>Auto generate from image</button>
-                    </Link>
                 </div>
             )}
+            {docId && (
+                <div>
+                    <Link 
+                        to="/labelEditor"
+                        state={{
+                            id: docId
+                        }}
+                        onClick={handleNavigate}
+                        >
+                        <button>Label your own data</button>
+                    </Link>
+                    {/* <Link 
+                        // to={{
+                        //     pathname: "/generate",
+                        //     state: {docId: docId}
+                        // }}
+                        // to="/generate" 
+                        // onClick={handleNavigate}
+                        >
+                        <button>Auto generate from image</button>
+                    </Link> */}
+                </div>
+
+            )}
+            
         </div>
     );
 }
