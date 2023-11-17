@@ -4,10 +4,11 @@ import LabelModalMenu from "../components/LabelModalMenu/LabelModal";
 import {modalUIElements} from "../components/LabelModalMenu/LabelModalElements";
 import "../components/LabelModalMenu/LabelModal.css";
 import "./LabelingView.css";
-import {Link} from "react-router-dom";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import HeaderBar from "../components/Header/HeaderBar";
 import Button from "@mui/material/Button";
+import { doc, collection, getDoc } from 'firebase/firestore';
+import { db } from "../firebaseConfig";
 
 // This component is the main view for the labeling page
 export default function LabelingView() {
@@ -17,8 +18,26 @@ export default function LabelingView() {
     const [rectangles, setRectangles] = useState([]);
     const [showDropdown, setShowDropdown] = useState(false);
     const [currentRect, setCurrentRect] = useState(null);
+    let location = useLocation();
+    const docId = location.state.id;
+    const wireframeCollectionRef = collection(db, "wireframe");
+    const [imageSrc, setImageSrc] = useState(null);
 
-    const imageSrc = localStorage.getItem('imageSrc');
+    // get the wireframe from firestore once the view launched
+    useEffect(() => {
+        const getWireframe = async () => {
+            const docRef = doc(wireframeCollectionRef, docId);
+            try {
+                const result = await getDoc(docRef);
+                // set the image source
+                setImageSrc(result.data().imageUrl);
+            } catch (error) {
+                console.error("Failed to fetch file:", error)
+            }
+        }
+
+        getWireframe();
+    }, [])
 
     // Variable to check if the canvas is loaded. This is used to prevent the useEffect from running multiple times
     const canvasLoaded = useRef(false);
