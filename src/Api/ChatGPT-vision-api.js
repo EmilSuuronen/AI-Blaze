@@ -1,7 +1,7 @@
 const OPENAI_URL = 'https://api.openai.com/v1/chat/completions';
 const API_KEY = process.env.REACT_APP_CHATGPT_API_KEY;
 
-export const sendToChatGPTVision = async (imgURL) => {
+export const sendToChatGPTVision = async (imageUrl) => {
     try {
         const requestBody = {
             model: "gpt-4-vision-preview",
@@ -27,10 +27,13 @@ export const sendToChatGPTVision = async (imgURL) => {
                     role: "user",
                     content:
                         [
-                            {"type": "text", "text": "Generate the JSON object based on this image"},
+                            {
+                                "type": "text",
+                                "text": "Generate the JSON object based on this image"
+                            },
                             {
                                 "type": "image_url",
-                                "image_url": imgURL,
+                                "image_url": imageUrl,
                             },
                         ]
                 }

@@ -7,8 +7,8 @@ export default async function fetchImageData(docId) {
     try {
         const doc = await getDoc(docRef);
         if (doc.exists) {
-            console.log(doc.data());
-            return doc.data();
+            console.log(doc.data().imageUrl);
+            return doc.data().imageUrl;
         } else {
             console.log("No document with this ID found");
         }
@@ -16,4 +16,3 @@ export default async function fetchImageData(docId) {
         console.error("Error fetching document:", error);
     }
 };
-

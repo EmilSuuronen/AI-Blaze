@@ -41,6 +41,7 @@ export default function GenerateView() {
     useEffect(() => {
         if (docId) {
             fetchImageData(docId).then(data => setImageData(data));
+            console.log("Image data fetched" + imageData);
         }
     }, [docId]);
 
@@ -54,9 +55,9 @@ export default function GenerateView() {
         }
     }, [elementData]);
 
-  const handleNavigate = () => {
-    navigate("/createNewProject");
-  };
+    const handleNavigate = () => {
+        navigate("/createNewProject");
+    };
 
     //Send data to ChatGPT API
     const handleSendToChatGPT = async () => {
@@ -79,7 +80,7 @@ export default function GenerateView() {
         console.log("Generation with vision started");
         setIsLoading(true);
         try {
-            const response = await sendToChatGPTVision(imageData.imageUrl);
+            const response = await sendToChatGPTVision(imageData);
             const data = await response;
             setResponseData(data);
             setParsedResponse(JSON.parse(data));
@@ -98,11 +99,9 @@ export default function GenerateView() {
     // useMemo hook will re-compute when parsedResponse changes
     const htmlContent = useMemo(() => {
         // If parsedResponse is not yet populated, return null or some fallback content
-        /*
         if (isLoading || !parsedResponse.HTML || !parsedResponse.CSS) {
             return null;
         }
-         */
         return `
       <!DOCTYPE html>
       <html lang="en">
@@ -134,29 +133,23 @@ export default function GenerateView() {
     `;
     }, [previewBackgroundColor, previewButtonColor, previewDivColor, testJson.CSS, testJson.HTML]);
 
-
-    function handleTestImageData() {
-        console.log("Image ID from param: " + docId);
-        console.log("Imagedata state var: " + imageData);
-        console.log("imageData from firebase: " + imageData.imageUrl);
-    }
     return (
         <div className="generate-view-main">
             <HeaderBar/>
             {isLoading ? (
-                    <div className="div-loader">
-                        <l-quantum
-                            size="45"
-                            speed="1.75"
-                            color="#4F518C"
-                        >LoadingElement</l-quantum>
-                        <h3 className="h3-loading-title">Generating your website...</h3>
-                    </div>
+                <div className="div-loader">
+                    <l-quantum
+                        size="45"
+                        speed="1.75"
+                        color="#4F518C"
+                    >LoadingElement</l-quantum>
+                    <h3 className="h3-loading-title">Generating your website...</h3>
+                </div>
             ) : (
                 <div className="div-generation-editor">
                     <div className="div-editor-info-text">
-                            <h2>Edit and save</h2>
-                            <p> Here you can edit, save or regenerate your design.</p>
+                        <h2>Edit and save</h2>
+                        <p> Here you can edit, save or regenerate your design.</p>
                     </div>
                     <div className="div-editor-row">
                         <div className="div-preview-iframe-container">

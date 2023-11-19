@@ -1,4 +1,85 @@
 .file-preview-img {
-    width: 100px;
-    height: 200px;
+    max-width: 100px;
+    max-height: 200px;
+}
+
+.label-name-new-project {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 12px;
+}
+
+.input-name-new-project {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid black;
+}
+
+.div-new-project-main {
+    display: flex;
+    width: 100%;
+    min-height: 100vh;
+    height: 100%;
+    flex-direction: column;
+    align-items: center;
+    background-color: #4F518C;
+    color: white;
+}
+
+.div-new-project-form-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 24px;
+    border: 1px solid black;
+    padding: 24px;
+}
+
+.div-new-project-file-selector-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 24px;
+    width: 90%;
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 16px;
+    padding: 24px;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.button-new-project {
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+    border: 2px solid #2b254b;
+    margin: 12px;
+    border-radius: 64px;
+}
+
+#button-new-project-upload {
+    background-color: #2b254b;
+    color: white;
+}
+
+.button-new-project:hover {
+    background-color: #69699f;
+}
+
+.div-new-project-select-file {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.div-new-project-generate-buttons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
