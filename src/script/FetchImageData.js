@@ -1,19 +1,22 @@
 import { db } from '../firebaseConfig';
-import {doc, getDoc} from 'firebase/firestore';
+import {collection, getDocs, query, where} from 'firebase/firestore';
 
 // Fetch image data from firestore. Returns the document data as an object
-export default async function fetchImageData(docId) {
-    const docRef = doc(db, "wireframe", docId);
+export default async function fetchImageData(userUid) {
+    const imagesCollectionRef = collection(db, "wireframe");
+
     try {
-        const doc = await getDoc(docRef);
-        if (doc.exists) {
-            console.log(doc.data());
-            return doc.data();
-        } else {
-            console.log("No document with this ID found");
-        }
+         const q = query(imagesCollectionRef, where("uid", "==", userUid));
+         const querySnapshot = await getDocs(q);
+
+         const imageData = [];
+         querySnapshot.forEach((doc) => {
+             imageData.push(doc.data());
+         });
+ 
+         return imageData;
     } catch (error) {
         console.error("Error fetching document:", error);
+        return [];
     }
 };
-
