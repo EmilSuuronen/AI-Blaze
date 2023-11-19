@@ -1,25 +1,13 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import "./InfoBox.css";
-import {onAuthStateChanged} from "firebase/auth";
-import {auth} from "../firebaseConfig";
+import { UserAuth } from "../context/AuthContext";
 
 function InformationBox({ infoText }) {
-  const [user, setUser] = useState(null);
-
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-      if (authUser) {
-        setUser(authUser);
-      } else {
-        setUser(null);
-      }
-    });
-    return () => unsubscribe();
-  }, [])
+  const { user } = UserAuth();
 
   return (
     <div className="info_container">
-      {user && (<p>Welcome, {user.email}!</p>)}
+      {user && <p>Welcome, {user.email}!</p>}
       <div className="separator" />
     </div>
   );

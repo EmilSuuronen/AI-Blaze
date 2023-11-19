@@ -1,36 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Navbar from "./Navbar";
 import InformationBox from "./Infobox";
 import MainContent from "./Maincontent";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebaseConfig";
+import { UserAuth } from "../context/AuthContext";
 
 function MainScreen({ recentProjects }) {
-  const [user, setUser] = useState(null);
-  const [userData, setUserData] = useState(null);
+  const { user } = UserAuth();
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-      if (authUser) {
-        const uid = authUser.uid;
-        console.log("uid", uid);
-        setUser(authUser);
-
-        // Dummy user-specific data
-        const dummyUserData = {
-          email: authUser.email || "guest@example.com",
-          someData: "Dummy data specific to the user", // change this to project name
-        };
-
-        setUserData(dummyUserData);
-      } else {
-        console.log("User logged out");
-        setUser(null);
-        setUserData(null);
+  const userData = user
+    ? {
+        email: user.email || "no email",
+        someData: "Dummy data specific to the user",
       }
-    });
-    return () => unsubscribe();
-  }, []);
+    : null;
 
   return (
     <div>
