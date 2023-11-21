@@ -86,23 +86,25 @@ export default function CreateNewProject() {
                     Upload an image to get started. For best results,<br/> use a high resolution image with a single wireframe drawing.
                 </p>
             </div>
-            <label htmlFor="fname" className="label-name-new-project">Project name</label>
-            <input type="text" id="fname" name="fname" className="input-name-new-project"/>
             <div className="div-new-project-file-selector-container">
-                <div className="div-new-project-select-file">
-                    <label htmlFor="file-upload-new-project" className="button-new-project">
-                        Select a file
-                        <input type="file" accept="image/*" onChange={handleFileSelect} id="file-upload-new-project"/>
-                    </label>
-                    <i>Supported filetypes .png .jpg</i>
-                </div>
-                {imagePreview && (
-                    <div>
-                        <img src={imagePreview} alt="Selected" className="file-preview-img"/>
+                <label htmlFor="fname" className="label-name-new-project">Project name</label>
+                <input type="text" id="fname" name="fname" className="input-name-new-project"/>
+                <div className="div-new-project-row">
+                    <div className="div-new-project-select-file">
+                        <label htmlFor="file-upload-new-project" className="button-new-project">
+                            Select a file
+                            <input type="file" accept="image/*" onChange={handleFileSelect} id="file-upload-new-project"/>
+                        </label>
+                        <i>Supported filetypes .png .jpg</i>
                     </div>
-                )}
+                    {imagePreview && (
+                        <div>
+                            <img src={imagePreview} alt="Selected" className="file-preview-img"/>
+                        </div>
+                    )}
+                </div>
+                <button onClick={handleFileUpload} className="button-new-project" id="button-new-project-upload">Upload</button>
             </div>
-            <button onClick={handleFileUpload} className="button-new-project" id="button-new-project-upload">Upload</button>
             {docId && (
                 <div className="div-new-project-generate-buttons">
                     <label htmlFor="button-new-project-label">
@@ -115,9 +117,9 @@ export default function CreateNewProject() {
                         }}
                         onClick={handleNavigateToLabelEditor}
                     >
-                        <button className="button-new-project">Label</button>
+                        <button className="button-new-project" id="button-new-project-label">Label</button>
                     </Link>
-                    <label htmlFor="button-new-project-label">
+                    <label htmlFor="button-new-project-auto">
                         Auto-generate
                     </label>
                     <Link
@@ -127,7 +129,7 @@ export default function CreateNewProject() {
                         }}
                         onClick={handleNavigateToGenerateView}
                     >
-                        <button className="button-new-project" id="button-new-project-label">Auto generate</button>
+                        <button className="button-new-project" id="button-new-project-auto">Auto generate</button>
                     </Link>
                 </div>
             )}

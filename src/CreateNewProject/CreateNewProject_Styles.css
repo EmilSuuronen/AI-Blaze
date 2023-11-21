@@ -13,7 +13,7 @@
     width: 100%;
     padding: 12px;
     border-radius: 8px;
-    border: 1px solid black;
+    border: 1px solid #2b254b;
 }
 
 .div-new-project-main {
@@ -24,7 +24,6 @@
     flex-direction: column;
     align-items: center;
     background-color: #4F518C;
-    color: white;
 }
 
 .div-new-project-form-container{
@@ -33,19 +32,30 @@
     align-items: center;
     justify-content: center;
     margin: 24px;
-    border: 1px solid black;
     padding: 24px;
+    box-shadow: 0px 0px 12px 0px #000000;
+    border-radius: 16px;
+    background-color: #f0f0f0;
 }
 
 .div-new-project-file-selector-container {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     margin-top: 24px;
     width: 90%;
     background-color: rgba(0, 0, 0, 0.25);
-    border-radius: 16px;
+    border-radius: 8px;
     padding: 24px;
+}
+
+.div-new-project-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
 }
 
 input[type="file"] {

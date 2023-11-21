@@ -6,8 +6,7 @@ export default async function fetchImageData(docId) {
     const docRef = doc(db, "wireframe", docId);
     try {
         const doc = await getDoc(docRef);
-        if (doc.exists) {
-            console.log(doc.data().imageUrl);
+        if (doc.exists()) {
             return doc.data().imageUrl;
         } else {
             console.log("No document with this ID found");
