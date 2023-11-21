@@ -1,14 +1,14 @@
-import { sendToChatGPT } from "../Api/ChatGPT-api";
-import React, { useEffect, useMemo, useState } from "react";
-import { useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import {sendToChatGPT} from "../Api/ChatGPT-api";
+import React, {useEffect, useMemo, useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 import "./GenerateView.css";
-import { sendToChatGPTVision } from "../Api/ChatGPT-vision-api";
+import {sendToChatGPTVision} from "../Api/ChatGPT-vision-api";
 import HeaderBar from "../components/Header/HeaderBar";
 import Button from "@mui/material/Button";
-import { quantum } from "ldrs";
+import {quantum} from "ldrs";
 import ColorPicker from '../components/ColorPicker/ColorPicker.js';
 import fetchImageData from '../script/FetchImageData.js';
+import saveProject from "../script/SaveProject";
 
 export default function GenerateView() {
 
@@ -92,21 +92,6 @@ export default function GenerateView() {
         }
     };
 
-    const testJson = {
-        HTML: "<!DOCTYPE html><html lang='en'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Product Page</title></head><body><header><nav><button id='menu-btn'>☰</button><input type='search' id='search-bar' placeholder='Search...'><button id='cart-btn'>🛒</button><button id='profile-btn'>👤</button></nav></header><main><section id='product-image'><button id='prev-btn'>⟨</button><img src='https://t3.ftcdn.net/jpg/02/48/42/64/360_F_248426448_NVKLywWqArG2ADUxDq6QprtIzsF82dMF.jpg' alt='Product Image'><button id='next-btn'>⟩</button></section><div id='image-indicators'><span>⚪</span><span>⚪</span><span>⚪</span></div><button id='fav-btn'>❤</button><article id='product-details'><div id='description'></div></article><section id='product-selection'><label for='color-select'>Color:</label><select id='color-select'><option selected>Choose color</option></select><div id='quantity-selector'><button>-</button><input type='text' value='1'><button>+</button></div></section><button id='add-to-trolley'>ADD TO TROLLEY</button></main></body></html>",
-        CSS: "body, html { margin: 0; padding: 0; font-family: Arial, sans-serif; } header { display: flex; justify-content: space-between; background: #f8f8f8; padding: 10px; } nav button { background: none; border: none; font-size: 20px; } #search-bar { flex-grow: 1; margin: 0 10px; } #product-image { text-align: center; position: relative; } #prev-btn, #next-btn { position: absolute; top: 50%; transform: translateY(-50%); background: none; border: none; font-size: 20px; } #prev-btn { left: 0; } #next-btn { right: 0; } #image-indicators { text-align: center; } #image-indicators span { font-size: 20px; } #fav-btn { background: none; border: none; float: right; font-size: 20px; } #product-details { padding: 20px; } #description { height: 100px; background: #eaeaea; margin-bottom: 20px; } #product-selection { display: flex; align-items: center; margin: 20px; } #color-select { margin-right: 10px; } #quantity-selector { display: flex; align-items: center; } #quantity-selector button { background: none; border: 1px solid #ccc; } #quantity-selector input { text-align: center; width: 30px; } #add-to-trolley { width: calc(100% - 40px); padding: 10px; background: #ff4500; color: white; border: none; margin: 20px; cursor: pointer; }"
-    }
-
-    async function testImageFetching () {
-        const imageData = await fetchImageData(docId);
-        console.log("Test image data fetched " + imageData);
-    }
-
-    async function testChatGPTAPI () {
-        const response = await sendToChatGPT("button, image, text");
-        console.log("Test CHATGPT API response" + response);
-    }
-
     // useMemo hook will re-compute when parsedResponse changes
     const htmlContent = useMemo(() => {
         // If parsedResponse is not yet populated, return null or some fallback content
@@ -143,6 +128,12 @@ export default function GenerateView() {
       </html>
     `;
     }, [parsedResponse.CSS, parsedResponse.HTML, previewBackgroundColor, previewButtonColor, previewDivColor]);
+
+    const handleSaveProject = async() => {
+        console.log("Saving project: " + htmlContent);
+        await saveProject(docId, htmlContent);
+        console.log("Project saved");
+    }
 
     return (
         <div className="generate-view-main">
@@ -212,7 +203,7 @@ export default function GenerateView() {
                                     <Button id="button-generate" variant="outlined">
                                         Preview
                                     </Button>
-                                    <Button id="button-generate" variant="contained">
+                                    <Button id="button-generate" variant="contained" onClick={handleSaveProject}>
                                         Save
                                     </Button>
                                 </div>
