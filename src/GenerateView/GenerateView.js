@@ -18,15 +18,11 @@ export default function GenerateView() {
     const [labels, setLabels] = useState(elementData ? elementData.map(element => element.label) : null);
 
     //response data from the ChatGPT API
-    const [responseData, setResponseData] = useState('no data yet');
     const [parsedResponse, setParsedResponse] = useState({});
 
     //Loading animation states
     const [isLoading, setIsLoading] = useState(false);
     quantum.register()
-
-    //Navigation
-    const navigate = useNavigate();
 
     //State variables for editing values
     const [previewBackgroundColor, setPreviewBackgroundColor] = useState('#cbcbcb');
@@ -56,10 +52,6 @@ export default function GenerateView() {
         }
     }, [elementData, imageData,]);
 
-    const handleNavigate = () => {
-        navigate("/createNewProject");
-    };
-
     //Send data to ChatGPT API
     const handleSendToChatGPT = async () => {
         console.log("Generation started");
@@ -67,7 +59,6 @@ export default function GenerateView() {
         try {
             const response = await sendToChatGPT("generate code based on these components: " + labels);
             const data = await response;
-            setResponseData(data);
             setParsedResponse(JSON.parse(data));
         } catch (error) {
             console.error("Failed to generate response:", error);
@@ -83,7 +74,6 @@ export default function GenerateView() {
         try {
             const response = await sendToChatGPTVision(imageData);
             const data = await response;
-            setResponseData(data);
             setParsedResponse(JSON.parse(data));
         } catch (error) {
             console.error("Failed to generate response:", error);
@@ -91,6 +81,16 @@ export default function GenerateView() {
             setIsLoading(false);
         }
     };
+
+    const handleRegenerateProject = async () => {
+        if (elementData != null) {
+            setLabels(elementData.map(element => element.label));
+            console.log("labelsdata: " + labels)
+            handleSendToChatGPT(elementData);
+        } else {
+            handleSendToChatGPTVision(imageData);
+        }
+    }
 
     // useMemo hook will re-compute when parsedResponse changes
     const htmlContent = useMemo(() => {
@@ -130,9 +130,7 @@ export default function GenerateView() {
     }, [parsedResponse.CSS, parsedResponse.HTML, previewBackgroundColor, previewButtonColor, previewDivColor]);
 
     const handleSaveProject = async() => {
-        console.log("Saving project: " + htmlContent);
         await saveProject(docId, htmlContent);
-        console.log("Project saved");
     }
 
     return (
@@ -197,7 +195,7 @@ export default function GenerateView() {
                                     Save and regenerate
                                 </div>
                                 <div className="div-editor-options-content-container">
-                                    <Button id="button-generate" variant="outlined" onClick={handleSendToChatGPTVision}>
+                                    <Button id="button-generate" variant="outlined" onClick={handleRegenerateProject}>
                                         Regenerate
                                     </Button>
                                     <Button id="button-generate" variant="outlined">
