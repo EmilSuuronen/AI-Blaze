@@ -1,7 +1,8 @@
 const OPENAI_URL = 'https://api.openai.com/v1/chat/completions';
 const API_KEY = process.env.REACT_APP_CHATGPT_API_KEY;
 
-export const sendToChatGPTVision = async (imgURL) => {
+export const sendToChatGPTVision = async (imageUrl) => {
+
     try {
         const requestBody = {
             model: "gpt-4-vision-preview",
@@ -11,7 +12,7 @@ export const sendToChatGPTVision = async (imgURL) => {
                     content:
                         "Your task is to generate HTML code for a website by giving HTML and CSS code in JSON format. " +
                         "Create the code based on hand-drawn sketches of the website given to you. " +
-                        "Answer ONLY in the following JSON format, do not include ANYTHING else. " +
+                        "Answer ONLY in the following JSON format, do not include ANYTHING else, such as ```json markdown  " +
                         "{" +
                         "HTML: (HTML code as a string here)" +
                         "CSS: (CSS code as a string here)" +
@@ -30,7 +31,7 @@ export const sendToChatGPTVision = async (imgURL) => {
                             {"type": "text", "text": "Generate the JSON object based on this image"},
                             {
                                 "type": "image_url",
-                                "image_url": imgURL,
+                                "image_url": imageUrl,
                             },
                         ]
                 }
@@ -38,22 +39,22 @@ export const sendToChatGPTVision = async (imgURL) => {
             "max_tokens": 2000,
         };
 
-    const response = await fetch(OPENAI_URL, {
-      method: "POST",
-      headers: {
-        Authorization: `Bearer ${API_KEY}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    });
+        const response = await fetch(OPENAI_URL, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${API_KEY}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestBody)
+        });
 
-    const data = await response.json();
+        const data = await response.json();
 
-    console.log(data.choices[0].message.content);
+        console.log(data.choices[0].message.content)
 
-    return data.choices[0].message.content;
-  } catch (error) {
-    console.error("Error querying ChatGPT:", error);
-    throw error;
-  }
+        return data.choices[0].message.content;
+    } catch (error) {
+        console.error('Error querying ChatGPT:', error);
+        throw error;
+    }
 };

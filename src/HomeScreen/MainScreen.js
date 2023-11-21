@@ -4,10 +4,20 @@ import InformationBox from "./Infobox";
 import MainContent from "./Maincontent";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebaseConfig";
+import fetchImagesByUser from "../script/FetchImagesByUser";
+import * as PropTypes from "prop-types";
+
+function ImageComponent(props) {
+  return null;
+}
+
+ImageComponent.propTypes = {imageUrl: PropTypes.string};
 
 function MainScreen({ recentProjects }) {
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
+  const [imageUrl, setImageUrl] = useState(null);
+  const [imageUrls, setImageUrls] = useState([]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (authUser) => {
@@ -23,6 +33,18 @@ function MainScreen({ recentProjects }) {
         };
 
         setUserData(dummyUserData);
+
+        // Fetch images from firestore by current logged in user ID
+        const imagesArrayByUser = fetchImagesByUser(uid)
+        console.log("imagesArrayByUser: ", imagesArrayByUser);
+
+        // Parse the array of image urls and set them to state variable
+        imagesArrayByUser.then(urls => {
+          setImageUrls(urls);
+        }).catch(error => {
+          console.error("Error fetching images: ", error);
+        });
+
       } else {
         console.log("User logged out");
         setUser(null);
@@ -39,6 +61,11 @@ function MainScreen({ recentProjects }) {
         <div>
           <InformationBox infoText="Your Information" />
           <MainContent recentProjects={recentProjects} />
+          <div>
+            {imageUrls.map((url, index) => (
+                <img key={index} src={url} alt={`Image ${index}`} style={{ width: '100px', height: '200px' }} />
+            ))}
+          </div>
           {userData && (
             <div>
               <p>Welcome, {user.uid}!</p>

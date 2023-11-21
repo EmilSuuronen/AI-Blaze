@@ -1,11 +1,9 @@
-import { OpenAI } from "openai";
 
 const OPENAI_URL = 'https://api.openai.com/v1/chat/completions';
-const API_KEY = process.env.REACT_APP_CHAT_GPTAPI_KEY;
-
+const API_KEY = process.env.REACT_APP_CHATGPT_API_KEY;
 
 export const sendToChatGPT = async (elementData) => {
-
+console.log("api_key: " + API_KEY);
     try {
         const requestBody = {
             model: "gpt-3.5-turbo",
@@ -14,7 +12,7 @@ export const sendToChatGPT = async (elementData) => {
                     role: "system",
                     content:
                         "Your task is to generate HTML code for a website by giving HTML and CSS code in JSON format. " +
-                        "Answer ONLY in the following JSON format, do not include ANYTHING else. " +
+                        "Answer ONLY in the following JSON format, do not include ANYTHING else" +
                         "{" +
                         "HTML: (HTML code as a string here)" +
                         "CSS: (CSS code as a string here)" +
