@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import Navbar from "./Navbar";
 import InformationBox from "./Infobox";
 import MainContent from "./Maincontent";
-import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebaseConfig";
 import fetchImagesByUser from "../script/FetchImagesByUser";
+import fetchImageData from "../script/FetchImageData";
 import * as PropTypes from "prop-types";
+import {UserAuth} from "../context/AuthContext";
 
 function ImageComponent(props) {
   return null;
@@ -13,46 +13,30 @@ function ImageComponent(props) {
 
 ImageComponent.propTypes = {imageUrl: PropTypes.string};
 
-function MainScreen({ recentProjects }) {
-  const [user, setUser] = useState(null);
-  const [userData, setUserData] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
+function MainScreen() {
+  const { user} = UserAuth();
   const [imageUrls, setImageUrls] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (authUser) => {
-      if (authUser) {
-        const uid = authUser.uid;
-        console.log("uid", uid);
-        setUser(authUser);
+    if (user && user.uid) {
+      const uid = user.uid;
 
-        // Dummy user-specific data
-        const dummyUserData = {
-          email: authUser.email || "guest@example.com",
-          someData: "Dummy data specific to the user", // change this to project name
-        };
+      // Fetch images from firestore by the current logged-in user ID
+      const imagesArrayByUser = fetchImagesByUser(uid);
+      console.log("imagesArrayByUser: ", imagesArrayByUser);
 
-        setUserData(dummyUserData);
-
-        // Fetch images from firestore by current logged in user ID
-        const imagesArrayByUser = fetchImagesByUser(uid)
-        console.log("imagesArrayByUser: ", imagesArrayByUser);
-
-        // Parse the array of image urls and set them to state variable
-        imagesArrayByUser.then(urls => {
+      // Parse the array of image urls and set them to the state variable
+      imagesArrayByUser
+        .then((urls) => {
           setImageUrls(urls);
-        }).catch(error => {
+        })
+        .catch((error) => {
           console.error("Error fetching images: ", error);
         });
-
-      } else {
-        console.log("User logged out");
-        setUser(null);
-        setUserData(null);
-      }
-    });
-    return () => unsubscribe();
-  }, []);
+    } else {
+      console.log("User logged out");
+    }
+  }, [user]);
 
   return (
     <div>
@@ -60,18 +44,7 @@ function MainScreen({ recentProjects }) {
       {user ? (
         <div>
           <InformationBox infoText="Your Information" />
-          <MainContent recentProjects={recentProjects} />
-          <div>
-            {imageUrls.map((url, index) => (
-                <img key={index} src={url} alt={`Image ${index}`} style={{ width: '100px', height: '200px' }} />
-            ))}
-          </div>
-          {userData && (
-            <div>
-              <p>Welcome, {user.uid}!</p>
-              <p>Your specific data: {userData.someData}</p>
-            </div>
-          )}
+          <MainContent imageUrls={imageUrls} />
         </div>
       ) : (
         <p>Please sign in to access this content.</p>

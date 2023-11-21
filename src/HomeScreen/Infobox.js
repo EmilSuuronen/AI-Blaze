@@ -19,7 +19,7 @@ function InformationBox({ infoText }) {
 
   return (
     <div className="info_container">
-      {user && (<p>Welcome, {user.email}!</p>)}
+      {user && (<p>Welcome, {user.email}, id: {user.uid}!</p>)}
       <div className="separator" />
     </div>
   );

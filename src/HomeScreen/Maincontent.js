@@ -3,18 +3,18 @@
 import React from "react";
 import "./MainContent.css";
 
-function MainContent({ recentProjects }) {
+function MainContent({ imageUrls }) {
   return (
-    <div className="mainContent">
-      <h2 className="recentProjectsText">Your Recent Projects</h2>
-      <div className="projectImages">
-        {recentProjects && recentProjects.map((project, index) => (
-          <div key={index} className="projectImage">
-            <img src={project.image} alt={project.fileName} className="image" />
-            <p className="fileNameText">{project.fileName}</p>
-          </div>
-        ))}
-      </div>
+    <div>
+      <h3>Your Recent Projects</h3>
+      {imageUrls.map((url, index) => (
+        <img
+          key={index}
+          src={url}
+          alt={`Image ${index}`}
+          style={{ width: "100px", height: "200px" }}
+        />
+      ))}
     </div>
   );
 }
