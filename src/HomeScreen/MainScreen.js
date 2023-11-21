@@ -34,9 +34,11 @@ function MainScreen({ recentProjects }) {
 
         setUserData(dummyUserData);
 
+        // Fetch images from firestore by current logged in user ID
         const imagesArrayByUser = fetchImagesByUser(uid)
         console.log("imagesArrayByUser: ", imagesArrayByUser);
 
+        // Parse the array of image urls and set them to state variable
         imagesArrayByUser.then(urls => {
           setImageUrls(urls);
         }).catch(error => {
