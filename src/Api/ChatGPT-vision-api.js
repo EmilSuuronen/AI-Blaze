@@ -1,6 +1,5 @@
 const OPENAI_URL = 'https://api.openai.com/v1/chat/completions';
-const API_KEY = '';
-
+const API_KEY = process.env.REACT_APP_CHATGPT_API_KEY;
 
 export const sendToChatGPTVision = async (imageUrl) => {
 
