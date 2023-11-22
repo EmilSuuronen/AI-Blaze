@@ -23,7 +23,7 @@ function InformationBox({ infoText }) {
     <div className="info_container">
       {user && (
         <p>
-          Welcome, {user.email}, id: {user.uid}!
+          Welcome, {user.email} , id (dev purposes): {user.uid}!
         </p>
       )}
       <div className="separator" />

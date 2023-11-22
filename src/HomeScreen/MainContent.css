@@ -5,33 +5,25 @@
   }
   
   .recentProjectsText {
-    font-size: 18px;
+    font-size: 24px;
     font-weight: bold;
-    margin-bottom: 10px;
-    padding: 10px
+    margin-left: 10px;
   }
-  
-  .projectImages {
+
+  .recentsContainer {
+    overflow: hidden;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: row;
     justify-content: center;
-  }
-  
-  .projectImage {
-    width: 100px;
-    margin: 10px;
     text-align: center;
   }
   
-  .image {
-    width: 100px;
-    height: 100px;
-    border-radius: 10px;
+  @media only screen and (max-width: 600px) {
+    .recentProjectsText {
+      font-size: 18px;
+    }
+    .infoBoxButton {
+      height: 200px;
+      width: 150px;
+    }
   }
-  
-  .fileNameText {
-    font-size: 14px;
-    margin-top: 5px;
-    text-align: center;
-  }
-  

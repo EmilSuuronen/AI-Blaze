@@ -5,18 +5,20 @@ import "./MainContent.css";
 function MainContent({ imageUrls }) {
   return (
     <div>
-      <h3>Your Recent Projects</h3>
-      {imageUrls.map((url, index) => (
-        <div>
-          <p>{url.imageName}</p>
-          <img
-            key={index}
-            src={url.imageUrl}
-            alt={`Image ${index}`}
-            style={{ width: "100px", height: "200px" }}
-          />
-        </div>
-      ))}
+      <h3 className="recentProjectsText">Your Recent Projects</h3>
+      <div className="recentsContainer">
+        {imageUrls.map((url, index) => (
+          <div>
+            <p>{url.imageName}</p>
+            <img
+              key={index}
+              src={url.imageUrl}
+              alt={`${index}`}
+              style={{ width: "200px" }}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
