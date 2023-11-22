@@ -62,13 +62,20 @@ export default function GenerateView() {
 
     //Send data to ChatGPT API
     const handleSendToChatGPT = async () => {
-        console.log("Generation started");
+        console.log("Generation with labels started");
         setIsLoading(true);
         try {
-            const response = await sendToChatGPT("generate code based on these components: " + labels);
-            const data = await response;
+            const response = await fetch('/generate-with-labels', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ elementData: "generate code based on these components: " + labels })
+            });
+            const data = await response.json();
             setResponseData(data);
             setParsedResponse(JSON.parse(data));
+            await handleSaveProject();
         } catch (error) {
             console.error("Failed to generate response:", error);
         } finally {
