@@ -1,9 +1,7 @@
-
 const OPENAI_URL = 'https://api.openai.com/v1/chat/completions';
 const API_KEY = process.env.REACT_APP_CHATGPT_API_KEY;
 
 export const sendToChatGPT = async (elementData) => {
-console.log("api_key: " + API_KEY);
     try {
         const requestBody = {
             model: "gpt-3.5-turbo",

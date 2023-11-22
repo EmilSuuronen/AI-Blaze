@@ -76,7 +76,6 @@ export default function GenerateView() {
         }
     };
 
-
     //Send image data to chatGPT vision API
     const handleSendToChatGPTVision = async () => {
         console.log("Generation with vision started");
@@ -92,26 +91,13 @@ export default function GenerateView() {
             const data = await response.json();
             setResponseData(data);
             setParsedResponse(JSON.parse(data));
+            await handleSaveProject();
         } catch (error) {
             console.error("Failed to generate response:", error);
         } finally {
             setIsLoading(false);
         }
     };
-
-
-    /*
-    const handleSendToChatGPTVision = () => {
-        fetch("/test")
-            .then(response => response.json())
-            .then(data => {
-                console.log(data.message); // Log the 'message' property
-            })
-            .catch(error => {
-                console.error("Error fetching data:", error);
-            });
-    };
-     */
 
     // useMemo hook will re-compute when parsedResponse changes
     const htmlContent = useMemo(() => {
