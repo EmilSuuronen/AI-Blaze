@@ -11,3 +11,4 @@ export default async function fetchImagesByUser(uid) {
         console.error("Error fetching documents: ", error);
     }
 };
+
