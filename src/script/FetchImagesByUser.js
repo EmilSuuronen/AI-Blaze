@@ -6,7 +6,7 @@ export default async function fetchImagesByUser(uid) {
     try {
         const q = query(collection(db, 'wireframe'), where('uid', '==', uid));
         const querySnapshot = await getDocs(q);
-        return querySnapshot.docs.map(doc => doc.data().imageUrl);
+        return querySnapshot.docs.map(doc => doc.data());
     } catch (error) {
         console.error("Error fetching documents: ", error);
     }

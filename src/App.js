@@ -11,6 +11,7 @@ import MainScreen from "./HomeScreen/MainScreen";
 import LandingPage from "./LandingPageView/LandingPage";
 import { AuthContextProvider } from './context/AuthContext';
 import PreviewView from "./Preview/Preview";
+import GalleryView from "./GalleryScreen/GalleryView";
 
 export default function App() {
     return (
@@ -24,6 +25,7 @@ export default function App() {
                 <Route path="/labelEditor" element={<LabelingView/>}/>
                 <Route path="/newProjectView" element={<NewProject/>}/>
                 <Route path="/editView" element={<EditView/>}/>
+                <Route path="/galleryView" element={<GalleryView/>}/>
                 <Route path="/signupview" element={<SignupView />} />
                 <Route path="/mainscreen" element={<MainScreen />} />
                 <Route path="/preview" element={<PreviewView />} />
