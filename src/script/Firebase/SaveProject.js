@@ -1,5 +1,5 @@
 import {doc, updateDoc} from "firebase/firestore";
-import {db} from "../firebaseConfig";
+import {db} from "../../firebaseConfig";
 
 export default async function saveProject(docId, contentData) {
     const docRef = doc(db, "wireframe", docId);

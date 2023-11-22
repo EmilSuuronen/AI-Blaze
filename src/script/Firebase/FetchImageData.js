@@ -1,4 +1,4 @@
-import { db } from '../firebaseConfig';
+import { db } from '../../firebaseConfig';
 import {doc, getDoc} from 'firebase/firestore';
 
 // Fetch image data from firestore. Returns the document data as an object

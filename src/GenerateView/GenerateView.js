@@ -7,8 +7,8 @@ import HeaderBar from "../components/Header/HeaderBar";
 import Button from "@mui/material/Button";
 import {quantum} from "ldrs";
 import ColorPicker from '../components/ColorPicker/ColorPicker.js';
-import fetchImageData from '../script/FetchImageData.js';
-import saveProject from "../script/SaveProject";
+import fetchImageData from '../script/Firebase/FetchImageData.js';
+import saveProject from "../script/Firebase/SaveProject";
 
 export default function GenerateView() {
 
@@ -34,6 +34,7 @@ export default function GenerateView() {
     // State variable to save the image data to
     const [imageData, setImageData] = useState(null);
 
+    //Fetch the image data of current project from firestore
     useEffect(() => {
         if (docId) {
             fetchImageData(docId).then(data => setImageData(data));
@@ -60,6 +61,8 @@ export default function GenerateView() {
             const response = await sendToChatGPT("generate code based on these components: " + labels);
             const data = await response;
             setParsedResponse(JSON.parse(data));
+            // automatically save the project after generating
+            await handleSaveProject();
         } catch (error) {
             console.error("Failed to generate response:", error);
         } finally {
@@ -75,6 +78,8 @@ export default function GenerateView() {
             const response = await sendToChatGPTVision(imageData);
             const data = await response;
             setParsedResponse(JSON.parse(data));
+            // automatically save the project after generating
+            await handleSaveProject();
         } catch (error) {
             console.error("Failed to generate response:", error);
         } finally {
@@ -82,6 +87,7 @@ export default function GenerateView() {
         }
     };
 
+    //Function to regenerate the project
     const handleRegenerateProject = async () => {
         if (elementData != null) {
             setLabels(elementData.map(element => element.label));
@@ -92,12 +98,8 @@ export default function GenerateView() {
         }
     }
 
-    // useMemo hook will re-compute when parsedResponse changes
+    // useMemo hook will re-compute when parsedResponse (response from ChatGPT API) changes
     const htmlContent = useMemo(() => {
-        // If parsedResponse is not yet populated, return null or some fallback content
-        /*if (isLoading || !parsedResponse.HTML || !parsedResponse.CSS) {
-            return null;
-        }*/
         return `
       <!DOCTYPE html>
       <html lang="en">

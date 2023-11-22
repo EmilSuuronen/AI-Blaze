@@ -4,8 +4,8 @@ import InformationBox from "./Infobox";
 import MainContent from "./Maincontent";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebaseConfig";
-import fetchImagesByUser from "../script/FetchImagesByUser";
 import * as PropTypes from "prop-types";
+import fetchProjectDocumentsByUser from "../script/Firebase/FetchImagesByUser";
 
 function ImageComponent(props) {
   return null;
@@ -16,7 +16,6 @@ ImageComponent.propTypes = {imageUrl: PropTypes.string};
 function MainScreen({ recentProjects }) {
   const [user, setUser] = useState(null);
   const [userData, setUserData] = useState(null);
-  const [imageUrl, setImageUrl] = useState(null);
   const [imageUrls, setImageUrls] = useState([]);
 
   useEffect(() => {
@@ -35,7 +34,7 @@ function MainScreen({ recentProjects }) {
         setUserData(dummyUserData);
 
         // Fetch images from firestore by current logged in user ID
-        const imagesArrayByUser = fetchImagesByUser(uid)
+        const imagesArrayByUser = fetchProjectDocumentsByUser(uid)
         console.log("imagesArrayByUser: ", imagesArrayByUser);
 
         // Parse the array of image urls and set them to state variable

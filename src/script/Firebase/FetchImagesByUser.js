@@ -1,8 +1,8 @@
 // Fetch image data from firestore. Returns the document data as an object
 import {collection, getDocs, query, where} from "firebase/firestore";
-import {db} from "../firebaseConfig";
+import {db} from "../../firebaseConfig";
 
-export default async function fetchImagesByUser(uid) {
+export default async function fetchProjectDocumentsByUser(uid) {
     try {
         const q = query(collection(db, 'wireframe'), where('uid', '==', uid));
         const querySnapshot = await getDocs(q);
