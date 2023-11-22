@@ -1,12 +1,13 @@
 import React from "react";
-import Navbar from "../HomeScreen/Navbar";
-import MainContent from "../HomeScreen/Maincontent";
+import HeaderBar from "../components/Header/HeaderBar";
 
 function GalleryView({ recentProjects }) {
   return (
     <div>
-      <Navbar />
-      <MainContent recentProjects={recentProjects} />
+      <HeaderBar />
+      <p>Gallery</p>
     </div>
   );
 }
+
+export default GalleryView;

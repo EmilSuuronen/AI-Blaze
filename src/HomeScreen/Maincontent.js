@@ -1,9 +1,8 @@
 // MainContent.js
-
 import React from "react";
 import "./MainContent.css";
 
-function MainContent({ imageUrls, imagesData }) {
+function MainContent({ imageUrls }) {
   return (
     <div>
       <h3>Your Recent Projects</h3>

@@ -1,4 +1,5 @@
 .info_container {
+  overflow: hidden;
     height: 300px;
     border-radius: 10px;
     border: 1px solid #e0e0e0;
@@ -16,4 +17,18 @@
     background-color: #e0e0e0;
     margin: 10px 0;
   }
-  
+
+  .infoButtonContainer {
+    overflow: hidden;
+    display: inline;
+    flex-direction: column;
+    justify-content: space-evenly;
+  }
+
+  .infoBoxButton {
+    border-radius: 5px;
+    height: 120px;
+    width: 100%;
+    text-align: center;
+    cursor: pointer;
+  }

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import Navbar from "./Navbar";
 import InformationBox from "./Infobox";
 import MainContent from "./Maincontent";
 import fetchImagesByUser from "../script/FetchImagesByUser";
 import * as PropTypes from "prop-types";
 import {UserAuth} from "../context/AuthContext";
+import HeaderBar from "../components/Header/HeaderBar";
 
 function ImageComponent(props) {
   return null;
@@ -39,7 +39,7 @@ function MainScreen() {
 
   return (
     <div>
-      <Navbar />
+      <HeaderBar />
       {user ? (
         <div>
           <InformationBox infoText="Your Information" />
