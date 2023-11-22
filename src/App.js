@@ -10,6 +10,7 @@ import SignupView from "./Signup/SignupView";
 import MainScreen from "./HomeScreen/MainScreen";
 import LandingPage from "./LandingPageView/LandingPage";
 import { AuthContextProvider } from './context/AuthContext';
+import PreviewView from "./Preview/Preview";
 
 export default function App() {
     return (
@@ -25,6 +26,7 @@ export default function App() {
                 <Route path="/editView" element={<EditView/>}/>
                 <Route path="/signupview" element={<SignupView />} />
                 <Route path="/mainscreen" element={<MainScreen />} />
+                <Route path="/preview" element={<PreviewView />} />
             </Routes>
             </Router>
         </AuthContextProvider>

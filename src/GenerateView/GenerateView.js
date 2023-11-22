@@ -38,6 +38,11 @@ export default function GenerateView() {
     // State variable to save the image data to
     const [imageData, setImageData] = useState(null);
 
+    // handle the preview navigate
+    const handlePreviewNavigate = () => {
+        navigate('/preview', { state: { htmlContent: htmlContent}})
+    }
+
     useEffect(() => {
         if (docId) {
             fetchImageData(docId).then(data => setImageData(data));
@@ -200,7 +205,11 @@ export default function GenerateView() {
                                     <Button id="button-generate" variant="outlined" onClick={handleSendToChatGPTVision}>
                                         Regenerate
                                     </Button>
-                                    <Button id="button-generate" variant="outlined">
+                                    <Button 
+                                        id="button-generate" 
+                                        variant="outlined" 
+                                        onClick={handlePreviewNavigate}
+                                    >
                                         Preview
                                     </Button>
                                     <Button id="button-generate" variant="contained" onClick={handleSaveProject}>
