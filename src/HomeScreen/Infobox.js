@@ -41,12 +41,12 @@ function InformationBox({ infoText }) {
             Gallery
           </Button>
         </Link>
+        <div className="separator2" />
         <Link to="/createNewProject">
           <Button
             style={{
               backgroundColor: "rgba(79,81,140,1)",
               color: "#fffffa",
-              marginTop: "5px",
             }}
             className="infoBoxButton"
             size="medium"

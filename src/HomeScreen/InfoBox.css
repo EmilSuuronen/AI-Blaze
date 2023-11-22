@@ -18,6 +18,10 @@
     margin: 10px 0;
   }
 
+  .separator2 {
+    height: 1px;
+  }
+
   .infoButtonContainer {
     overflow: hidden;
     display: inline;
@@ -31,4 +35,15 @@
     width: 100%;
     text-align: center;
     cursor: pointer;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .infoButtonContainer {
+      display: flex;
+      flex-direction: row;
+    }
+    .infoBoxButton {
+      height: 200px;
+      width: 150px;
+    }
   }
