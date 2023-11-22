@@ -3,7 +3,6 @@ import Navbar from "./Navbar";
 import InformationBox from "./Infobox";
 import MainContent from "./Maincontent";
 import fetchImagesByUser from "../script/FetchImagesByUser";
-import fetchImageData from "../script/FetchImageData";
 import * as PropTypes from "prop-types";
 import {UserAuth} from "../context/AuthContext";
 

@@ -3,17 +3,20 @@
 import React from "react";
 import "./MainContent.css";
 
-function MainContent({ imageUrls }) {
+function MainContent({ imageUrls, imagesData }) {
   return (
     <div>
       <h3>Your Recent Projects</h3>
       {imageUrls.map((url, index) => (
-        <img
-          key={index}
-          src={url}
-          alt={`Image ${index}`}
-          style={{ width: "100px", height: "200px" }}
-        />
+        <div>
+          <p>{url.imageName}</p>
+          <img
+            key={index}
+            src={url.imageUrl}
+            alt={`Image ${index}`}
+            style={{ width: "100px", height: "200px" }}
+          />
+        </div>
       ))}
     </div>
   );
