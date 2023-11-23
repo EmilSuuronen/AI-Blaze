@@ -3,11 +3,13 @@ import React from "react";
 import "./MainContent.css";
 
 function MainContent({ imageUrls }) {
+  const latestProjects = imageUrls.slice(0, 3);
+
   return (
     <div>
       <h3 className="recentProjectsText">Your Recent Projects</h3>
       <div className="recentsContainer">
-        {imageUrls.map((url, index) => (
+        {latestProjects.map((url, index) => (
           <div key={index} className="projectContainer">
             <p>{url.imageName}</p>
             <div className="iframeContainer">
