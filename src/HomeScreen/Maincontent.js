@@ -8,14 +8,22 @@ function MainContent({ imageUrls }) {
       <h3 className="recentProjectsText">Your Recent Projects</h3>
       <div className="recentsContainer">
         {imageUrls.map((url, index) => (
-          <div>
+          <div key={index} className="projectContainer">
             <p>{url.imageName}</p>
+            <div className="iframeContainer">
+              <iframe
+                title={`Project ${index}`}
+                srcDoc={url.contentData}
+                className="recentProject"
+              />
+            </div>
+            {/*}
             <img
               key={index}
               src={url.imageUrl}
               alt={`${index}`}
-              style={{ width: "200px" }}
-            />
+              style={{ width: "100px", height: "200px" }}
+        /> */}
           </div>
         ))}
       </div>
