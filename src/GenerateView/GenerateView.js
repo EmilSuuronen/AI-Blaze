@@ -1,5 +1,5 @@
 import {sendToChatGPT} from "../Api/ChatGPT-api";
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useMemo, useState, useRef} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import "./GenerateView.css";
 import {sendToChatGPTVision} from "../Api/ChatGPT-vision-api";
@@ -37,6 +37,10 @@ export default function GenerateView() {
     const docId = location.state?.id;
     // State variable to save the image data to
     const [imageData, setImageData] = useState(null);
+
+    // set the ref for Preview element 
+    const iframeRef = useRef(null);
+    // const [selectedElement, setSelectedElement] = useState(null);
 
     // handle the preview navigate
     const handlePreviewNavigate = () => {
@@ -140,6 +144,81 @@ export default function GenerateView() {
         console.log("Project saved");
     }
 
+    // State variable for the width and height input value of selected element
+    const [selectedElementRef, setSelectedElementRef] = useState(null);
+    const [selectedElementWidth, setSelectedElementWidth] = useState('');
+    const [selectedElementHeight, setSelectedElementHeight] = useState('');
+
+    // Function to handle width input change
+    const handleWidthInputChange = (event) => {
+        setSelectedElementWidth(event.target.value);
+    };
+
+    // Function to handle height input change
+    const handleHeightInputChange = (event) => {
+        setSelectedElementHeight(event.target.value);
+    };
+
+    // Function to handle selection of an element
+    const handleElementSelection = (elementRef) => {
+        setSelectedElementRef(elementRef);
+        console.log('handleElementSelection element:', elementRef.tagName)
+    };
+
+    // Function to apply the width to the selected element
+    const applyWidthToElement = () => {
+        if (!selectedElementRef || !selectedElementWidth) return;
+
+        selectedElementRef.style.width = selectedElementWidth + 'px';
+
+        // set the width to null for next selected element
+        setSelectedElementWidth(null);
+    };
+
+    // Function to apply the width to the selected element
+    const applyHeightToElement = () => {
+        if (!selectedElementRef || !selectedElementHeight) return;
+    
+        selectedElementRef.style.height = selectedElementHeight + 'px';
+
+        // set the height to null for next selected element
+        setSelectedElementHeight(null);
+    };
+
+    // Function to set up event listener for applying size changes
+    useEffect(() => {
+        const applySizeChanges = setTimeout(() => {
+            applyWidthToElement();
+            applyHeightToElement();
+        }, 500); // Adjust this debounce time as needed
+
+        return () => clearTimeout(applySizeChanges);
+    }, [selectedElementWidth, selectedElementHeight, selectedElementRef]);
+
+    const handleIframeLoad = () => {
+        const iframe = iframeRef.current;
+        if (!iframe) return;
+
+        const buttons = iframe.contentDocument.getElementsByTagName('button');
+
+        Array.from(buttons).forEach((button) => {
+            button.addEventListener('click', (event) => {
+                event.preventDefault();
+                handleElementSelection(button);
+            });
+
+        });
+
+        const inputs = iframe.contentDocument.getElementsByTagName('input');
+
+        Array.from(inputs).forEach((input) => {
+             // Adding a click event to select an element
+            input.addEventListener('click', () => {
+                handleElementSelection(input);
+            });
+        });
+    };
+
     return (
         <div className="generate-view-main">
             <HeaderBar/>
@@ -167,7 +246,9 @@ export default function GenerateView() {
                                 id="iframe-code-preview"
                                 srcDoc={htmlContent || 'about:blank'} // Use htmlContent or 'about:blank' if htmlContent is null
                                 frameBorder="0"
-                                sandbox="allow-scripts allow-same-origin"
+                                sandbox="allow-scripts allow-same-origin allow-forms"
+                                ref={iframeRef}
+                                onLoad={handleIframeLoad}
                             >Iframe</iframe>
                         </div>
                         <div className="div-editor-flex-column">
@@ -190,6 +271,24 @@ export default function GenerateView() {
                             <div className="div-editor-options">
                                 <div className="title-editor-top-bar-container">
                                     Element sizing
+                                </div>
+                                <div className="div-editor-options-content-container">
+                                    <div>Width input
+                                        <input
+                                            type="number"
+                                            value={selectedElementWidth}
+                                            onChange={handleWidthInputChange}
+                                            placeholder="Enter width"
+                                        />
+                                    </div>
+                                    <div>Height input
+                                        <input
+                                            type="number"
+                                            value={selectedElementHeight}
+                                            onChange={handleHeightInputChange}
+                                            placeholder="Enter height"
+                                        />
+                                    </div>
                                 </div>
                             </div>
                             <div className="div-editor-options">
