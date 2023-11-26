@@ -11,5 +11,6 @@
   
   .galleryProject {
     width: 100%;
-    height: 300px; /* Set your desired height */
+    height: 300px; 
+    pointer-events: none;
   }

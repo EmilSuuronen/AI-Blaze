@@ -16,7 +16,7 @@ function MainContent({ imageUrls }) {
               <iframe
                 title={`Project ${index}`}
                 srcDoc={url.contentData}
-                className="recentProject"
+                className="iframeRecentProject"
               />
             </div>
             {/*}
