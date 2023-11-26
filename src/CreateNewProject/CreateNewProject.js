@@ -21,6 +21,9 @@ import { db, storage } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import HeaderBar from "../components/Header/HeaderBar";
 
+// Import the saveProjectName function
+import { saveProjectName } from "../script/SaveProjectName";
+
 export default function CreateNewProject() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
@@ -36,8 +39,24 @@ export default function CreateNewProject() {
     setIsDarkMode((prevMode) => !prevMode);
   };
 
+  // Function to save the project name
+  const handleSaveProjectName = () => {
+    if (docId && projectName.trim() !== "") {
+      saveProjectName(docId, projectName)
+        .then(() => {
+          console.log("Project name saved successfully");
+        })
+        .catch((error) => {
+          console.error("Error saving project name: ", error);
+        });
+    }
+  };
+
   // navigate to labeling view with docId
   const handleNavigateToLabelEditor = () => {
+    // Save the project name before navigating
+    handleSaveProjectName();
+
     navigate("/labelEditor", {
       state: {
         id: docId,
@@ -47,6 +66,9 @@ export default function CreateNewProject() {
 
   // navigate to generateView view with docId
   const handleNavigateToGenerateView = () => {
+    // Save the project name before navigating
+    handleSaveProjectName();
+
     navigate("/generate", {
       state: {
         id: docId,
@@ -93,7 +115,7 @@ export default function CreateNewProject() {
           uid: user.uid,
         });
         setDocId(docRef.id);
-        console.log("File saved to firestore", docRef.id);
+        console.log("File saved to Firestore", docRef.id);
       } catch (error) {
         console.error("Failed to upload file:", error);
       }
@@ -151,6 +173,7 @@ export default function CreateNewProject() {
             value={projectName}
             onChange={(e) => setProjectName(e.target.value)}
           />
+
           <div className="div-new-project-row">
             <div className="div-new-project-select-file">
               <label
@@ -165,7 +188,7 @@ export default function CreateNewProject() {
                   id="file-upload-new-project"
                 />
               </label>
-              <i>Supported filetypes .png .jpg</i>
+              <i>Supported file types: .png .jpg</i>
             </div>
             {imagePreview && (
               <div className="image-preview-card">
