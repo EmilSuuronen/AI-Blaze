@@ -7,7 +7,6 @@ import { UserAuth } from "../../context/AuthContext";
 const HeaderBar = () => {
   const location = useLocation();
   const locationName = location.pathname;
-
   const { logOut } = UserAuth();
 
   const handleSignOut = async () => {
