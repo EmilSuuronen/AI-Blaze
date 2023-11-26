@@ -1,0 +1,16 @@
+.galleryContainer {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: flex-start;
+  }
+  
+  .galleryItem {
+    margin: 20px;
+  }
+  
+  .galleryProject {
+    width: 100%;
+    height: 300px; 
+    pointer-events: none;
+  }

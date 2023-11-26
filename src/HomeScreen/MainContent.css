@@ -11,11 +11,21 @@
   }
 
   .recentsContainer {
-    overflow: hidden;
     display: flex;
     flex-direction: row;
     justify-content: center;
     text-align: center;
+  }
+
+  .projectContainer {
+    margin: 20px; 
+  }
+
+  .iframeRecentProject {
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    transform: scale(0.8) translateY(-10%);
   }
   
   @media only screen and (max-width: 600px) {
