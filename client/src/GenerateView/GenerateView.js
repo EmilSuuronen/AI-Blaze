@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useRef, useState} from "react";
-import {useLocation} from "react-router-dom";
+import {useLocation, useNavigate} from "react-router-dom";
 import "./GenerateView.css";
 import HeaderBar from "../components/Header/HeaderBar";
 import Button from "@mui/material/Button";
