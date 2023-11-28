@@ -27,8 +27,6 @@ const TextCompletionGenerator = ({iframeRef}) => {
                     content: textContent,
                     elementId: elementId,
                 }, '*'); // '*' allows communication with any origin
-                console.log("elementID: " + elementId)
-                console.log("textContent: " + textContent)
             }
         };
 
@@ -55,7 +53,6 @@ const TextCompletionGenerator = ({iframeRef}) => {
                     const selectedElement = iframeRef.current.contentDocument.getElementById(selectedElementId);
                     if (selectedElement) {
                         selectedElement.textContent = event.data.content;
-                        console.log("selectedElement.textContent: " + selectedElement.textContent)
                     }
                 }
             }
