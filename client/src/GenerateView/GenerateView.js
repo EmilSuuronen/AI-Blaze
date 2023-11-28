@@ -1,14 +1,13 @@
-import {sendToChatGPT} from "../Api/ChatGPT-api";
-import React, {useEffect, useMemo, useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import React, {useEffect, useMemo, useRef, useState} from "react";
+import {useLocation} from "react-router-dom";
 import "./GenerateView.css";
-import {sendToChatGPTVision} from "../Api/ChatGPT-vision-api";
 import HeaderBar from "../components/Header/HeaderBar";
 import Button from "@mui/material/Button";
 import {quantum} from "ldrs";
 import ColorPicker from '../components/ColorPicker/ColorPicker.js';
 import fetchImageData from '../script/FetchImageData.js';
 import saveProject from "../script/SaveProject";
+import TextCompletionGenerator from "../components/TextCompletionGenerator/TextCompletionGenerator";
 
 export default function GenerateView() {
 
@@ -34,11 +33,18 @@ export default function GenerateView() {
     // State variable to save the image data to
     const [imageData, setImageData] = useState(null);
 
+    // Get the iframe element reference
+    const iframeRef = useRef(null);
+
+    const [regenerateDesign, setRegenerateDesign] = useState(false);
+
     useEffect(() => {
         if (docId) {
             fetchImageData(docId).then(data => setImageData(data));
             console.log("Image data fetched " + imageData);
-            handleSendToChatGPTVision(imageData).then(r => console.log("Generating with vision API: " + imageData));
+            if (regenerateDesign == false) {
+                handleSendToChatGPTVision(imageData).then(r => console.log("Generating with vision API: " + imageData));
+            }
         }
     }, [docId, imageData]);
 
@@ -57,7 +63,7 @@ export default function GenerateView() {
             console.log("parsedResponse: changed")
         }
     }, [parsedResponse]);
-    
+
     //Send data to ChatGPT API
     async function handleSendToChatGPT() {
         console.log("Generation with labels started");
@@ -93,6 +99,7 @@ export default function GenerateView() {
             const data = await response.json();
             setParsedResponse(JSON.parse(data));
             await handleSaveProject();
+            setRegenerateDesign(true);
         } catch (error) {
             console.error("Failed to generate response:", error);
         }
@@ -100,10 +107,6 @@ export default function GenerateView() {
 
     // useMemo hook will re-compute when parsedResponse changes
     const htmlContent = useMemo(() => {
-        // If parsedResponse is not yet populated, return null or some fallback content
-        /*if (isLoading || !parsedResponse.HTML || !parsedResponse.CSS) {
-            return null;
-        }*/
         return `
       <!DOCTYPE html>
       <html lang="en">
@@ -166,6 +169,7 @@ export default function GenerateView() {
                             </div>
                             <iframe
                                 id="iframe-code-preview"
+                                ref={iframeRef}
                                 srcDoc={htmlContent || 'about:blank'} // Use htmlContent or 'about:blank' if htmlContent is null
                                 frameBorder="0"
                                 sandbox="allow-scripts allow-same-origin"
@@ -195,8 +199,11 @@ export default function GenerateView() {
                             </div>
                             <div className="div-editor-options">
                                 <div className="title-editor-top-bar-container">
-                                    Text content
+                                    Text completion
                                 </div>
+                                {Object.keys(parsedResponse).length > 0 && (
+                                    <TextCompletionGenerator parsedResponse={parsedResponse} iframeRef={iframeRef} />
+                                )}
                             </div>
                             <div className="div-editor-options">
                                 <div className="title-editor-top-bar-container">
