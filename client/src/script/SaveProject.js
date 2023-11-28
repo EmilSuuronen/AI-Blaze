@@ -12,3 +12,4 @@ export default async function saveProject(docId, contentData) {
         console.error('Error updating document: ', error);
     }
 }
+

@@ -18,16 +18,12 @@ export default function GenerateView() {
     const [labels, setLabels] = useState(elementData ? elementData.map(element => element.label) : null);
 
     //response data from the ChatGPT API
-    const [responseData, setResponseData] = useState('no data yet');
     const [parsedResponse, setParsedResponse] = useState({});
 
     //Loading animation states
     const [isLoading, setIsLoading] = useState(false);
     quantum.register()
-
-    //Navigation
-    const navigate = useNavigate();
-
+    
     //State variables for editing values
     const [previewBackgroundColor, setPreviewBackgroundColor] = useState('#cbcbcb');
     const [previewButtonColor, setPreviewButtonColor] = useState('#cbcbcb');
@@ -42,6 +38,7 @@ export default function GenerateView() {
         if (docId) {
             fetchImageData(docId).then(data => setImageData(data));
             console.log("Image data fetched " + imageData);
+            handleSendToChatGPTVision(imageData).then(r => console.log("Generating with vision API: " + imageData));
         }
     }, [docId, imageData]);
 
@@ -49,19 +46,20 @@ export default function GenerateView() {
     useEffect(() => {
         if (elementData != null) {
             setLabels(elementData.map(element => element.label));
-            console.log("labelsdata: " + labels)
-            handleSendToChatGPT(elementData);
-        } else {
-            handleSendToChatGPTVision(imageData);
+            handleSendToChatGPT(elementData).then(r => console.log("Generating with labels: " + elementData));
         }
-    }, [elementData, imageData,]);
+    }, [elementData, labels, imageData]);
 
-    const handleNavigate = () => {
-        navigate("/createNewProject");
-    };
-
+    // Add an useEffect to listen for changes in parsedResponse
+    useEffect(() => {
+        if (parsedResponse && Object.keys(parsedResponse).length > 0) {
+            setIsLoading(false);
+            console.log("parsedResponse: changed")
+        }
+    }, [parsedResponse]);
+    
     //Send data to ChatGPT API
-    const handleSendToChatGPT = async () => {
+    async function handleSendToChatGPT() {
         console.log("Generation with labels started");
         setIsLoading(true);
         try {
@@ -73,18 +71,15 @@ export default function GenerateView() {
                 body: JSON.stringify({ elementData: "generate code based on these components: " + labels })
             });
             const data = await response.json();
-            setResponseData(data);
             setParsedResponse(JSON.parse(data));
             await handleSaveProject();
         } catch (error) {
             console.error("Failed to generate response:", error);
-        } finally {
-            setIsLoading(false);
         }
-    };
+    }
 
     //Send image data to chatGPT vision API
-    const handleSendToChatGPTVision = async () => {
+    async function handleSendToChatGPTVision() {
         console.log("Generation with vision started");
         setIsLoading(true);
         try {
@@ -96,15 +91,12 @@ export default function GenerateView() {
                 body: JSON.stringify({ imageUrl: imageData })
             });
             const data = await response.json();
-            setResponseData(data);
             setParsedResponse(JSON.parse(data));
             await handleSaveProject();
         } catch (error) {
             console.error("Failed to generate response:", error);
-        } finally {
-            setIsLoading(false);
         }
-    };
+    }
 
     // useMemo hook will re-compute when parsedResponse changes
     const htmlContent = useMemo(() => {
