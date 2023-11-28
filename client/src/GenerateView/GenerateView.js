@@ -42,8 +42,8 @@ export default function GenerateView() {
         if (docId) {
             fetchImageData(docId).then(data => setImageData(data));
             console.log("Image data fetched " + imageData);
-            if (regenerateDesign == false) {
-                handleSendToChatGPTVision(imageData).then(r => console.log("Generating with vision API: " + imageData));
+            if (regenerateDesign === false) {
+                handleSendToChatGPTVision(imageData).then(r => console.log(r));
             }
         }
     }, [docId, imageData]);
@@ -52,7 +52,7 @@ export default function GenerateView() {
     useEffect(() => {
         if (elementData != null) {
             setLabels(elementData.map(element => element.label));
-            handleSendToChatGPT(elementData).then(r => console.log("Generating with labels: " + elementData));
+            handleSendToChatGPT(elementData).then(r => console.log(r));
         }
     }, [elementData, labels, imageData]);
 
@@ -102,6 +102,14 @@ export default function GenerateView() {
             setRegenerateDesign(true);
         } catch (error) {
             console.error("Failed to generate response:", error);
+        }
+    }
+
+    async function handleRegenerate() {
+        if (elementData != null) {
+            handleSendToChatGPT(elementData).then(r => console.log(r));
+        } else {
+            handleSendToChatGPTVision(imageData).then(r => console.log(r));
         }
     }
 
@@ -210,7 +218,7 @@ export default function GenerateView() {
                                     Save and regenerate
                                 </div>
                                 <div className="div-editor-options-content-container">
-                                    <Button id="button-generate" variant="outlined" onClick={handleSendToChatGPTVision}>
+                                    <Button id="button-generate" variant="outlined" onClick={handleRegenerate}>
                                         Regenerate
                                     </Button>
                                     <Button id="button-generate" variant="outlined">
