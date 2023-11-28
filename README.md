@@ -1,28 +1,50 @@
-# Project Name
 
-A brief description of what this project does and who it's for
+# AI-blaze
+AI-blaze is an web application built on React and designed to transform hand-drawn wireframes into editable HTML and CSS code. Leveraging the power of AI, it offers an interface for novice/non-techical users to see and edit instant recreations of their wireframe projects. This project integrates a Node.js backend, React frontend, Firebase database, and utilizes GPT-3.5 and GPT-4 Vision Preview for generation.
 
 ## Features
+- **Wireframe to Code Conversion**: Users can upload hand-drawn wireframe images, which are then converted into HTML and CSS code using ChatGPT 3.5 and GPT-4 Vision Preview.
+- **Generation**: Generation can be done automatically or by labeling elements in an image by hand.
+- **Editable Preview Interface**: Generated project is editable in an custom editor.
+- **Firebase Database Integration**: Projects are saved and managed in a Firebase database.
+- **Secure Authentication**: Users can sign in using credentials or their Google account for a personalized experience.
 
-- Feature 1
-- Feature 2
-- Feature 3
+## Getting Started
+### Prerequisites
+- Node.js
+- React
 
-## Tech Stack
+## Acknowledgments
+API access required for the following
+- ChatGPT 3.5 and GPT-4 Vision Preview for AI-powered code generation.
+- Firebase for database services.
 
-- Tech 1
-- Tech 2
-- Tech 3
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/EmilSuuronen/AI-Blaze.git
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Set up Firebase:
+   - Create a Firebase project.
+   - Configure the Firebase settings in the project.
+   - Create .env file with your firebase configuration
 
-## Installation
+4. You will need an Chat GPT api key from here [platform.openai.com](https://platform.openai.com/)
+   - Create an .env file in /server folder with variable: OPENAI_CHATGPT_API_KEY=YOUR_API_KEY_HERE
 
-Describe how to install and set up the project, including any dependencies.
-
-## Usage
-
-Provide instructions on how to use the project, including any relevant code snippets.
-
-## Contributing
-
-Explain how others can contribute to the project, including any guidelines or requirements.
+6. Run the application:
+   run the React Frontend
+   ```bash
+   cd client
+   npm start
+   ```
+   run the backend server locally
+   ```bash
+   cd server
+   npm run dev
+   ```
 

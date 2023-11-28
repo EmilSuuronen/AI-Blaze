@@ -1,14 +1,13 @@
-import {sendToChatGPT} from "../Api/ChatGPT-api";
-import React, {useEffect, useMemo, useState} from "react";
-import {useLocation, useNavigate} from "react-router-dom";
+import React, {useEffect, useMemo, useRef, useState} from "react";
+import {useLocation} from "react-router-dom";
 import "./GenerateView.css";
-import {sendToChatGPTVision} from "../Api/ChatGPT-vision-api";
 import HeaderBar from "../components/Header/HeaderBar";
 import Button from "@mui/material/Button";
 import {quantum} from "ldrs";
 import ColorPicker from '../components/ColorPicker/ColorPicker.js';
 import fetchImageData from '../script/FetchImageData.js';
 import saveProject from "../script/SaveProject";
+import TextCompletionGenerator from "../components/TextCompletionGenerator/TextCompletionGenerator";
 
 export default function GenerateView() {
 
@@ -18,7 +17,6 @@ export default function GenerateView() {
     const [labels, setLabels] = useState(elementData ? elementData.map(element => element.label) : null);
 
     //response data from the ChatGPT API
-    const [responseData, setResponseData] = useState('no data yet');
     const [parsedResponse, setParsedResponse] = useState({});
 
     //Loading animation states
@@ -43,10 +41,18 @@ export default function GenerateView() {
         navigate('/preview', { state: { htmlContent: htmlContent}})
     }
 
+    // Get the iframe element reference
+    const iframeRef = useRef(null);
+
+    const [regenerateDesign, setRegenerateDesign] = useState(false);
+
     useEffect(() => {
         if (docId) {
             fetchImageData(docId).then(data => setImageData(data));
             console.log("Image data fetched " + imageData);
+            if (regenerateDesign === false) {
+                handleSendToChatGPTVision(imageData).then(r => console.log(r));
+            }
         }
     }, [docId, imageData]);
 
@@ -54,55 +60,69 @@ export default function GenerateView() {
     useEffect(() => {
         if (elementData != null) {
             setLabels(elementData.map(element => element.label));
-            console.log("labelsdata: " + labels)
-            handleSendToChatGPT(elementData);
-        } else {
-            handleSendToChatGPTVision(imageData);
+            handleSendToChatGPT(elementData).then(r => console.log(r));
         }
-    }, [elementData, imageData,]);
+    }, [elementData, labels, imageData]);
 
-    const handleNavigate = () => {
-        navigate("/createNewProject");
-    };
+    // Add an useEffect to listen for changes in parsedResponse
+    useEffect(() => {
+        if (parsedResponse && Object.keys(parsedResponse).length > 0) {
+            setIsLoading(false);
+            console.log("parsedResponse: changed")
+        }
+    }, [parsedResponse]);
 
     //Send data to ChatGPT API
-    const handleSendToChatGPT = async () => {
-        console.log("Generation started");
+    async function handleSendToChatGPT() {
+        console.log("Generation with labels started");
         setIsLoading(true);
         try {
-            const response = await sendToChatGPT("generate code based on these components: " + labels);
-            const data = await response;
-            setResponseData(data);
+            const response = await fetch('/generate-with-labels', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ elementData: "generate code based on these components: " + labels })
+            });
+            const data = await response.json();
             setParsedResponse(JSON.parse(data));
+            await handleSaveProject();
         } catch (error) {
             console.error("Failed to generate response:", error);
-        } finally {
-            setIsLoading(false);
         }
-    };
+    }
 
     //Send image data to chatGPT vision API
-    const handleSendToChatGPTVision = async () => {
+    async function handleSendToChatGPTVision() {
         console.log("Generation with vision started");
         setIsLoading(true);
         try {
-            const response = await sendToChatGPTVision(imageData);
-            const data = await response;
-            setResponseData(data);
+            const response = await fetch('/generate-with-vision', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ imageUrl: imageData })
+            });
+            const data = await response.json();
             setParsedResponse(JSON.parse(data));
+            await handleSaveProject();
+            setRegenerateDesign(true);
         } catch (error) {
             console.error("Failed to generate response:", error);
-        } finally {
-            setIsLoading(false);
         }
-    };
+    }
+
+    async function handleRegenerate() {
+        if (elementData != null) {
+            handleSendToChatGPT(elementData).then(r => console.log(r));
+        } else {
+            handleSendToChatGPTVision(imageData).then(r => console.log(r));
+        }
+    }
 
     // useMemo hook will re-compute when parsedResponse changes
     const htmlContent = useMemo(() => {
-        // If parsedResponse is not yet populated, return null or some fallback content
-        /*if (isLoading || !parsedResponse.HTML || !parsedResponse.CSS) {
-            return null;
-        }*/
         return `
       <!DOCTYPE html>
       <html lang="en">
@@ -165,6 +185,7 @@ export default function GenerateView() {
                             </div>
                             <iframe
                                 id="iframe-code-preview"
+                                ref={iframeRef}
                                 srcDoc={htmlContent || 'about:blank'} // Use htmlContent or 'about:blank' if htmlContent is null
                                 frameBorder="0"
                                 sandbox="allow-scripts allow-same-origin"
@@ -194,22 +215,29 @@ export default function GenerateView() {
                             </div>
                             <div className="div-editor-options">
                                 <div className="title-editor-top-bar-container">
-                                    Text content
+                                    Text completion
                                 </div>
+                                {Object.keys(parsedResponse).length > 0 && (
+                                    <TextCompletionGenerator parsedResponse={parsedResponse} iframeRef={iframeRef} />
+                                )}
                             </div>
                             <div className="div-editor-options">
                                 <div className="title-editor-top-bar-container">
                                     Save and regenerate
                                 </div>
                                 <div className="div-editor-options-content-container">
-                                    <Button id="button-generate" variant="outlined" onClick={handleSendToChatGPTVision}>
+                                    <Button id="button-generate" variant="outlined" onClick={handleRegenerate}>
                                         Regenerate
                                     </Button>
-                                    <Button 
-                                        id="button-generate" 
-                                        variant="outlined" 
-                                        onClick={handlePreviewNavigate}
-                                    >
+                                    <Button
+                                        id="button-generate"
+                                        variant="outlined"
+                                        onClick={handleRegenerate}
+                                    > Regenerate </Button>
+                                        <Button
+                                            variant="outlined"
+                                            onClick={handlePreviewNavigate}
+                                        >
                                         Preview
                                     </Button>
                                     <Button id="button-generate" variant="contained" onClick={handleSaveProject}>
