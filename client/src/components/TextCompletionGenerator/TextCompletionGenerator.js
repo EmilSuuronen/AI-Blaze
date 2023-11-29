@@ -27,6 +27,7 @@ const TextCompletionGenerator = ({iframeRef}) => {
                     content: textContent,
                     elementId: elementId,
                 }, '*'); // '*' allows communication with any origin
+                console.log("at")
             }
         };
 
@@ -65,7 +66,7 @@ const TextCompletionGenerator = ({iframeRef}) => {
             // Remove the event listener when the component unmounts
             window.removeEventListener('message', handleMessage);
         };
-    }, [setPrompt, setGeneratedText, selectedElementId]);
+    }, [setPrompt, setGeneratedText, selectedElementId, iframeRef]);
 
     const handleGeneratedTextChange = (e) => {
         const newText = e.target.value;

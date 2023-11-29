@@ -1,7 +1,6 @@
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import {useLocation, useNavigate} from "react-router-dom";
 import "./GenerateView.css";
-import { sendToChatGPTVision } from "../Api/ChatGPT-vision-api";
 import HeaderBar from "../components/Header/HeaderBar";
 import Button from "@mui/material/Button";
 import { quantum } from "ldrs";
@@ -58,7 +57,7 @@ export default function GenerateView() {
                 handleSendToChatGPTVision(imageData).then(r => console.log(r));
             }
         }
-    }, [docId, imageData]);
+    }, [docId, imageData, regenerateDesign]);
 
   // Get values from labeling view and map them. If no values are passed, use vision API to generate design
   useEffect(() => {
