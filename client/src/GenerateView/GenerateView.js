@@ -59,11 +59,8 @@ export default function GenerateView() {
     // Variable required for regeneration after initial generation
     const [isRegeneratedDesign, setIsRegeneratedDesign] = useState(false);
 
-    // State variable for the html content currently in iframe
-    const [iframeContent, setIframeContent] = useState('');
-
     useEffect(() => {
-        if (docId) {
+        if (elementData == null) {
             fetchImageData(docId).then((data) => setImageData(data));
             console.log("Image data fetched " + imageData);
             if (isRegeneratedDesign === false) {
@@ -284,9 +281,6 @@ export default function GenerateView() {
             const elements = iframe.contentDocument.getElementsByTagName(elementType);
             setupEventListeners(elements, elementType, handleElementSelection);
         })
-
-        const currentContent = getCurrentIframeContent();
-        setIframeContent(currentContent);
 
         const js = `
             const addNumberedIds = (elements, className) => {
