@@ -57,7 +57,7 @@ export default function GenerateView() {
     };
 
     // Variable required for regeneration after initial generation
-    const [isRegeneratedDesign, setIsRegeneratedDesign] = useState(false);
+    const isRegeneratedDesign = useRef(false);
 
     useEffect(() => {
         if (elementData == null) {
@@ -70,14 +70,22 @@ export default function GenerateView() {
     }, [docId, imageData, isRegeneratedDesign]);
 
 
-    // Get values from labeling view and map them. If no values are passed, use vision API to generate design
-    useEffect(  () => {
+    useEffect(() => {
         if (elementData != null && isRegeneratedDesign === false) {
             setLabels(elementData.map((element) => element.label));
-            handleSendToChatGPT(elementData).then(r => console.log(r));
-            console.log("Labels: " + labels);
         }
     }, [elementData, isRegeneratedDesign]);
+
+
+    useEffect(() => {
+        // Ensure elementData is not null and isRegeneratedDesign is false
+        if (elementData != null && isRegeneratedDesign === false) {
+            // Trigger the API call here
+            handleSendToChatGPT(elementData).then((result) => {
+                console.log(result);
+            });
+        }
+    }, []);
 
     // Add an useEffect to listen for changes in parsedResponse
     useEffect(() => {
@@ -100,7 +108,6 @@ export default function GenerateView() {
             const data = await response.json();
             setParsedResponse(JSON.parse(data));
             await handleSaveProject();
-            setIsRegeneratedDesign(true);
         } catch (error) {
             console.error("Failed to generate response:", error);
         }
@@ -121,7 +128,6 @@ export default function GenerateView() {
             const data = await response.json();
             setParsedResponse(JSON.parse(data));
             await handleSaveProject();
-            setIsRegeneratedDesign(true);
         } catch (error) {
             console.error("Failed to generate response:", error);
         }
