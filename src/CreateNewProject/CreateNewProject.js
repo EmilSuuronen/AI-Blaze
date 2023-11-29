@@ -64,7 +64,7 @@ export default function CreateNewProject() {
     });
   };
 
-  // navigate to generateView view with docId
+  // navigate to generateView view with docId and projectName
   const handleNavigateToGenerateView = () => {
     // Save the project name before navigating
     handleSaveProjectName();
@@ -72,6 +72,7 @@ export default function CreateNewProject() {
     navigate("/generate", {
       state: {
         id: docId,
+        projectName: projectName, // Pass the project name to GenerateView
       },
     });
   };
@@ -208,32 +209,43 @@ export default function CreateNewProject() {
           <label htmlFor="button-new-project-label">
             Generate a new design by labeling the elements
           </label>
-          <Link
-            to="/labelEditor"
-            state={{
-              id: docId,
-            }}
-            onClick={handleNavigateToLabelEditor}
-          >
-            <button
-              className="button-new-project"
-              id="button-new-project-label"
+          {/* Disable the "Label" button if projectName is empty or selectedFile is null */}
+          {projectName.trim() !== "" && selectedFile && (
+            <Link
+              to="/labelEditor"
+              state={{
+                id: docId,
+              }}
+              onClick={handleNavigateToLabelEditor}
             >
-              Label
-            </button>
-          </Link>
+              <button
+                className="button-new-project"
+                id="button-new-project-label"
+              >
+                Label
+              </button>
+            </Link>
+          )}
+
           <label htmlFor="button-new-project-auto">Auto-generate</label>
-          <Link
-            to="/generate"
-            state={{
-              id: docId,
-            }}
-            onClick={handleNavigateToGenerateView}
-          >
-            <button className="button-new-project" id="button-new-project-auto">
-              Auto generate
-            </button>
-          </Link>
+          {/* Disable the "Auto generate" button if projectName is empty or selectedFile is null */}
+          {projectName.trim() !== "" && selectedFile && (
+            <Link
+              to="/generate"
+              state={{
+                id: docId,
+                projectName: projectName, // Pass the project name to GenerateView
+              }}
+              onClick={handleNavigateToGenerateView}
+            >
+              <button
+                className="button-new-project"
+                id="button-new-project-auto"
+              >
+                Auto generate
+              </button>
+            </Link>
+          )}
         </div>
       </div>
     </div>
