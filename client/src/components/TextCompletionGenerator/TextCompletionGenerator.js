@@ -4,14 +4,14 @@ const TextCompletionGenerator = ({iframeRef}) => {
     const [prompt, setPrompt] = useState('');
     const [generatedText, setGeneratedText] = useState('');
     const [selectedElementId, setSelectedElementId] = useState(null);
+    const validTagNames = ['BUTTON', 'DIV', 'P', 'LABEL', 'SPAN', 'LI', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
 
     useEffect(() => {
         // Get the iframe element in GenerateView.js
-        const iframe = document.getElementById('iframe-code-preview');
-
         const handleClick = (event) => {
+            const clickedTagName = event.target.tagName;
             // Check if the clicked element is a text element
-            if (event.target.tagName === 'BUTTON' || event.target.tagName === 'DIV' || event.target.tagName === 'P' || event.target.tagName === 'H1' || event.target.tagName === 'H2' || event.target.tagName === 'H3' || event.target.tagName === 'H4' || event.target.tagName === 'H5' || event.target.tagName === 'H6') {
+            if (validTagNames.includes(clickedTagName)) {
                 // Send the text content to the parent window
                 const textContent = event.target.textContent;
                 let elementId = event.target.id;
@@ -27,17 +27,15 @@ const TextCompletionGenerator = ({iframeRef}) => {
                     content: textContent,
                     elementId: elementId,
                 }, '*'); // '*' allows communication with any origin
-                console.log("at")
             }
         };
 
         // Add click event listener to the iframe content
-        iframe.contentWindow.document.body.addEventListener('click', handleClick);
-
+        iframeRef.current.contentWindow.document.body.addEventListener('click', handleClick);
         return () => {
-            iframe.contentWindow.document.body.removeEventListener('click', handleClick);
+            iframeRef.current.contentWindow.document.body.removeEventListener('click', handleClick);
         };
-    }, [prompt]);
+    }, [iframeRef, prompt, validTagNames]);
 
     useEffect(() => {
         const handleMessage = (event) => {
@@ -66,11 +64,12 @@ const TextCompletionGenerator = ({iframeRef}) => {
             // Remove the event listener when the component unmounts
             window.removeEventListener('message', handleMessage);
         };
-    }, [setPrompt, setGeneratedText, selectedElementId, iframeRef]);
+    }, [prompt, generatedText, selectedElementId, iframeRef]);
 
     const handleGeneratedTextChange = (e) => {
         const newText = e.target.value;
 
+        setPrompt(e.target.value)
         // Update the generatedText state
         setGeneratedText(newText);
 
