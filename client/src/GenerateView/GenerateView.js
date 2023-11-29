@@ -59,6 +59,9 @@ export default function GenerateView() {
     // Variable required for regeneration after initial generation
     const [isRegeneratedDesign, setIsRegeneratedDesign] = useState(false);
 
+    // State variable for the html content currently in iframe
+    const [iframeContent, setIframeContent] = useState('');
+
     useEffect(() => {
         if (docId) {
             fetchImageData(docId).then((data) => setImageData(data));
@@ -176,9 +179,7 @@ export default function GenerateView() {
 
     // Function to handle saving the project
     const handleSaveProject = async () => {
-        console.log("Saving project: " + htmlContent);
-        await saveProject(docId, htmlContent);
-        console.log("Project saved");
+        await saveProject(docId, getCurrentIframeContent());
     };
 
     // Function to handle downloading as a zip
@@ -261,6 +262,17 @@ export default function GenerateView() {
         })
     }
 
+    // Function to get the current content of the iframe
+    const getCurrentIframeContent = () => {
+        if (iframeRef.current) {
+            const iframeDocument = iframeRef.current.contentDocument;
+            if (iframeDocument) {
+                return iframeDocument.documentElement.outerHTML;
+            }
+        }
+        return '';
+    };
+
     // handle elements to be sized and set up js to htmlContent
     const handleIframeLoad = () => {
         const iframe = iframeRef.current;
@@ -272,6 +284,9 @@ export default function GenerateView() {
             const elements = iframe.contentDocument.getElementsByTagName(elementType);
             setupEventListeners(elements, elementType, handleElementSelection);
         })
+
+        const currentContent = getCurrentIframeContent();
+        setIframeContent(currentContent);
 
         const js = `
             const addNumberedIds = (elements, className) => {

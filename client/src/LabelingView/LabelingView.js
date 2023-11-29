@@ -20,6 +20,7 @@ export default function LabelingView() {
     const [currentRect, setCurrentRect] = useState(null);
     let location = useLocation();
     const docId = location.state.id;
+    const projectName = location.state.projectName;
     const wireframeCollectionRef = collection(db, "wireframe");
     const [imageSrc, setImageSrc] = useState(null);
 
@@ -179,7 +180,14 @@ export default function LabelingView() {
     const navigate = useNavigate();
 
     const handleNavigate = () => {
-        navigate('/generate', { state: { objectData: rectangles } });
+        navigate('/generate', {
+            state: {
+                objectData: rectangles,
+                id: docId,
+                projectName: projectName,
+
+            }
+        });
     };
 
     return (

@@ -4,7 +4,7 @@ const TextCompletionGenerator = ({iframeRef}) => {
     const [prompt, setPrompt] = useState('');
     const [generatedText, setGeneratedText] = useState('');
     const [selectedElementId, setSelectedElementId] = useState(null);
-    const validTagNames = ['BUTTON', 'DIV', 'P', 'LABEL', 'SPAN', 'LI', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
+    const validTagNames = ['BUTTON', 'DIV', 'P', 'LABEL', 'SPAN', 'LI', 'INPUT', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
 
     useEffect(() => {
         // Get the iframe element in GenerateView.js

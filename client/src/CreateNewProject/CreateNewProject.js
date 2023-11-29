@@ -60,6 +60,7 @@ export default function CreateNewProject() {
     navigate("/labelEditor", {
       state: {
         id: docId,
+        projectName: projectName,
       },
     });
   };
