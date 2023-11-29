@@ -40,7 +40,6 @@ export default function GenerateView() {
 
     // set the ref for Preview element 
     const iframeRef = useRef(null);
-    // const [selectedElement, setSelectedElement] = useState(null);
 
     // handle the preview navigate
     const handlePreviewNavigate = () => {
@@ -159,10 +158,9 @@ export default function GenerateView() {
         setSelectedElementHeight(event.target.value);
     };
 
-    // Function to handle selection of an element
+    // Function to handle selection of an element and text displays in element sizing
     const handleElementSelection = (elementRef) => {
         setSelectedElementRef(elementRef);
-        console.log('handleElementSelection element:', elementRef.tagName)
     };
 
     // Function to apply the width to the selected element
@@ -200,7 +198,6 @@ export default function GenerateView() {
         if (!iframe) return;
 
         const buttons = iframe.contentDocument.getElementsByTagName('button');
-
         Array.from(buttons).forEach((button) => {
             button.addEventListener('click', (event) => {
                 event.preventDefault();
@@ -210,11 +207,26 @@ export default function GenerateView() {
         });
 
         const inputs = iframe.contentDocument.getElementsByTagName('input');
-
         Array.from(inputs).forEach((input) => {
              // Adding a click event to select an element
             input.addEventListener('click', () => {
                 handleElementSelection(input);
+            });
+        });
+
+        const images = iframe.contentDocument.getElementsByTagName('img');
+        Array.from(images).forEach((image) => {
+             // Adding a click event to select an element
+            image.addEventListener('click', () => {
+                handleElementSelection(image);
+            });
+        });
+
+        const pictures = iframe.contentDocument.getElementsByTagName('picture');
+        Array.from(pictures).forEach((picture) => {
+             // Adding a click event to select an element
+            picture.addEventListener('click', () => {
+                handleElementSelection(picture);
             });
         });
     };
@@ -272,22 +284,34 @@ export default function GenerateView() {
                                 <div className="title-editor-top-bar-container">
                                     Element sizing
                                 </div>
-                                <div className="div-editor-options-content-container">
-                                    <div>Width input
+                                <div className="div-editor-element-sizing-content-container">
+                                    <div 
+                                        className="div-editor-element-sizing-content">
+                                        You are selecting: {selectedElementRef ? selectedElementRef.tagName : 'None'}
+                                    </div>
+                                    <div 
+                                        className="div-editor-element-sizing-content">
+                                            Width input:
                                         <input
+                                            className="div-editor-element-sizing-input"
                                             type="number"
                                             value={selectedElementWidth}
                                             onChange={handleWidthInputChange}
                                             placeholder="Enter width"
                                         />
+                                        px
                                     </div>
-                                    <div>Height input
+                                    <div
+                                        className="div-editor-element-sizing-content">
+                                            Height input:
                                         <input
+                                            className="div-editor-element-sizing-input"
                                             type="number"
                                             value={selectedElementHeight}
                                             onChange={handleHeightInputChange}
                                             placeholder="Enter height"
                                         />
+                                        px
                                     </div>
                                 </div>
                             </div>
