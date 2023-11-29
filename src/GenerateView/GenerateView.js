@@ -41,6 +41,15 @@ export default function GenerateView() {
     // set the ref for Preview element 
     const iframeRef = useRef(null);
 
+    // State variable for the width and height input value of selected element
+    const [selectedElementRef, setSelectedElementRef] = useState(null);
+    const [selectedElementWidth, setSelectedElementWidth] = useState('');
+    const [selectedElementHeight, setSelectedElementHeight] = useState('');
+    
+    // set the user edited css and js
+    const [userEditedCSS, setUserEditedCSS] = useState('');
+    const [userEditedJS, setUserEditedJS] = useState('')
+
     // handle the preview navigate
     const handlePreviewNavigate = () => {
         navigate('/preview', { state: { htmlContent: htmlContent}})
@@ -128,14 +137,18 @@ export default function GenerateView() {
         background-color: ${previewDivColor};
         }
         ${parsedResponse.CSS}
+        ${userEditedCSS}
         </style>
+        <script>
+          ${userEditedJS}
+        </script>
       </head>
       <body>
         ${parsedResponse.HTML}
       </body>
       </html>
     `;
-    }, [parsedResponse.CSS, parsedResponse.HTML, previewBackgroundColor, previewButtonColor, previewDivColor]);
+    }, [parsedResponse.CSS, parsedResponse.HTML, previewBackgroundColor, previewButtonColor, previewDivColor, userEditedCSS, userEditedJS]);
 
     const handleSaveProject = async() => {
         console.log("Saving project: " + htmlContent);
@@ -143,92 +156,103 @@ export default function GenerateView() {
         console.log("Project saved");
     }
 
-    // State variable for the width and height input value of selected element
-    const [selectedElementRef, setSelectedElementRef] = useState(null);
-    const [selectedElementWidth, setSelectedElementWidth] = useState('');
-    const [selectedElementHeight, setSelectedElementHeight] = useState('');
-
-    // Function to handle width input change
-    const handleWidthInputChange = (event) => {
-        setSelectedElementWidth(event.target.value);
-    };
-
-    // Function to handle height input change
-    const handleHeightInputChange = (event) => {
-        setSelectedElementHeight(event.target.value);
-    };
-
     // Function to handle selection of an element and text displays in element sizing
     const handleElementSelection = (elementRef) => {
         setSelectedElementRef(elementRef);
     };
 
-    // Function to apply the width to the selected element
-    const applyWidthToElement = () => {
-        if (!selectedElementRef || !selectedElementWidth) return;
+    // Function to handle input change for width and height
+    const handleInputChange = (type, value) => {
+        if (type === 'width') {
+            setSelectedElementWidth(value);
+        } else if (type === 'height') {
+            setSelectedElementHeight(value);
+        }
+    };
 
-        selectedElementRef.style.width = selectedElementWidth + 'px';
+    // generate the css for element sizing 
+    const generateUserEditedCSS = (elementRef, width, height) => {
+        if (!elementRef || (!width && !height)) return '';
 
-        // set the width to null for next selected element
+        const idName = elementRef.id;
+        const widthCSS = width ? 
+            `
+            #${idName} { 
+                width: ${width}px; 
+            }
+            ` : '';
+        const heightCSS = height ? 
+            `
+            #${idName} { 
+                height: ${height}px; 
+            }
+            ` : '';
+
+        const combinedCSS = widthCSS + heightCSS;
+
+        setUserEditedCSS(prevCSS => prevCSS + combinedCSS);
+
+        // set value to null for next element
         setSelectedElementWidth(null);
-    };
-
-    // Function to apply the width to the selected element
-    const applyHeightToElement = () => {
-        if (!selectedElementRef || !selectedElementHeight) return;
-    
-        selectedElementRef.style.height = selectedElementHeight + 'px';
-
-        // set the height to null for next selected element
         setSelectedElementHeight(null);
+
     };
 
-    // Function to set up event listener for applying size changes
+    // Function to set up event listener for applying size changes and delay 500 milliseconds
     useEffect(() => {
-        const applySizeChanges = setTimeout(() => {
-            applyWidthToElement();
-            applyHeightToElement();
-        }, 500); // Adjust this debounce time as needed
-
-        return () => clearTimeout(applySizeChanges);
+        const applyCssUpdate = setTimeout(() => {
+            generateUserEditedCSS(selectedElementRef, selectedElementWidth, selectedElementHeight);
+            console.log('big html:', htmlContent);
+        }, 500);
+        return () => clearTimeout(applyCssUpdate);
+            
     }, [selectedElementWidth, selectedElementHeight, selectedElementRef]);
 
+    // set up click listener and assign the className to each element
+    const setupEventListeners = (elements, prefix, handler) => {
+        let count = 1;
+        Array.from(elements).forEach((element) => {
+            element.addEventListener('click', (event) => {
+                event.preventDefault();
+                handler(element);
+            });
+            const elementId = `${prefix}-${count}`;
+            element.setAttribute('id', elementId);
+            count++;
+        })
+    }
+
+    // handle elements to be sized and set up js to htmlContent
     const handleIframeLoad = () => {
         const iframe = iframeRef.current;
         if (!iframe) return;
 
-        const buttons = iframe.contentDocument.getElementsByTagName('button');
-        Array.from(buttons).forEach((button) => {
-            button.addEventListener('click', (event) => {
-                event.preventDefault();
-                handleElementSelection(button);
-            });
+        // set up the event listener to each element
+        const elementsToSize = ['button', 'input', 'img'];
+        elementsToSize.forEach((elementType) => {
+            const elements = iframe.contentDocument.getElementsByTagName(elementType);
+            setupEventListeners(elements, elementType, handleElementSelection);
+        })
 
-        });
-
-        const inputs = iframe.contentDocument.getElementsByTagName('input');
-        Array.from(inputs).forEach((input) => {
-             // Adding a click event to select an element
-            input.addEventListener('click', () => {
-                handleElementSelection(input);
-            });
-        });
-
-        const images = iframe.contentDocument.getElementsByTagName('img');
-        Array.from(images).forEach((image) => {
-             // Adding a click event to select an element
-            image.addEventListener('click', () => {
-                handleElementSelection(image);
-            });
-        });
-
-        const pictures = iframe.contentDocument.getElementsByTagName('picture');
-        Array.from(pictures).forEach((picture) => {
-             // Adding a click event to select an element
-            picture.addEventListener('click', () => {
-                handleElementSelection(picture);
-            });
-        });
+        const js = `
+            const addNumberedIds = (elements, className) => {
+                let count = 1;
+                Array.from(elements).forEach((element) => {
+                    const elementId = \`\${prefix}-\${count}\`;
+                    element.setAttribute('id', elementId);
+                    count++;
+                });
+            };
+        
+            const buttons = document.getElementsByTagName('button');
+            const inputs = document.getElementsByTagName('input');
+            const images = document.getElementsByTagName('image');
+        
+            addNumberedIds(buttons, 'button');
+            addNumberedIds(inputs, 'input');
+            addNumberedIds(images, 'image');
+        `
+        setUserEditedJS(js);
     };
 
     return (
@@ -296,7 +320,7 @@ export default function GenerateView() {
                                             className="div-editor-element-sizing-input"
                                             type="number"
                                             value={selectedElementWidth}
-                                            onChange={handleWidthInputChange}
+                                            onChange={(e) => handleInputChange('width', e.target.value)}
                                             placeholder="Enter width"
                                         />
                                         px
@@ -308,7 +332,7 @@ export default function GenerateView() {
                                             className="div-editor-element-sizing-input"
                                             type="number"
                                             value={selectedElementHeight}
-                                            onChange={handleHeightInputChange}
+                                            onChange={(e) => handleInputChange('height', e.target.value)}
                                             placeholder="Enter height"
                                         />
                                         px
