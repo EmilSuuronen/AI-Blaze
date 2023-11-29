@@ -1,10 +1,12 @@
 import React, {useState, useEffect} from 'react';
+import "./TextCompletionGenerator.css";
 
 const TextCompletionGenerator = ({iframeRef}) => {
     const [prompt, setPrompt] = useState('');
     const [generatedText, setGeneratedText] = useState('');
     const [selectedElementId, setSelectedElementId] = useState(null);
     const validTagNames = ['BUTTON', 'DIV', 'P', 'LABEL', 'SPAN', 'LI', 'INPUT', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
+    const [isBlinking, setIsBlinking] = useState(false);
 
     useEffect(() => {
         const handleClick = (event) => {
@@ -110,26 +112,51 @@ const TextCompletionGenerator = ({iframeRef}) => {
         }
     };
 
+    useEffect(() => {
+        // Trigger the blinking animation when the prompt changes
+        setIsBlinking(true);
+
+        // Reset the blinking state after the animation duration
+        const timeoutId = setTimeout(() => {
+            setIsBlinking(false);
+        }, 300); // Adjust the duration to match the animation duration
+
+        return () => {
+            clearTimeout(timeoutId);
+        };
+    }, [prompt]);
     return (
-        <div>
-            <div>
-                <label htmlFor="prompt">Selected text: </label>
+        <div className="div-flex-text-completion-main">
+            <div className="div-text-completion-section">
+                <h4>Selected text</h4>
                 <input
                     type="text"
                     id="prompt"
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
                     readOnly
+                    className={`input-text-completion-selected-text ${isBlinking ? 'blinking-border' : ''}`}
                 />
             </div>
-            <div>
-                <label htmlFor="generatedText">Generated Text: </label>
+            <div className="div-text-completion-section">
+                <h4>Edit text</h4>
                 <textarea
                     id="generatedText"
-                    rows="4"
-                    cols="50"
                     value={generatedText}
                     onChange={handleGeneratedTextChange}
+                    className="input-text-completion-text"
+                />
+            </div>
+            <div className="div-text-completion-section">
+                <h4>Generate text</h4>
+                <p> Here you can create a prompt to automatically generate content for your site.
+                    For example, *Create a description for an shop item for bicycle*
+                </p>
+                <textarea
+                    id="generatedText"
+                    value={generatedText}
+                    onChange={handleGeneratedTextChange}
+                    className="input-text-completion-text"
                 />
             </div>
             <div>

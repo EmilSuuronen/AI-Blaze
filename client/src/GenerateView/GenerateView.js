@@ -345,6 +345,14 @@ export default function GenerateView() {
                         <div className="div-editor-flex-column">
                             <div className="div-editor-options">
                                 <div className="title-editor-top-bar-container">
+                                    Text Completion
+                                </div>
+                                {Object.keys(parsedResponse).length > 0 && (
+                                    <TextCompletionGenerator iframeRef={iframeRef}/>
+                                )}
+                            </div>
+                            <div className="div-editor-options">
+                                <div className="title-editor-top-bar-container">
                                     Edit Colors
                                 </div>
                                 <div className="div-editor-options-content-container">
@@ -375,14 +383,6 @@ export default function GenerateView() {
                                 <div className="title-editor-top-bar-container">
                                     Element sizing
                                 </div>
-                            </div>
-                            <div className="div-editor-options">
-                                <div className="title-editor-top-bar-container">
-                                    Text Completion
-                                </div>
-                                {Object.keys(parsedResponse).length > 0 && (
-                                    <TextCompletionGenerator iframeRef={iframeRef}/>
-                                )}
                             </div>
                             <div className="div-editor-options">
                                 <div className="title-editor-top-bar-container">

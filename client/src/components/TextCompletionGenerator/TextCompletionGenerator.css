@@ -1,0 +1,38 @@
+.div-flex-text-completion-main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 12px;
+}
+
+.input-text-completion-selected-text {
+  width: 90%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  color: #7c7c7c;
+}
+
+@keyframes blinkBorder {
+  0%, 100% {
+    border: 1px solid #ccc;
+    box-shadow: 0 0 18px 0 rgba(255, 255, 255, 0);
+  }
+  50% {
+    border: 1px solid #2C2A4A; /* Blue color */
+    box-shadow: 0 0 5px 0 #2C2A4A;
+  }
+}
+
+.blinking-border {
+  animation: blinkBorder 0.3s ease-out; /* Customize the duration and timing function as needed */
+}
+
+.input-text-completion-text {
+  width: 90%;
+  min-height: 30%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 16px;
+  resize: none;
+}
