@@ -10,6 +10,7 @@ const TextCompletionGenerator = ({iframeRef}) => {
     const validTagNames = ['BUTTON', 'DIV', 'P', 'LABEL', 'SPAN', 'LI', 'INPUT', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
     const [isBlinking, setIsBlinking] = useState(false);
     const [selectedElementValue, setSelectedElementValue] = useState('');
+    const [autocompleteLoading, setAutoCompleteLoading] = useState(false);
 
     useEffect(() => {
         const handleClick = (event) => {
@@ -112,7 +113,7 @@ const TextCompletionGenerator = ({iframeRef}) => {
             return;
         }
         try {
-            console.log("generatetext started ")
+            setAutoCompleteLoading(true);
             const response = await fetch('/generate-auto-completion', {
                 method: 'POST',
                 headers: {
@@ -125,6 +126,8 @@ const TextCompletionGenerator = ({iframeRef}) => {
             console.log("generatetext finished " + data)
         } catch (error) {
             console.error("Failed to generate response:", error);
+        }  finally {
+            setAutoCompleteLoading(false); // Set loading to false regardless of success or failure
         }
     };
 
@@ -188,7 +191,7 @@ const TextCompletionGenerator = ({iframeRef}) => {
             <div className="div-text-completion-section">
                 <h4>Generate text</h4>
                 <div className="info-box-text-generation">
-                    <p>Here you can create a prompt to automatically generate content for your site. </p>
+                    <p>Create a prompt to automatically generate content for your site. </p>
                     <i>For example, *Create a description for an shop item for a bicycle*</i>
                     <p>Choose the text type and create a prompt</p>
                 </div>
@@ -201,13 +204,18 @@ const TextCompletionGenerator = ({iframeRef}) => {
                     <option value="button text">Button text</option>
                     <option value="list item">List item</option>
                 </select>
+                <h4>Prompt</h4>
                 <textarea
                     id="generateAutoCompletion-text-area"
                     value={promptText}
                     onChange={handlePromptChange}
                     className="input-text-completion-text"
                 />
-                <button onClick={generateText} className="button-text-completion-generate">Generate</button>
+                <button
+                    onClick={generateText}
+                    className={`button-text-completion-generate ${autocompleteLoading ? 'disabled' : ''}`}
+                    disabled={autocompleteLoading}
+                >Generate</button>
             </div>
         </div>
     );
