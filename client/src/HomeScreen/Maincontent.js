@@ -19,13 +19,6 @@ function MainContent({ imageUrls }) {
                 className="iframeRecentProject"
               />
             </div>
-            {/*}
-            <img
-              key={index}
-              src={url.imageUrl}
-              alt={`${index}`}
-              style={{ width: "100px", height: "200px" }}
-        /> */}
           </div>
         ))}
       </div>

@@ -3,12 +3,15 @@ import "./GalleryView.css";
 import HeaderBar from "../components/Header/HeaderBar";
 import { UserAuth } from "../context/AuthContext";
 import fetchImagesByUser from "../script/FetchImagesByUser";
+import BackToTopButton from "../components/BackToTopButton/BackToTopButton";
+import { Link } from "react-router-dom";
 
 function GalleryView() {
   const { user } = UserAuth();
   const [allProjects, setAllProjects] = useState([]);
 
   useEffect(() => {
+    // Check if user is logged in
     if (user && user.uid) {
       const uid = user.uid;
 
@@ -31,18 +34,32 @@ function GalleryView() {
   return (
     <div>
       <HeaderBar />
+      <Link to="/createNewProject" style={{ textDecoration: "none" }}>
+        <div className="newProjectBox">+ New Project</div>
+      </Link>
       <div className="galleryContainer">
-        {allProjects.map((project, index) => (
-          <div key={index} className="galleryItem">
-            <p>{project.imageName}</p>
-            <iframe
-              title={`Project ${index}`}
-              srcDoc={project.contentData}
-              className="galleryProject"
-            />
-          </div>
-        ))}
+        {allProjects
+          .slice() // Create a copy of the array
+          .reverse() // Reverse the array so that the most recent project is at the top
+          .map(
+            (
+              project,
+              index // Map each project to a div
+            ) => (
+              <div key={index} className="galleryItem">
+                <div className="projectCard">
+                  <p className="projectName">{project.projectName}</p>
+                  <iframe
+                    title={`Project ${index}`}
+                    srcDoc={project.contentData}
+                    className="galleryProject"
+                  />
+                </div>
+              </div>
+            )
+          )}
       </div>
+      <BackToTopButton />
     </div>
   );
 }
