@@ -1,0 +1,18 @@
+.back-to-top-button {
+    display: block;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(79, 81, 140, 0.679);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    padding: 15px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .back-to-top-button:hover {
+    background-color: rgba(79, 81, 140, 1);
+  }
+  
