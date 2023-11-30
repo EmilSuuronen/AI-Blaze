@@ -32,7 +32,10 @@ function GalleryView() {
     <div>
       <HeaderBar />
       <div className="galleryContainer">
-        {allProjects.map((project, index) => (
+        {allProjects
+        .slice()
+        .reverse()
+        .map((project, index) => (
           <div key={index} className="galleryItem">
             <p>{project.imageName}</p>
             <iframe
