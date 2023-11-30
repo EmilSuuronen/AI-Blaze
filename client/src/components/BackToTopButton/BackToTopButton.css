@@ -1,5 +1,5 @@
 .back-to-top-button {
-    display: block;
+    display: none;
     position: fixed;
     bottom: 20px;
     right: 20px;
@@ -14,5 +14,9 @@
   
   .back-to-top-button:hover {
     background-color: rgba(79, 81, 140, 1);
+  }
+
+  .back-to-top-button.visible {
+    display: block; 
   }
   
