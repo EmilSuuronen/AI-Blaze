@@ -73,10 +73,6 @@ export default function GenerateView() {
         }
     }, [elementData, imageData,]);
 
-    const handleNavigate = () => {
-        navigate("/createNewProject");
-    };
-
     //Send data to ChatGPT API
     const handleSendToChatGPT = async () => {
         console.log("Generation started");
