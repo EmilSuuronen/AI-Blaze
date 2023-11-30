@@ -88,6 +88,23 @@ iframe {
     justify-content: space-evenly;
 }
 
+.div-editor-element-sizing-content-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 8px;
+    justify-content: space-evenly;
+}
+
+.div-editor-element-sizing-content {
+    padding: 2px;
+}
+
+.div-editor-element-sizing-input {
+    margin: 8px;
+}
+
+
 @media only screen and (max-width: 600px) {
     .generate-view-main {
         width: 100%;

@@ -165,7 +165,11 @@ export default function GenerateView() {
         background-color: ${previewDivColor};
         }
         ${parsedResponse.CSS}
+        ${userEditedCSS}
         </style>
+        <script>
+          ${userEditedJS}
+        </script>
       </head>
       <body>
         ${parsedResponse.HTML}
@@ -178,6 +182,8 @@ export default function GenerateView() {
         previewBackgroundColor,
         previewButtonColor,
         previewDivColor,
+        userEditedCSS, 
+        userEditedJS
     ]);
 
     // Function to handle saving the project
@@ -382,6 +388,36 @@ export default function GenerateView() {
                             <div className="div-editor-options">
                                 <div className="title-editor-top-bar-container">
                                     Element sizing
+                                </div>
+                                <div className="div-editor-element-sizing-content-container">
+                                    <div 
+                                        className="div-editor-element-sizing-content">
+                                        You are selecting: {selectedElementRef ? selectedElementRef.tagName : 'None'}
+                                    </div>
+                                    <div 
+                                        className="div-editor-element-sizing-content">
+                                            Width input:
+                                        <input
+                                            className="div-editor-element-sizing-input"
+                                            type="number"
+                                            value={selectedElementWidth}
+                                            onChange={(e) => handleInputChange('width', e.target.value)}
+                                            placeholder="Enter width"
+                                        />
+                                        px
+                                    </div>
+                                    <div
+                                        className="div-editor-element-sizing-content">
+                                            Height input:
+                                        <input
+                                            className="div-editor-element-sizing-input"
+                                            type="number"
+                                            value={selectedElementHeight}
+                                            onChange={(e) => handleInputChange('height', e.target.value)}
+                                            placeholder="Enter height"
+                                        />
+                                        px
+                                    </div>
                                 </div>
                             </div>
                             <div className="div-editor-options">
