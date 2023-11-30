@@ -4,7 +4,8 @@ import "./TextCompletionGenerator.css";
 const TextCompletionGenerator = ({iframeRef}) => {
     const [selectedText, setSelectedText] = useState('');
     const [editedText, setEditedText] = useState('');
-    const [generatedText, setGeneratedTExt] = useState('');
+    const [promptText, setPromptText] = useState('');
+    const [generatedText, setGeneratedText] = useState('');
     const [selectedElementId, setSelectedElementId] = useState(null);
     const validTagNames = ['BUTTON', 'DIV', 'P', 'LABEL', 'SPAN', 'LI', 'INPUT', 'H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
     const [isBlinking, setIsBlinking] = useState(false);
@@ -98,29 +99,37 @@ const TextCompletionGenerator = ({iframeRef}) => {
         }
     };
 
+    const handlePromptChange = (e) => {
+        const newText = e.target.value;
+        setPromptText(newText);
+        console.log("prompt text: " + promptText)
+    };
+
     // Function to call the server and fetch and generate text using ChatGPT API
     const generateText = async () => {
-        if (!selectedText) {
+        if (!promptText || selectedElementValue === '') {
             alert('Please provide a prompt before generating!');
             return;
         }
         try {
+            console.log("generatetext started ")
             const response = await fetch('/generate-auto-completion', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({elementType: selectedElementValue,completionPrompt: selectedText})
+                body: JSON.stringify({elementType: selectedElementValue, completionPrompt: promptText})
             });
             const data = await response.json();
             handleGeneratedTextChange(data);
+            console.log("generatetext finished " + data)
         } catch (error) {
             console.error("Failed to generate response:", error);
         }
     };
 
     const handleGeneratedTextChange = (responseData) => {
-        setEditedText(responseData);
+        setGeneratedText(responseData);
 
         // Send a message to the iframe to update the content of the selected text element
         if (iframeRef) {
@@ -193,9 +202,9 @@ const TextCompletionGenerator = ({iframeRef}) => {
                     <option value="list item">List item</option>
                 </select>
                 <textarea
-                    id="generatedText"
-                    value={editedText}
-                    onChange={handleEditedTextChange}
+                    id="generateAutoCompletion-text-area"
+                    value={promptText}
+                    onChange={handlePromptChange}
                     className="input-text-completion-text"
                 />
                 <button onClick={generateText} className="button-text-completion-generate">Generate</button>
