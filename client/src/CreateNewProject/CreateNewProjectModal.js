@@ -19,11 +19,12 @@ import {
 import { db, storage } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
 import HeaderBar from "../components/Header/HeaderBar";
+import Modal from "../components/Modal/Modal";
 
 // Import the saveProjectName function
 import { saveProjectName } from "../script/SaveProjectName";
 
-export default function CreateNewProject() {
+export default function CreateNewProjectModal() {
   const [selectedFile, setSelectedFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [projectName, setProjectName] = useState(""); // Added state for project name
@@ -31,11 +32,20 @@ export default function CreateNewProject() {
   const wireframeCollectionRef = collection(db, "wireframe");
   const [docId, setDocId] = useState(null);
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(false); // State variable for dark mode
 
   const toggleDarkMode = () => {
     // Function to toggle dark mode
     setIsDarkMode((prevMode) => !prevMode);
+  };
+
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   // Function to save the project name
@@ -148,107 +158,110 @@ export default function CreateNewProject() {
   };
 
   return (
-    <div className={`div-new-project-main ${isDarkMode ? "dark-mode" : ""}`}>
-      <div className="div-new-project-info">
-        <p>
-          Upload an image to get started. For best results, use a
-          high-resolution image with a single wireframe drawing.
-        </p>
-      </div>
-      <div className="div-new-project-form-container">
-        <div className="div-new-project-file-selector-container">
-          {/* Dark mode toggle button */}
-          {/* 
-          <button className="dark-mode-toggle" onClick={toggleDarkMode}>
-            {isDarkMode ? <FaSun /> : <FaMoon />}
-          </button>
-          */}
+    <Modal isOpen={isModalOpen} closeModal={closeModal}>
+      <div className={`div-new-project-main ${isDarkMode ? "dark-mode" : ""}`}>
+        <HeaderBar />
+        <div className="div-new-project-info">
+          <p>
+            Upload an image to get started. For best results, use a
+            high-resolution image with a single wireframe drawing.
+          </p>
+        </div>
+        <div className="div-new-project-form-container">
+          <div className="div-new-project-file-selector-container">
+            {/* Dark mode toggle button */}
+            {/* 
+            <button className="dark-mode-toggle" onClick={toggleDarkMode}>
+              {isDarkMode ? <FaSun /> : <FaMoon />}
+            </button>
+            */}
 
-          <label htmlFor="fname" className="label-name-new-project">
-            Project name
-          </label>
-          <input
-            type="text"
-            id="fname"
-            name="fname"
-            className="input-name-new-project"
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-          />
+            <label htmlFor="fname" className="label-name-new-project">
+              Project name
+            </label>
+            <input
+              type="text"
+              id="fname"
+              name="fname"
+              className="input-name-new-project"
+              value={projectName}
+              onChange={(e) => setProjectName(e.target.value)}
+            />
 
-          <div className="div-new-project-row">
-            <div className="div-new-project-select-file">
-              <label
-                htmlFor="file-upload-new-project"
-                className="button-new-project"
-              >
-                Select a file
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFileSelect}
-                  id="file-upload-new-project"
-                />
-              </label>
-              <i>Supported file types: .png .jpg</i>
+            <div className="div-new-project-row">
+              <div className="div-new-project-select-file">
+                <label
+                  htmlFor="file-upload-new-project"
+                  className="button-new-project"
+                >
+                  Select a file
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileSelect}
+                    id="file-upload-new-project"
+                  />
+                </label>
+                <i>Supported file types: .png .jpg</i>
+                {imagePreview && (
+                  <button onClick={handleDeleteImage} className="button-delete">
+                    Delete Image
+                  </button>
+                )}
+              </div>
               {imagePreview && (
-                <button onClick={handleDeleteImage} className="button-delete">
-                  Delete Image
-                </button>
+                <div className="image-preview-card">
+                  <img
+                    src={imagePreview}
+                    alt="Selected"
+                    className="file-preview-img"
+                  />
+                </div>
               )}
             </div>
-            {imagePreview && (
-              <div className="image-preview-card">
-                <img
-                  src={imagePreview}
-                  alt="Selected"
-                  className="file-preview-img"
-                />
-              </div>
+          </div>
+          <div className="div-new-project-generate-buttons">
+            {projectName.trim() !== "" && selectedFile && (
+              <>
+                <label htmlFor="button-new-project-label">
+                  Generate a new design by labeling the elements
+                </label>
+                <Link
+                  to="/labelEditor"
+                  state={{ id: docId }}
+                  onClick={handleNavigateToLabelEditor}
+                >
+                  <button
+                    style={{ margin: "10px" }}
+                    className="button-new-project"
+                    id="button-new-project-label"
+                  >
+                    Label
+                  </button>
+                </Link>
+
+                <label htmlFor="button-new-project-auto">Or</label>
+                <Link
+                  to="/generate"
+                  state={{
+                    id: docId,
+                    projectName: projectName,
+                  }}
+                  onClick={handleNavigateToGenerateView}
+                >
+                  <button
+                    style={{ marginTop: "10px" }}
+                    className="button-new-project"
+                    id="button-new-project-auto"
+                  >
+                    Auto generate
+                  </button>
+                </Link>
+              </>
             )}
           </div>
         </div>
-        <div className="div-new-project-generate-buttons">
-          {projectName.trim() !== "" && selectedFile && (
-            <>
-              <label htmlFor="button-new-project-label">
-                Generate a new design by labeling the elements
-              </label>
-              <Link
-                to="/labelEditor"
-                state={{ id: docId }}
-                onClick={handleNavigateToLabelEditor}
-              >
-                <button
-                  style={{ margin: "10px" }}
-                  className="button-new-project"
-                  id="button-new-project-label"
-                >
-                  Label
-                </button>
-              </Link>
-
-              <label htmlFor="button-new-project-auto">Or</label>
-              <Link
-                to="/generate"
-                state={{
-                  id: docId,
-                  projectName: projectName,
-                }}
-                onClick={handleNavigateToGenerateView}
-              >
-                <button
-                  style={{ marginTop: "10px" }}
-                  className="button-new-project"
-                  id="button-new-project-auto"
-                >
-                  Auto generate
-                </button>
-              </Link>
-            </>
-          )}
-        </div>
       </div>
-    </div>
+    </Modal>
   );
 }
