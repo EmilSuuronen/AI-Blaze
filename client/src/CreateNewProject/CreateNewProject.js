@@ -11,7 +11,6 @@ import {
   deleteField,
 } from "firebase/firestore";
 import {
-  getStorage,
   ref,
   uploadBytes,
   getDownloadURL,
@@ -151,18 +150,20 @@ export default function CreateNewProject() {
   return (
     <div className={`div-new-project-main ${isDarkMode ? "dark-mode" : ""}`}>
       <HeaderBar />
+      <div className="div-new-project-info">
+        <p>
+          Upload an image to get started. For best results, use a
+          high-resolution image with a single wireframe drawing.
+        </p>
+      </div>
       <div className="div-new-project-form-container">
-        <div>
-          <p>
-            Upload an image to get started. For best results,
-            <br /> use a high-resolution image with a single wireframe drawing.
-          </p>
-        </div>
         <div className="div-new-project-file-selector-container">
           {/* Dark mode toggle button */}
+          {/* 
           <button className="dark-mode-toggle" onClick={toggleDarkMode}>
             {isDarkMode ? <FaSun /> : <FaMoon />}
           </button>
+          */}
 
           <label htmlFor="fname" className="label-name-new-project">
             Project name
@@ -191,6 +192,11 @@ export default function CreateNewProject() {
                 />
               </label>
               <i>Supported file types: .png .jpg</i>
+              {imagePreview && (
+                <button onClick={handleDeleteImage} className="button-delete">
+                  Delete Image
+                </button>
+              )}
             </div>
             {imagePreview && (
               <div className="image-preview-card">
@@ -199,53 +205,48 @@ export default function CreateNewProject() {
                   alt="Selected"
                   className="file-preview-img"
                 />
-                <button onClick={handleDeleteImage} className="button-delete">
-                  Delete Image
-                </button>
               </div>
             )}
           </div>
         </div>
         <div className="div-new-project-generate-buttons">
-          <label htmlFor="button-new-project-label">
-            Generate a new design by labeling the elements
-          </label>
-          {/* Disable the "Label" button if projectName is empty or selectedFile is null */}
           {projectName.trim() !== "" && selectedFile && (
-            <Link
-              to="/labelEditor"
-              state={{
-                id: docId,
-              }}
-              onClick={handleNavigateToLabelEditor}
-            >
-              <button
-                className="button-new-project"
-                id="button-new-project-label"
+            <>
+              <label htmlFor="button-new-project-label">
+                Generate a new design by labeling the elements
+              </label>
+              <Link
+                to="/labelEditor"
+                state={{ id: docId }}
+                onClick={handleNavigateToLabelEditor}
               >
-                Label
-              </button>
-            </Link>
-          )}
+                <button
+                  style={{ margin: "10px" }}
+                  className="button-new-project"
+                  id="button-new-project-label"
+                >
+                  Label
+                </button>
+              </Link>
 
-          <label htmlFor="button-new-project-auto">Auto-generate</label>
-          {/* Disable the "Auto generate" button if projectName is empty or selectedFile is null */}
-          {projectName.trim() !== "" && selectedFile && (
-            <Link
-              to="/generate"
-              state={{
-                id: docId,
-                projectName: projectName, // Pass the project name to GenerateView
-              }}
-              onClick={handleNavigateToGenerateView}
-            >
-              <button
-                className="button-new-project"
-                id="button-new-project-auto"
+              <label htmlFor="button-new-project-auto">Or</label>
+              <Link
+                to="/generate"
+                state={{
+                  id: docId,
+                  projectName: projectName,
+                }}
+                onClick={handleNavigateToGenerateView}
               >
-                Auto generate
-              </button>
-            </Link>
+                <button
+                  style={{ marginTop: "10px" }}
+                  className="button-new-project"
+                  id="button-new-project-auto"
+                >
+                  Auto generate
+                </button>
+              </Link>
+            </>
           )}
         </div>
       </div>
