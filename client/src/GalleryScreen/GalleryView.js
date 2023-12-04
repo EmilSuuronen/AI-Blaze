@@ -33,12 +33,13 @@ function GalleryView() {
         }
     }, [user]);
 
-    const handleNavigateToGenerateView = (contentData) => {
+    const handleNavigateToGenerateView = (contentData, documentId) => {
         console.log("contendata galleryview: ", contentData);
         navigate({
             pathname: '/generate',
             state: {
                 contentData: contentData,
+                documentId: documentId,
             },
         });
     };
@@ -61,8 +62,8 @@ function GalleryView() {
                             <div key={index} className="galleryItem">
                                 <Link
                                     to="/generate"
-                                    state={{contentData: project.contentData}}
-                                    onClick={() => handleNavigateToGenerateView(project.contentData)}
+                                    state={{contentData: project.contentData, documentId: project.documentId}}
+                                    onClick={() => handleNavigateToGenerateView(project.contentData, project.documentId)}
                                 >
                                     <div className="projectCard">
                                         <p className="projectName">{project.projectName}</p>

@@ -11,12 +11,13 @@ function MainContent({imageUrls}) {
         setLatestProjects(imageUrls.slice(0, 3));
     }, [imageUrls]);
 
-    const handleNavigateToGenerateView = (contentData) => {
-        console.log("contendata mainview: ", contentData)
+    const handleNavigateToGenerateView = (contentData, documentId) => {
+        console.log("contendata galleryview: ", contentData);
         navigate({
             pathname: '/generate',
             state: {
                 contentData: contentData,
+                documentId: documentId,
             },
         });
     };
@@ -36,12 +37,12 @@ function MainContent({imageUrls}) {
                             <div key={index} className="galleryItem">
                                 <Link
                                     to="/generate"
-                                    state={{contentData: project.contentData}}
-                                    onClick={() => handleNavigateToGenerateView(project.contentData)}
+                                    state={{contentData: project.contentData, documentId: project.documentId}}
+                                    onClick={() => handleNavigateToGenerateView(project.contentData, project.documentId)}
                                 >
                                     <div className="projectCard">
                                         <p className="projectName">{project.projectName}</p>
-                                        <p className="projectDate">Edited: {project.id}</p>
+                                        <i className="projectDate">Edited: {project.lastUpdated}</i>
                                         <iframe
                                             title={`Project ${index}`}
                                             srcDoc={project.contentData}

@@ -41,6 +41,8 @@ export default function GenerateView() {
 
     // Content data from navigation from home page or gallery view
     const contentData = location.state?.contentData ?? null;
+    // Content data from navigation from preview page
+    const documentId = location.state?.documentId ?? null;
 
     useEffect(() => {
         if (contentData) {
@@ -69,10 +71,7 @@ export default function GenerateView() {
     // Variable required for regeneration after initial generation
     const isRegeneratedDesign = useRef(false);
 
-    console.log("contentData:", contentData);
-
     useEffect(() => {
-        console.log("elementData:", elementData, "contentData:", contentData);
         if (docId != null) {
             fetchImageData(docId).then((data) => setImageData(data));
             if (isRegeneratedDesign === false) {
@@ -199,7 +198,12 @@ export default function GenerateView() {
 
     // Function to handle saving the project
     const handleSaveProject = async () => {
-        await saveProject(docId, getCurrentIframeContent());
+        if (documentId != null) {
+            console.log("Saving project" + documentId);
+            await saveProject(documentId, getCurrentIframeContent().toString());
+        } else {
+            await saveProject(docId, getCurrentIframeContent());
+        }
     };
 
     // Function to handle downloading as a zip
