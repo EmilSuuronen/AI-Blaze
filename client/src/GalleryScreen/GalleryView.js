@@ -71,6 +71,7 @@ function GalleryView() {
                                             srcDoc={project.contentData}
                                             className="galleryProject"
                                             frameBorder="0"
+                                            scrolling="no"
                                         />
                                     </div>
                                 </Link>

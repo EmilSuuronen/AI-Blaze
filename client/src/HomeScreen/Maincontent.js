@@ -41,11 +41,13 @@ function MainContent({imageUrls}) {
                                 >
                                     <div className="projectCard">
                                         <p className="projectName">{project.projectName}</p>
+                                        <p className="projectDate">Edited: {project.id}</p>
                                         <iframe
                                             title={`Project ${index}`}
                                             srcDoc={project.contentData}
                                             className="galleryProject"
                                             frameBorder="0"
+                                            scrolling="no"
                                         />
                                     </div>
                                 </Link>
