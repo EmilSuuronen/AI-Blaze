@@ -9,6 +9,8 @@ import fetchImageData from "../script/FetchImageData.js";
 import saveProject from "../script/SaveProject";
 import TextCompletionGenerator from "../components/TextCompletionGenerator/TextCompletionGenerator";
 import {downloadProjectAsZip} from "../DownLoadProject.js";
+import EditorOptionsExpandableDiv from "../components/EditorOptionsExpandableDiv/EditorOptionsExpandableDiv";
+import handleElementHoverChange from "../script/handleElementHoverChange";
 
 export default function GenerateView() {
     // Location of the page and the data passed from the previous page
@@ -193,7 +195,7 @@ export default function GenerateView() {
         previewBackgroundColor,
         previewButtonColor,
         previewDivColor,
-        userEditedCSS, 
+        userEditedCSS,
         userEditedJS
     ]);
 
@@ -323,6 +325,8 @@ export default function GenerateView() {
             setupEventListeners(elements, elementType, handleElementSelection);
         })
 
+        handleElementHoverChange(iframeRef);
+
         const js = `
             const addNumberedIds = (elements, className) => {
                 let count = 1;
@@ -356,10 +360,6 @@ export default function GenerateView() {
                 </div>
             ) : (
                 <div className="div-generation-editor">
-                    <div className="div-editor-info-text">
-                        <h2>Edit and save</h2>
-                        <p> Here you can edit, save or regenerate your design.</p>
-                    </div>
                     <div className="div-editor-row">
                         <div className="div-preview-iframe-container">
                             <div
@@ -375,80 +375,83 @@ export default function GenerateView() {
                                 sandbox="allow-scripts allow-same-origin allow-forms"
                                 ref={iframeRef}
                                 onLoad={handleIframeLoad}
-                            >Iframe</iframe>
+                            >Iframe
+                            </iframe>
                         </div>
                         <div className="div-editor-flex-column">
-                            <div className="div-editor-options">
-                                <div className="title-editor-top-bar-container">
-                                    Text Completion
-                                </div>
-                                {(Object.keys(parsedResponse).length > 0 || contentData) && (
-                                    <TextCompletionGenerator iframeRef={iframeRef}/>
-                                )}
-                            </div>
-                            <div className="div-editor-options">
-                                <div className="title-editor-top-bar-container">
-                                    Edit Colors
-                                </div>
-                                <div className="div-editor-options-content-container">
-                                    <div>
-                                        Background color
-                                        <ColorPicker
-                                            color={previewBackgroundColor}
-                                            onColorChange={setPreviewBackgroundColor}
-                                        />
+                            <EditorOptionsExpandableDiv
+                                title="Text Completion"
+                                content={
+                                    (Object.keys(parsedResponse).length > 0 || contentData) && (
+                                        <TextCompletionGenerator iframeRef={iframeRef}/>
+                                    )
+                                }
+                            />
+                            <EditorOptionsExpandableDiv
+                                title="Edit colors"
+                                content={
+                                    <div className="div-editor-options-content-container">
+                                        <div>
+                                            Background color
+                                            <ColorPicker
+                                                color={previewBackgroundColor}
+                                                onColorChange={setPreviewBackgroundColor}
+                                            />
+                                        </div>
+                                        <div>
+                                            Button color
+                                            <ColorPicker
+                                                color={previewButtonColor}
+                                                onColorChange={setPreviewButtonColor}
+                                            />
+                                        </div>
+                                        <div>
+                                            Div colors
+                                            <ColorPicker
+                                                color={previewDivColor}
+                                                onColorChange={setPreviewDivColor}
+                                            />
+                                        </div>
                                     </div>
-                                    <div>
-                                        Button color
-                                        <ColorPicker
-                                            color={previewButtonColor}
-                                            onColorChange={setPreviewButtonColor}
-                                        />
-                                    </div>
-                                    <div>
-                                        Div colors
-                                        <ColorPicker
-                                            color={previewDivColor}
-                                            onColorChange={setPreviewDivColor}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="div-editor-options">
-                                <div className="title-editor-top-bar-container">
-                                    Element sizing
-                                </div>
-                                <div className="div-editor-element-sizing-content-container">
-                                    <div 
-                                        className="div-editor-element-sizing-content">
-                                        You are selecting: {selectedElementRef ? selectedElementRef.tagName : 'None'}
-                                    </div>
-                                    <div 
-                                        className="div-editor-element-sizing-content">
+                                }
+
+                            />
+                            <EditorOptionsExpandableDiv
+                                title="Element sizing"
+                                content={
+                                    <div className="div-editor-element-sizing-content-container">
+                                        <div
+                                            className="div-editor-element-sizing-content">
+                                            You are
+                                            selecting: {selectedElementRef ? selectedElementRef.tagName : 'None'}
+                                        </div>
+                                        <div
+                                            className="div-editor-element-sizing-content">
                                             Width input:
-                                        <input
-                                            className="div-editor-element-sizing-input"
-                                            type="number"
-                                            value={selectedElementWidth}
-                                            onChange={(e) => handleInputChange('width', e.target.value)}
-                                            placeholder="Enter width"
-                                        />
-                                        px
-                                    </div>
-                                    <div
-                                        className="div-editor-element-sizing-content">
+                                            <input
+                                                className="div-editor-element-sizing-input"
+                                                type="number"
+                                                value={selectedElementWidth}
+                                                onChange={(e) => handleInputChange('width', e.target.value)}
+                                                placeholder="Enter width"
+                                            />
+                                            px
+                                        </div>
+                                        <div
+                                            className="div-editor-element-sizing-content">
                                             Height input:
-                                        <input
-                                            className="div-editor-element-sizing-input"
-                                            type="number"
-                                            value={selectedElementHeight}
-                                            onChange={(e) => handleInputChange('height', e.target.value)}
-                                            placeholder="Enter height"
-                                        />
-                                        px
+                                            <input
+                                                className="div-editor-element-sizing-input"
+                                                type="number"
+                                                value={selectedElementHeight}
+                                                onChange={(e) => handleInputChange('height', e.target.value)}
+                                                placeholder="Enter height"
+                                            />
+                                            px
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                }
+                            />
                             <div className="div-editor-options">
                                 <div className="title-editor-top-bar-container">
                                     Save and regenerate
