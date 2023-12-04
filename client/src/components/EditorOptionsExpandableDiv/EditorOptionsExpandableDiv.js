@@ -1,7 +1,7 @@
 // ExpandableDiv.js
 import React, { useState } from 'react';
-import Button from '@mui/material/Button';
 import './EditorOptionsExpandableDiv.css';
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa';
 
 const EditorOptionsExpandableDiv = ({ title, content }) => {
     const [isContentVisible, setIsContentVisible] = useState(false);
@@ -22,9 +22,10 @@ const EditorOptionsExpandableDiv = ({ title, content }) => {
                 </div>
             </div>
             <div className="div-toggle-button-container">
-                <Button variant="outlined" onClick={handleToggleContent}>
-                    Toggle Content
-                </Button>
+                <i>{isContentVisible ? 'Show Less' : 'Show More'}</i>
+                <button onClick={handleToggleContent} className="button-editor-show-more">
+                    {isContentVisible ? <FaChevronUp/> : <FaChevronDown />}
+                </button>
             </div>
         </div>
     );
