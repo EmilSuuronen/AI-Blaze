@@ -39,6 +39,16 @@ export default function GenerateView() {
     // State variable to save the image data to
     const [imageData, setImageData] = useState(null);
 
+    // Content data from navigation from home page or gallery view
+    const contentData = location.state?.contentData;
+
+    useEffect(() => {
+        if (contentData) {
+            // Set the parsed response to the state
+            setParsedResponse(contentData);
+        }
+    }, [contentData, parsedResponse]);
+
     // set the ref for Preview element
     const iframeRef = useRef(null);
 
@@ -53,11 +63,13 @@ export default function GenerateView() {
 
     // Handle the preview navigate
     const handlePreviewNavigate = () => {
-        navigate("/preview", {state: {htmlContent: htmlContent}});
+        navigate("/preview", {state: {htmlContent: getCurrentProjectData()}});
     };
 
     // Variable required for regeneration after initial generation
     const isRegeneratedDesign = useRef(false);
+
+    console.log("contentData:", contentData);
 
     useEffect(() => {
         if (elementData == null) {
@@ -205,6 +217,14 @@ export default function GenerateView() {
         }
     };
 
+    const getCurrentProjectData = () => {
+        if (!contentData) {
+            return htmlContent;
+        } else {
+            return contentData;
+        }
+    }
+
     // Function to handle selection of an element and text displays in element sizing
     const handleElementSelection = (elementRef) => {
         setSelectedElementRef(elementRef);
@@ -341,7 +361,7 @@ export default function GenerateView() {
                             </div>
                             <iframe
                                 id="iframe-code-preview"
-                                srcDoc={htmlContent || 'about:blank'} // Use htmlContent or 'about:blank' if htmlContent is null
+                                srcDoc={getCurrentProjectData()} // Use htmlContent or 'about:blank' if htmlContent is null
                                 frameBorder="0"
                                 sandbox="allow-scripts allow-same-origin allow-forms"
                                 ref={iframeRef}
@@ -353,7 +373,7 @@ export default function GenerateView() {
                                 <div className="title-editor-top-bar-container">
                                     Text Completion
                                 </div>
-                                {Object.keys(parsedResponse).length > 0 && (
+                                {(Object.keys(parsedResponse).length > 0 || contentData) && (
                                     <TextCompletionGenerator iframeRef={iframeRef}/>
                                 )}
                             </div>
