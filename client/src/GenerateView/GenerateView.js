@@ -13,7 +13,7 @@ import {downloadProjectAsZip} from "../DownLoadProject.js";
 export default function GenerateView() {
     // Location of the page and the data passed from the previous page
     const location = useLocation();
-    const elementData = location.state?.objectData;
+    const elementData = location.state?.objectData ?? null;
     const [labels, setLabels] = useState(
         elementData ? elementData.map((element) => element.label) : null
     );
@@ -35,12 +35,12 @@ export default function GenerateView() {
     const [previewDivColor, setPreviewDivColor] = useState("#cbcbcb");
 
     // Get the Image ID from parameters
-    const docId = location.state?.id;
+    const docId = location.state?.id ?? null;
     // State variable to save the image data to
     const [imageData, setImageData] = useState(null);
 
     // Content data from navigation from home page or gallery view
-    const contentData = location.state?.contentData;
+    const contentData = location.state?.contentData ?? null;
 
     useEffect(() => {
         if (contentData) {
@@ -72,15 +72,14 @@ export default function GenerateView() {
     console.log("contentData:", contentData);
 
     useEffect(() => {
-        if (elementData == null) {
+        console.log("elementData:", elementData, "contentData:", contentData);
+        if (docId != null) {
             fetchImageData(docId).then((data) => setImageData(data));
-            console.log("Image data fetched " + imageData);
             if (isRegeneratedDesign === false) {
                 handleSendToChatGPTVision(imageData).then(r => console.log(r));
             }
         }
     }, [docId, imageData, isRegeneratedDesign]);
-
 
     useEffect(() => {
         if (elementData != null && isRegeneratedDesign === false) {
@@ -88,11 +87,9 @@ export default function GenerateView() {
         }
     }, [elementData, isRegeneratedDesign]);
 
-
     useEffect(() => {
         // Ensure elementData is not null and isRegeneratedDesign is false
         if (elementData != null && isRegeneratedDesign === false) {
-            // Trigger the API call here
             handleSendToChatGPT(elementData).then((result) => {
                 console.log(result);
             });
@@ -119,9 +116,10 @@ export default function GenerateView() {
             });
             const data = await response.json();
             setParsedResponse(JSON.parse(data));
-            await handleSaveProject();
         } catch (error) {
             console.error("Failed to generate response:", error);
+        } finally {
+            await handleSaveProject();
         }
     }
 
@@ -139,9 +137,10 @@ export default function GenerateView() {
             });
             const data = await response.json();
             setParsedResponse(JSON.parse(data));
-            await handleSaveProject();
         } catch (error) {
             console.error("Failed to generate response:", error);
+        } finally {
+            await handleSaveProject();
         }
     }
 
@@ -208,7 +207,13 @@ export default function GenerateView() {
         // Get the project name from the location state or use a default name
         const projectName = location.state?.projectName || "default_project_name";
 
-        if (htmlContent) {
+        if (contentData) {
+            downloadProjectAsZip(
+                projectName, // Use the project name for the zip file
+                contentData,
+                ""
+            );
+        } else if (htmlContent) {
             downloadProjectAsZip(
                 projectName, // Use the project name for the zip file
                 htmlContent,
@@ -264,7 +269,6 @@ export default function GenerateView() {
         // set value to null for next element
         setSelectedElementWidth(null);
         setSelectedElementHeight(null);
-
     };
 
     // Function to set up event listener for applying size changes and delay 500 milliseconds
