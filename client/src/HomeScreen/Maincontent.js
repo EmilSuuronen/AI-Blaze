@@ -1,8 +1,7 @@
 // MainContent.js
 import React, {useEffect, useState} from "react";
 import "./MainContent.css";
-import {useNavigate} from "react-router-dom";
-import {Link} from "@mui/material";
+import {Link, useNavigate} from "react-router-dom";
 
 function MainContent({imageUrls}) {
     const [latestProjects, setLatestProjects] = useState([]);
