@@ -67,6 +67,7 @@ function GalleryView() {
                                 >
                                     <div className="projectCard">
                                         <p className="projectName">{project.projectName}</p>
+                                        <i className="projectDate">Edited: {project.lastUpdated}</i>
                                         <iframe
                                             title={`Project ${index}`}
                                             srcDoc={project.contentData}

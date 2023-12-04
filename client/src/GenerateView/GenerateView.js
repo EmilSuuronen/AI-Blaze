@@ -68,32 +68,32 @@ export default function GenerateView() {
         navigate("/preview", {state: {htmlContent: getCurrentProjectData()}});
     };
 
-    // Variable required for regeneration after initial generation
-    const isRegeneratedDesign = useRef(false);
-
     useEffect(() => {
         if (docId != null) {
-            fetchImageData(docId).then((data) => setImageData(data));
-            if (isRegeneratedDesign === false) {
-                handleSendToChatGPTVision(imageData).then(r => console.log(r));
+
+            const fetchImageDataAsync = async () => {
+                await fetchImageData(docId).then((data) => setImageData(data));
             }
+            fetchImageDataAsync().catch(console.error);
+
+            handleSendToChatGPTVision(imageData).then(r => console.log(r));
         }
-    }, [docId, imageData, isRegeneratedDesign]);
+    }, [contentData, docId, imageData]);
 
     useEffect(() => {
-        if (elementData != null && isRegeneratedDesign === false) {
+        if (elementData != null) {
             setLabels(elementData.map((element) => element.label));
         }
-    }, [elementData, isRegeneratedDesign]);
+    }, [elementData]);
 
     useEffect(() => {
         // Ensure elementData is not null and isRegeneratedDesign is false
-        if (elementData != null && isRegeneratedDesign === false) {
+        if (elementData != null) {
             handleSendToChatGPT(elementData).then((result) => {
                 console.log(result);
             });
         }
-    }, []);
+    }, [elementData]);
 
     // Add an useEffect to listen for changes in parsedResponse
     useEffect(() => {
@@ -104,6 +104,7 @@ export default function GenerateView() {
 
     //Send data to ChatGPT API
     async function handleSendToChatGPT() {
+        console.log("Generation with labels started");
         setIsLoading(true);
         try {
             const response = await fetch('/generate-with-labels', {
@@ -202,6 +203,7 @@ export default function GenerateView() {
             console.log("Saving project" + documentId);
             await saveProject(documentId, getCurrentIframeContent().toString());
         } else {
+            console.log("docid" + docId);
             await saveProject(docId, getCurrentIframeContent());
         }
     };
@@ -279,7 +281,6 @@ export default function GenerateView() {
     useEffect(() => {
         const applyCssUpdate = setTimeout(() => {
             generateUserEditedCSS(selectedElementRef, selectedElementWidth, selectedElementHeight);
-            console.log('big html:', htmlContent);
         }, 500);
         return () => clearTimeout(applyCssUpdate);
 
