@@ -1,3 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans&display=swap');
+
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
 .App {
   text-align: center;
 }
