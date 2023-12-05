@@ -1,0 +1,32 @@
+.editorOptionVisible {
+    opacity: 1;
+    display: block;
+    padding: 0;
+    margin: 0;
+}
+
+.editorOptionHidden {
+    display: none;
+    transition: opacity 1s ease-out;
+    opacity: 0;
+}
+
+.div-toggle-button-container {
+    display: flex;
+    flex-direction: column;
+    align-content: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #e3e3e3;
+}
+
+.button-editor-show-more {
+    background: none;
+    color: rgb(89, 89, 89);
+    font-size: 24px;
+    border: none;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    padding: 0;
+}
