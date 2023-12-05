@@ -9,11 +9,13 @@ import fetchImageData from "../script/FetchImageData.js";
 import saveProject from "../script/SaveProject";
 import TextCompletionGenerator from "../components/TextCompletionGenerator/TextCompletionGenerator";
 import {downloadProjectAsZip} from "../DownLoadProject.js";
+import EditorOptionsExpandableDiv from "../components/EditorOptionsExpandableDiv/EditorOptionsExpandableDiv";
+import handleElementHoverChange from "../script/handleElementHoverChange";
 
 export default function GenerateView() {
     // Location of the page and the data passed from the previous page
     const location = useLocation();
-    const elementData = location.state?.objectData;
+    const elementData = location.state?.objectData ?? null;
     const [labels, setLabels] = useState(
         elementData ? elementData.map((element) => element.label) : null
     );
@@ -35,9 +37,21 @@ export default function GenerateView() {
     const [previewDivColor, setPreviewDivColor] = useState("#cbcbcb");
 
     // Get the Image ID from parameters
-    const docId = location.state?.id;
+    const docId = location.state?.id ?? null;
     // State variable to save the image data to
     const [imageData, setImageData] = useState(null);
+
+    // Content data from navigation from home page or gallery view
+    const contentData = location.state?.contentData ?? null;
+    // Content data from navigation from preview page
+    const documentId = location.state?.documentId ?? null;
+
+    useEffect(() => {
+        if (contentData) {
+            // Set the parsed response to the state
+            setParsedResponse(contentData);
+        }
+    }, [contentData, parsedResponse]);
 
     // set the ref for Preview element
     const iframeRef = useRef(null);
@@ -52,41 +66,42 @@ export default function GenerateView() {
     const [userEditedJS, setUserEditedJS] = useState('')
 
     // Handle the preview navigate
+<<<<<<< HEAD
     const handlePreviewNavigate = async () => {
         const currentIframeContent = await getCurrentIframeContent();
         navigate("/preview", {state: {htmlContent: currentIframeContent}});
+=======
+    const handlePreviewNavigate = () => {
+        navigate("/preview", {state: {htmlContent: getCurrentProjectData()}});
+>>>>>>> main
     };
 
-    // Variable required for regeneration after initial generation
-    const isRegeneratedDesign = useRef(false);
-
     useEffect(() => {
-        if (elementData == null) {
-            fetchImageData(docId).then((data) => setImageData(data));
-            console.log("Image data fetched " + imageData);
-            if (isRegeneratedDesign === false) {
-                handleSendToChatGPTVision(imageData).then(r => console.log(r));
+        if (docId != null) {
+
+            const fetchImageDataAsync = async () => {
+                await fetchImageData(docId).then((data) => setImageData(data));
             }
-        }
-    }, [docId, imageData, isRegeneratedDesign]);
+            fetchImageDataAsync().catch(console.error);
 
+            handleSendToChatGPTVision(imageData).then(r => console.log(r));
+        }
+    }, [contentData, docId, imageData]);
 
     useEffect(() => {
-        if (elementData != null && isRegeneratedDesign === false) {
+        if (elementData != null) {
             setLabels(elementData.map((element) => element.label));
         }
-    }, [elementData, isRegeneratedDesign]);
-
+    }, [elementData]);
 
     useEffect(() => {
         // Ensure elementData is not null and isRegeneratedDesign is false
-        if (elementData != null && isRegeneratedDesign === false) {
-            // Trigger the API call here
+        if (elementData != null) {
             handleSendToChatGPT(elementData).then((result) => {
                 console.log(result);
             });
         }
-    }, []);
+    }, [elementData]);
 
     // Add an useEffect to listen for changes in parsedResponse
     useEffect(() => {
@@ -97,6 +112,7 @@ export default function GenerateView() {
 
     //Send data to ChatGPT API
     async function handleSendToChatGPT() {
+        console.log("Generation with labels started");
         setIsLoading(true);
         try {
             const response = await fetch('/generate-with-labels', {
@@ -108,9 +124,10 @@ export default function GenerateView() {
             });
             const data = await response.json();
             setParsedResponse(JSON.parse(data));
-            await handleSaveProject();
         } catch (error) {
             console.error("Failed to generate response:", error);
+        } finally {
+            await handleSaveProject();
         }
     }
 
@@ -128,9 +145,10 @@ export default function GenerateView() {
             });
             const data = await response.json();
             setParsedResponse(JSON.parse(data));
-            await handleSaveProject();
         } catch (error) {
             console.error("Failed to generate response:", error);
+        } finally {
+            await handleSaveProject();
         }
     }
 
@@ -150,6 +168,7 @@ export default function GenerateView() {
       <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="preconnect" href="https://fonts.googleapis.com">
         <style>
         body {
             display: flex;
@@ -183,13 +202,19 @@ export default function GenerateView() {
         previewBackgroundColor,
         previewButtonColor,
         previewDivColor,
-        userEditedCSS, 
+        userEditedCSS,
         userEditedJS
     ]);
 
     // Function to handle saving the project
     const handleSaveProject = async () => {
-        await saveProject(docId, getCurrentIframeContent());
+        if (documentId != null) {
+            console.log("Saving project" + documentId);
+            await saveProject(documentId, getCurrentIframeContent().toString());
+        } else {
+            console.log("docid" + docId);
+            await saveProject(docId, getCurrentIframeContent());
+        }
     };
 
     // Function to handle downloading as a zip
@@ -197,7 +222,13 @@ export default function GenerateView() {
         // Get the project name from the location state or use a default name
         const projectName = location.state?.projectName || "default_project_name";
 
-        if (htmlContent) {
+        if (contentData) {
+            downloadProjectAsZip(
+                projectName, // Use the project name for the zip file
+                contentData,
+                ""
+            );
+        } else if (htmlContent) {
             downloadProjectAsZip(
                 projectName, // Use the project name for the zip file
                 htmlContent,
@@ -205,6 +236,14 @@ export default function GenerateView() {
             );
         }
     };
+
+    const getCurrentProjectData = () => {
+        if (!contentData) {
+            return htmlContent;
+        } else {
+            return contentData;
+        }
+    }
 
     // Function to handle selection of an element and text displays in element sizing
     const handleElementSelection = (elementRef) => {
@@ -245,14 +284,12 @@ export default function GenerateView() {
         // set value to null for next element
         setSelectedElementWidth(null);
         setSelectedElementHeight(null);
-
     };
 
     // Function to set up event listener for applying size changes and delay 500 milliseconds
     useEffect(() => {
         const applyCssUpdate = setTimeout(() => {
             generateUserEditedCSS(selectedElementRef, selectedElementWidth, selectedElementHeight);
-            console.log('big html:', htmlContent);
         }, 500);
         return () => clearTimeout(applyCssUpdate);
 
@@ -295,6 +332,8 @@ export default function GenerateView() {
             setupEventListeners(elements, elementType, handleElementSelection);
         })
 
+        handleElementHoverChange(iframeRef);
+
         const js = `
             const addNumberedIds = (elements, className) => {
                 let count = 1;
@@ -328,10 +367,6 @@ export default function GenerateView() {
                 </div>
             ) : (
                 <div className="div-generation-editor">
-                    <div className="div-editor-info-text">
-                        <h2>Edit and save</h2>
-                        <p> Here you can edit, save or regenerate your design.</p>
-                    </div>
                     <div className="div-editor-row">
                         <div className="div-preview-iframe-container">
                             <div
@@ -342,85 +377,88 @@ export default function GenerateView() {
                             </div>
                             <iframe
                                 id="iframe-code-preview"
-                                srcDoc={htmlContent || 'about:blank'} // Use htmlContent or 'about:blank' if htmlContent is null
+                                srcDoc={getCurrentProjectData()} // Use htmlContent or 'about:blank' if htmlContent is null
                                 frameBorder="0"
                                 sandbox="allow-scripts allow-same-origin allow-forms"
                                 ref={iframeRef}
                                 onLoad={handleIframeLoad}
-                            >Iframe</iframe>
+                            >Iframe
+                            </iframe>
                         </div>
                         <div className="div-editor-flex-column">
-                            <div className="div-editor-options">
-                                <div className="title-editor-top-bar-container">
-                                    Text Completion
-                                </div>
-                                {Object.keys(parsedResponse).length > 0 && (
-                                    <TextCompletionGenerator iframeRef={iframeRef}/>
-                                )}
-                            </div>
-                            <div className="div-editor-options">
-                                <div className="title-editor-top-bar-container">
-                                    Edit Colors
-                                </div>
-                                <div className="div-editor-options-content-container">
-                                    <div>
-                                        Background color
-                                        <ColorPicker
-                                            color={previewBackgroundColor}
-                                            onColorChange={setPreviewBackgroundColor}
-                                        />
+                            <EditorOptionsExpandableDiv
+                                title="Text Completion"
+                                content={
+                                    (Object.keys(parsedResponse).length > 0 || contentData) && (
+                                        <TextCompletionGenerator iframeRef={iframeRef}/>
+                                    )
+                                }
+                            />
+                            <EditorOptionsExpandableDiv
+                                title="Edit colors"
+                                content={
+                                    <div className="div-editor-options-content-container">
+                                        <div>
+                                            Background color
+                                            <ColorPicker
+                                                color={previewBackgroundColor}
+                                                onColorChange={setPreviewBackgroundColor}
+                                            />
+                                        </div>
+                                        <div>
+                                            Button color
+                                            <ColorPicker
+                                                color={previewButtonColor}
+                                                onColorChange={setPreviewButtonColor}
+                                            />
+                                        </div>
+                                        <div>
+                                            Div colors
+                                            <ColorPicker
+                                                color={previewDivColor}
+                                                onColorChange={setPreviewDivColor}
+                                            />
+                                        </div>
                                     </div>
-                                    <div>
-                                        Button color
-                                        <ColorPicker
-                                            color={previewButtonColor}
-                                            onColorChange={setPreviewButtonColor}
-                                        />
-                                    </div>
-                                    <div>
-                                        Div colors
-                                        <ColorPicker
-                                            color={previewDivColor}
-                                            onColorChange={setPreviewDivColor}
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div className="div-editor-options">
-                                <div className="title-editor-top-bar-container">
-                                    Element sizing
-                                </div>
-                                <div className="div-editor-element-sizing-content-container">
-                                    <div 
-                                        className="div-editor-element-sizing-content">
-                                        You are selecting: {selectedElementRef ? selectedElementRef.tagName : 'None'}
-                                    </div>
-                                    <div 
-                                        className="div-editor-element-sizing-content">
+                                }
+
+                            />
+                            <EditorOptionsExpandableDiv
+                                title="Element sizing"
+                                content={
+                                    <div className="div-editor-element-sizing-content-container">
+                                        <div
+                                            className="div-editor-element-sizing-content">
+                                            You are
+                                            selecting: {selectedElementRef ? selectedElementRef.tagName : 'None'}
+                                        </div>
+                                        <div
+                                            className="div-editor-element-sizing-content">
                                             Width input:
-                                        <input
-                                            className="div-editor-element-sizing-input"
-                                            type="number"
-                                            value={selectedElementWidth}
-                                            onChange={(e) => handleInputChange('width', e.target.value)}
-                                            placeholder="Enter width"
-                                        />
-                                        px
-                                    </div>
-                                    <div
-                                        className="div-editor-element-sizing-content">
+                                            <input
+                                                className="div-editor-element-sizing-input"
+                                                type="number"
+                                                value={selectedElementWidth}
+                                                onChange={(e) => handleInputChange('width', e.target.value)}
+                                                placeholder="Enter width"
+                                            />
+                                            px
+                                        </div>
+                                        <div
+                                            className="div-editor-element-sizing-content">
                                             Height input:
-                                        <input
-                                            className="div-editor-element-sizing-input"
-                                            type="number"
-                                            value={selectedElementHeight}
-                                            onChange={(e) => handleInputChange('height', e.target.value)}
-                                            placeholder="Enter height"
-                                        />
-                                        px
+                                            <input
+                                                className="div-editor-element-sizing-input"
+                                                type="number"
+                                                value={selectedElementHeight}
+                                                onChange={(e) => handleInputChange('height', e.target.value)}
+                                                placeholder="Enter height"
+                                            />
+                                            px
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
+                                }
+                            />
                             <div className="div-editor-options">
                                 <div className="title-editor-top-bar-container">
                                     Save and regenerate

@@ -27,15 +27,17 @@ async function generateWithVision(imageUrl) {
             },
             {
                 role: "user",
-                content:
-                    [
-                        {"type": "text", "text": "Generate the JSON object based on this image"},
-                        {
-                            "type": "image_url",
-                            "image_url": imageUrl,
+                content: [
+                    {"type": "text", "text": "Generate the JSON object based on this image"},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": imageUrl,
+                            "detail": "low",
                         },
-                    ]
-            }
+                    },
+                ],
+            },
         ],
         "max_tokens": 2000,
     };

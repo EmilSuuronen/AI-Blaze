@@ -31,8 +31,9 @@ app.post('/generate-with-labels', async (req, res) => {
 
 app.post('/generate-auto-completion', async (req, res) => {
     try {
+        const elementType = req.body.elementType;
         const completionPrompt = req.body.completionPrompt;
-        const result = await generateAutoCompletion(completionPrompt);
+        const result = await generateAutoCompletion(elementType, completionPrompt);
         res.json(result);
     } catch (error) {
         console.error('Error:', error);

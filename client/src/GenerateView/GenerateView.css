@@ -9,9 +9,9 @@
 
 .div-generation-editor {
     margin: 12px;
-    width: 80%;
+    width: 95%;
     border: 1px #cdcdcd solid;
-    border-radius: 16px;
+    border-radius: 8px;
     color: white;
 }
 
@@ -22,17 +22,17 @@
 }
 
 iframe {
-    min-height: 820px;
+    min-height: 800px;
     width: 100%;
-    border-radius: 0 0 16px 16px;
+    border-radius: 0 0 8px 8px;
 }
 
 .div-preview-iframe-container {
     margin: 8px;
     box-shadow: black 0px 0px 4px;
     background-color: white;
-    flex: 1;
-    border-radius: 16px;
+    flex: 1.5;
+    border-radius: 8px;
 }
 
 .title-editor-top-bar-container {
@@ -40,7 +40,7 @@ iframe {
     background-color: #2C2A4A;
     font-size: 18px;
     padding: 12px;
-    border-radius: 16px 16px 0 0;
+    border-radius: 8px 8px 0 0;
 }
 
 #title-editor-top-bar-container-iframe {
@@ -68,15 +68,15 @@ iframe {
     flex-direction: column;
     width: 50%;
     margin: 4px;
-    border-radius: 16px;
+    border-radius: 8px;
+    flex: 1;
 }
 
 .div-editor-options {
     margin: 8px;
     box-shadow: black 0px 0px 4px;
     background-color: white;
-    flex: 1;
-    border-radius: 16px;
+    border-radius: 8px;
     color: black;
 }
 
@@ -106,9 +106,6 @@ iframe {
 
 
 @media only screen and (max-width: 600px) {
-    .generate-view-main {
-        width: 100%;
-    }
     .div-generation-editor {
         width: 100%;
     }
