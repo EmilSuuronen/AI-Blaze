@@ -52,8 +52,9 @@ export default function GenerateView() {
     const [userEditedJS, setUserEditedJS] = useState('')
 
     // Handle the preview navigate
-    const handlePreviewNavigate = () => {
-        navigate("/preview", {state: {htmlContent: htmlContent}});
+    const handlePreviewNavigate = async () => {
+        const currentIframeContent = await getCurrentIframeContent();
+        navigate("/preview", {state: {htmlContent: currentIframeContent}});
     };
 
     // Variable required for regeneration after initial generation
@@ -430,12 +431,6 @@ export default function GenerateView() {
                                         variant="outlined"
                                         onClick={handleRegenerate}
                                     > Regenerate </Button>
-                                    <Button
-                                        variant="outlined"
-                                        onClick={handlePreviewNavigate}
-                                    >
-                                        Preview
-                                    </Button>
                                     <Button
                                         id="button-generate"
                                         variant="outlined"
