@@ -12,7 +12,7 @@ const EditorOptionsExpandableDiv = ({ title, content }) => {
 
     return (
         <div className="div-editor-options">
-            <div className="title-editor-top-bar-container">
+            <div className="title-editor-top-bar-container" id="editor-option-title">
                 {title}
             </div>
             <div className={`div-editor-options-content-container ${isContentVisible ? 'editorOptionVisible' : 'editorOptionHidden'}`}>
