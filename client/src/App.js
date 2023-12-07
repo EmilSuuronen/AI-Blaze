@@ -12,7 +12,6 @@ import LandingPage from "./LandingPageView/LandingPage";
 import { AuthContextProvider } from './context/AuthContext';
 import PreviewView from "./Preview/Preview";
 import GalleryView from "./GalleryScreen/GalleryView";
-import CreateNewProjectModal from "./CreateNewProject/CreateNewProjectModal";
 
 export default function App() {
     return (
@@ -30,7 +29,6 @@ export default function App() {
                 <Route path="/signupview" element={<SignupView />} />
                 <Route path="/mainscreen" element={<MainScreen />} />
                 <Route path="/preview" element={<PreviewView />} />
-                <Route path="/modal" element={<CreateNewProjectModal />} />
             </Routes>
             </Router>
         </AuthContextProvider>

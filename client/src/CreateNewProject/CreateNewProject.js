@@ -18,7 +18,6 @@ import {
 } from "firebase/storage";
 import { db, storage } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
-import HeaderBar from "../components/Header/HeaderBar";
 
 // Import the saveProjectName function
 import { saveProjectName } from "../script/SaveProjectName";

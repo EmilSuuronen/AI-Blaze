@@ -5,10 +5,15 @@ import { UserAuth } from "../context/AuthContext";
 import fetchImagesByUser from "../script/FetchImagesByUser";
 import BackToTopButton from "../components/BackToTopButton/BackToTopButton";
 import { Link } from "react-router-dom";
+import { Button } from "@mui/material";
+import Modal from "../components/Modal/Modal";
+import CreateNewProject from "../CreateNewProject/CreateNewProject";
 
 function GalleryView() {
   const { user } = UserAuth();
   const [allProjects, setAllProjects] = useState([]);
+  const [isCreateNewProjectModalOpen, setCreateNewProjectModalOpen] =
+    useState(false);
 
   useEffect(() => {
     // Check if user is logged in
@@ -31,12 +36,21 @@ function GalleryView() {
     }
   }, [user]);
 
+  const openCreateNewProjectModal = () => {
+    setCreateNewProjectModalOpen(true);
+  };
+
+  const closeCreateNewProjectModal = () => {
+    setCreateNewProjectModalOpen(false);
+  };
+
   return (
     <div>
       <HeaderBar />
-      <Link to="/createNewProject" style={{ textDecoration: "none" }}>
-        <div className="newProjectBox">+ New Project</div>
-      </Link>
+      <div className="newProjectBox">
+        <Button style={{textDecoration: 'none', color: 'white'}} onClick={openCreateNewProjectModal}>New Project</Button>
+      </div>
+
       <div className="galleryContainer">
         {allProjects
           .slice() // Create a copy of the array
@@ -60,6 +74,12 @@ function GalleryView() {
           )}
       </div>
       <BackToTopButton />
+      <Modal
+        isOpen={isCreateNewProjectModalOpen}
+        closeModal={closeCreateNewProjectModal}
+      >
+        <CreateNewProject />
+      </Modal>
     </div>
   );
 }
