@@ -1,6 +1,6 @@
 .newProjectBox {
   background-color: #4f518c;
-  color: #fff;
+  color: #fffffa;
   padding: 10px;
   border-bottom-left-radius: 8px;
   border-bottom-right-radius: 8px;
@@ -12,11 +12,13 @@
 }
 
 .galleryNewProjectButton {
+  text-decoration: none;
+  cursor: pointer;
+  background-color: transparent;
+  border: none;
+  font-size: 1em;
+  width: 100%;
   color: #fffffa;
-}
-
-.galleryNewProjectButton:hover {
-  color: #2c2a4a;
 }
 
 .newProjectBox:hover {

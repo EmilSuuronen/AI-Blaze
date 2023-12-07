@@ -48,7 +48,7 @@ function GalleryView() {
     <div>
       <HeaderBar />
       <div className="newProjectBox">
-        <Button style={{textDecoration: 'none', color: 'white'}} onClick={openCreateNewProjectModal}>New Project</Button>
+        <button className="galleryNewProjectButton" onClick={openCreateNewProjectModal}>New Project</button>
       </div>
 
       <div className="galleryContainer">
