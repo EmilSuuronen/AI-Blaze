@@ -11,6 +11,7 @@ function GalleryView() {
     const {user} = UserAuth();
     const [allProjects, setAllProjects] = useState([]);
     const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState('');
 
     useEffect(() => {
         // Check if user is logged in
@@ -44,14 +45,27 @@ function GalleryView() {
         });
     };
 
+    const filteredProjects = allProjects
+        .filter(project => project.projectName.toLowerCase().includes(searchTerm.toLowerCase()))
+        .slice()
+        .reverse();
+
     return (
         <div>
             <HeaderBar/>
             <Link to="/createNewProject" style={{textDecoration: "none"}}>
                 <div className="newProjectBox">+ New Project</div>
             </Link>
+            
+            <input
+                type="text"
+                placeholder="Search by project name"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="searchBar-gallery"
+            />
             <div className="galleryContainer">
-                {allProjects
+                {filteredProjects
                     .slice() // Create a copy of the array
                     .reverse() // Reverse the array so that the most recent project is at the top
                     .map(
