@@ -66,14 +66,9 @@ export default function GenerateView() {
     const [userEditedJS, setUserEditedJS] = useState('')
 
     // Handle the preview navigate
-<<<<<<< HEAD
     const handlePreviewNavigate = async () => {
         const currentIframeContent = await getCurrentIframeContent();
         navigate("/preview", {state: {htmlContent: currentIframeContent}});
-=======
-    const handlePreviewNavigate = () => {
-        navigate("/preview", {state: {htmlContent: getCurrentProjectData()}});
->>>>>>> main
     };
 
     useEffect(() => {
@@ -290,6 +285,9 @@ export default function GenerateView() {
     useEffect(() => {
         const applyCssUpdate = setTimeout(() => {
             generateUserEditedCSS(selectedElementRef, selectedElementWidth, selectedElementHeight);
+            if (iframeRef.current) {
+                iframeRef.current.contentWindow.location.reload(true);
+            }
         }, 500);
         return () => clearTimeout(applyCssUpdate);
 
@@ -329,7 +327,9 @@ export default function GenerateView() {
         const elementsToSize = ['button', 'input', 'img'];
         elementsToSize.forEach((elementType) => {
             const elements = iframe.contentDocument.getElementsByTagName(elementType);
-            setupEventListeners(elements, elementType, handleElementSelection);
+            if (elements) {
+                setupEventListeners(elements, elementType, handleElementSelection);
+            }
         })
 
         handleElementHoverChange(iframeRef);
@@ -434,27 +434,27 @@ export default function GenerateView() {
                                         </div>
                                         <div
                                             className="div-editor-element-sizing-content">
-                                            Width input:
+                                            Width:
                                             <input
                                                 className="div-editor-element-sizing-input"
-                                                type="number"
+                                                type="range"
                                                 value={selectedElementWidth}
                                                 onChange={(e) => handleInputChange('width', e.target.value)}
                                                 placeholder="Enter width"
                                             />
-                                            px
+                                            {selectedElementWidth}px
                                         </div>
                                         <div
                                             className="div-editor-element-sizing-content">
-                                            Height input:
+                                            Height:
                                             <input
                                                 className="div-editor-element-sizing-input"
-                                                type="number"
+                                                type="range"
                                                 value={selectedElementHeight}
                                                 onChange={(e) => handleInputChange('height', e.target.value)}
                                                 placeholder="Enter height"
                                             />
-                                            px
+                                            {selectedElementHeight}px
                                         </div>
                                     </div>
                                 }
