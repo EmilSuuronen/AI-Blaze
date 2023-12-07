@@ -1,39 +1,54 @@
 /* MainContent.css */
 
+/* ... (previous styles) */
+
+/* ProjectCard Component Styling */
+.notesTextArea {
+  width: 100%;
+  height: 100px; /* Adjust the height as needed */
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 10px;
+  margin-top: 10px;
+  resize: vertical; /* Allow vertical resizing of the textarea */
+}
+
+.notesTextArea:focus {
+  outline: none;
+  border-color: #007bff; /* Change to your desired focus color */
+}
+
+/* Button to toggle notes */
+button {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #007bff; /* Change to your desired button color */
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+/* Button hover effect */
+button:hover {
+  background-color: #0056b3; /* Change to your desired hover color */
+}
+/* MainContent.css */
+
+/* MainContent.css */
 .mainContent {
-    margin-top: 10px;
-  }
-  
-  .recentProjectsText {
-    font-size: 24px;
-    font-weight: bold;
-    margin-left: 10px;
-  }
+  margin: 20px 20px; /* Add margin to the left and right sides */
+  padding: 20px;
+  background-color: #f0f0f0;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-  .recentsContainer {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    text-align: center;
-  }
+.recentsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 20px;
+  margin: 0 5px; /* Add negative margin to offset the padding of mainContent */
+}
 
-  .projectContainer {
-    margin: 20px; 
-  }
-
-  .iframeRecentProject {
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    transform: scale(0.8) translateY(-10%);
-  }
-  
-  @media only screen and (max-width: 600px) {
-    .recentProjectsText {
-      font-size: 18px;
-    }
-    .infoBoxButton {
-      height: 200px;
-      width: 150px;
-    }
-  }

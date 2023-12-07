@@ -2,11 +2,11 @@ import React, { useEffect, useState } from "react";
 import InformationBox from "./Infobox";
 import MainContent from "./Maincontent";
 import fetchImagesByUser from "../script/FetchImagesByUser";
-import {UserAuth} from "../context/AuthContext";
+import { UserAuth } from "../context/AuthContext";
 import HeaderBar from "../components/Header/HeaderBar";
 
 function MainScreen() {
-  const { user} = UserAuth();
+  const { user } = UserAuth();
   const [imageUrls, setImageUrls] = useState([]);
 
   useEffect(() => {

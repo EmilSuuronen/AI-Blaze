@@ -23,6 +23,17 @@ function InformationBox({ infoText }) {
     return () => unsubscribe();
   }, []);
 
+  // Function to extract the part of the email before "@"
+  const getEmailPrefix = (email) => {
+    if (email) {
+      const parts = email.split("@");
+      if (parts.length === 2) {
+        return parts[0]; // Get the part before "@"
+      }
+    }
+    return "";
+  };
+
   const openCreateNewProjectModal = () => {
     setCreateNewProjectModalOpen(true);
   };
@@ -34,8 +45,8 @@ function InformationBox({ infoText }) {
   return (
     <div className="info_container">
       {user && (
-        <p>
-          Welcome, {user.email} , id (dev purposes): {user.uid}!
+        <p className="paragraph--text">
+          Welcome, {getEmailPrefix(user.email)} , id (dev purposes): {user.uid}!
         </p>
       )}
       <div className="separator" />
