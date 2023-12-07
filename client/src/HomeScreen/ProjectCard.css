@@ -1,0 +1,54 @@
+/* ProjectCard.css */
+
+.projectCard {
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 10px; /* Adjust the padding as needed */
+    margin: 10px; /* Adjust the margin as needed */
+    max-width: 400px; /* Set a maximum width for the card */
+    display: inline-block; /* Display cards in a row */
+    vertical-align: top; /* Align cards to the top of the row */
+    text-align: center;
+    display: flex; /* Use flexbox to center the content vertically */
+    flex-direction: column; /* Stack content vertically within the card */
+    justify-content: center; /* Vertically center the content */
+    transition: background-color 0.3s, transform 0.3s; /* Add transition for smooth hover effect */
+  }
+  
+  .projectCard:hover {
+    background-color: #e0e0e0; /* Change the background color on hover */
+    transform: scale(1.02); /* Scale up a bit on hover */
+  }
+  
+  .projectName {
+    font-size: 18px;
+    font-weight: bold;
+    margin: 10px 0; /* Adjust the margin as needed */
+  }
+  
+  .iframeRecentProject {
+    width: 100%;
+    height: 150px; /* Adjust the height as needed */
+    border: none;
+    margin: 10px 0; /* Adjust the margin as needed */
+    transform: scale(0.8) translateY(-10px);
+  }
+  
+  .notesTextArea {
+    width: 100%;
+    height: 80px; /* Adjust the height as needed */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 5px; /* Adjust the padding as needed */
+    margin: 5px -10px; /* Adjust the margin as needed */
+    resize: vertical;
+  }
+  
+  .notesTextArea:focus {
+    outline: none;
+    border-color: #007bff;
+  }
+  
+  
