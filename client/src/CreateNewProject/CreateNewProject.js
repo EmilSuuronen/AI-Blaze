@@ -18,7 +18,6 @@ import {
 } from "firebase/storage";
 import { db, storage } from "../firebaseConfig";
 import { useNavigate } from "react-router-dom";
-import HeaderBar from "../components/Header/HeaderBar";
 
 // Import the saveProjectName function
 import { saveProjectName } from "../script/SaveProjectName";
@@ -149,7 +148,6 @@ export default function CreateNewProject() {
 
   return (
     <div className={`div-new-project-main ${isDarkMode ? "dark-mode" : ""}`}>
-      <HeaderBar />
       <div className="div-new-project-info">
         <p>
           Upload an image to get started. For best results, use a
