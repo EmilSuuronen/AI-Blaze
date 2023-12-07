@@ -46,7 +46,7 @@ function InformationBox({ infoText }) {
     <div className="info_container">
       {user && (
         <p className="paragraph--text">
-          Welcome, {getEmailPrefix(user.email)} , id (dev purposes): {user.uid}!
+          Welcome, <p className="text-welcome-name">{getEmailPrefix(user.email)} </p>
         </p>
       )}
       <div className="separator" />

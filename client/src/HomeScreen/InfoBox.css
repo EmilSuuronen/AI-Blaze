@@ -1,6 +1,6 @@
 .info_container {
   overflow: hidden;
-  height: 45px; /* Adjust the height as needed */
+  min-height: 45px; /* Adjust the height as needed */
   border-radius: 10px;
   border: 1px solid #333;
   padding: 16px;
@@ -10,6 +10,13 @@
 .infoText {
   font-size: 16px;
   color: #333;
+}
+
+.text-welcome-name {
+  font-size: 24px;
+  color: #333;
+  margin: 15px 2px;
+  font-weight: bold;
 }
 
 .separator {
@@ -48,7 +55,8 @@
   }
 }
 .paragraph--text{
-  font-size: 18px;
+  font-size: 48px;
   color: #333;
   margin: 15px 2px;
+  font-weight: bold;
 }

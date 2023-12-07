@@ -3,12 +3,16 @@ import { useLocation, Link } from "react-router-dom";
 import "./HeaderBar.css";
 import { BiLogIn } from "react-icons/bi";
 import { UserAuth } from "../../context/AuthContext";
-import { FaBars } from "react-icons/fa"; // Import the icon
+import { FaBars } from "react-icons/fa";
+import Modal from "@mui/material/Modal";
+import CreateNewProject from "../../CreateNewProject/CreateNewProject"; // Import the icon
 
 const HeaderBar = () => {
   const location = useLocation();
   const locationName = location.pathname;
   const { logOut } = UserAuth();
+  const [isCreateNewProjectModalOpen, setCreateNewProjectModalOpen] =
+      useState(false);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
@@ -59,6 +63,14 @@ const HeaderBar = () => {
     return headerText;
   };
 
+  const openCreateNewProjectModal = () => {
+    setCreateNewProjectModalOpen(true);
+  };
+
+  const closeCreateNewProjectModal = () => {
+    setCreateNewProjectModalOpen(false);
+  };
+
   return (
     <header>
       <div className="header-item-main">
@@ -77,13 +89,19 @@ const HeaderBar = () => {
         {dropdownOpen && (
           <div className="dropdown-content">
             <Link to="/galleryView">Gallery</Link>
-            <Link to="/createNewProject">Create New Project</Link>
+            <button onClick={openCreateNewProjectModal}>Create New Project</button>
             <button onClick={handleSignOut}>
               Signout <BiLogIn />
             </button>
           </div>
         )}
       </div>
+      <Modal
+          isOpen={isCreateNewProjectModalOpen}
+          closeModal={closeCreateNewProjectModal}
+      >
+        <CreateNewProject />
+      </Modal>
     </header>
   );
 };

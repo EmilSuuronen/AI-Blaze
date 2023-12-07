@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import "./ProjectCard.css";
 
-function ProjectCard({ projectName, contentData, notes, onNoteChange }) {
+function ProjectCard({ projectName, contentData, notes, onNoteChange, lastUpdated }) {
   const [isEditing, setIsEditing] = useState(false);
 
   const handleSaveNote = () => {
@@ -12,12 +12,14 @@ function ProjectCard({ projectName, contentData, notes, onNoteChange }) {
 
   return (
     <div className="projectCard">
-      <p className="projectName">{projectName}</p>
-      <iframe
-        title={projectName}
-        srcDoc={contentData}
-        className="iframeRecentProject"
-      />
+        <p className="projectName">{projectName}</p>
+        <i className="projectDate">Edited: {lastUpdated}</i>
+        <iframe
+            srcDoc={contentData}
+            className="galleryProject"
+            frameBorder="0"
+            scrolling="no"
+        />
       {isEditing ? (
         <div>
           <textarea
