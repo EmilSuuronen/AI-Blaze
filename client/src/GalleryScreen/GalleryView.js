@@ -56,14 +56,16 @@ function GalleryView() {
             <Link to="/createNewProject" style={{textDecoration: "none"}}>
                 <div className="newProjectBox">+ New Project</div>
             </Link>
-            
-            <input
-                type="text"
-                placeholder="Search by project name"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="searchBar-gallery"
-            />
+            <p className="gallery-title-text">Your projects</p>
+            <div className="search-bar-gallery-container">
+                <input
+                    type="text"
+                    placeholder="Search projects"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="search-bar-gallery"
+                />
+            </div>
             <div className="galleryContainer">
                 {filteredProjects
                     .slice() // Create a copy of the array
