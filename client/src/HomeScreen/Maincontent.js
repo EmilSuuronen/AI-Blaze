@@ -1,8 +1,8 @@
 // MainContent.js
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import ProjectCard from "./ProjectCard";
 import "./MainContent.css";
-import {Link, useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function MainContent({ imageUrls }) {
   const [latestProjects, setLatestProjects] = useState(imageUrls);
@@ -25,57 +25,57 @@ function MainContent({ imageUrls }) {
     });
     setNotes(retrievedNotes);
   }, []); // Empty dependency array
-    
-    const navigate = useNavigate();
 
-    useEffect(() => {
-        setLatestProjects(imageUrls.slice(0, 3));
-    }, [imageUrls, setLatestProjects]);
+  const navigate = useNavigate();
 
-    const handleNavigateToGenerateView = (contentData, documentId) => {
-        console.log("contendata galleryview: ", contentData);
-        navigate({
-            pathname: '/generate',
-            state: {
-                contentData: contentData,
-                documentId: documentId,
-            },
-        });
-    };
+  useEffect(() => {
+    setLatestProjects(imageUrls.slice(0, 3));
+  }, [imageUrls, setLatestProjects]);
 
-    return (
-        <div>
-            <h3 className="recentProjectsText">Your Recent Projects</h3>
-            <div className="galleryContainer" >
-                {latestProjects
-                    .slice() // Create a copy of the array
-                    .reverse() // Reverse the array so that the most recent project is at the top
-                    .map(
-                        (
-                            project,
-                            index, // Map each project to a div
-                        ) => (
-                            <div key={index} className="galleryItem">
-                                <Link
+  const handleNavigateToGenerateView = (contentData, documentId) => {
+    console.log("contendata galleryview: ", contentData);
+    navigate({
+      pathname: "/generate",
+      state: {
+        contentData: contentData,
+        documentId: documentId,
+      },
+    });
+  };
+
+  return (
+    <div>
+      <h3 className="recentProjectsText">Your Recent Projects</h3>
+      <div className="galleryContainer">
+        {latestProjects
+          .slice() // Create a copy of the array
+          .reverse() // Reverse the array so that the most recent project is at the top
+          .map(
+            (
+              project,
+              index // Map each project to a div
+            ) => (
+              <div key={index} className="galleryItem">
+                {/* <Link
                                     to="/generate"
                                     state={{contentData: project.contentData, documentId: project.documentId}}
                                     onClick={() => handleNavigateToGenerateView(project.contentData, project.documentId)}
-                                >
-                                    <ProjectCard
-                                        key={index}
-                                        projectName={project.projectName}
-                                        contentData={project.contentData}
-                                        lastUpdated={project.lastUpdated}
-                                        notes={notes[index] || ""}
-                                        onNoteChange={(event) => handleNoteChange(index, event)}
-                                    />
-                                </Link>
-                            </div>
-                        )
-                    )}
-            </div>
-        </div>
-    );
+                                > */}
+                <ProjectCard
+                  key={index}
+                  projectName={project.projectName}
+                  contentData={project.contentData}
+                  lastUpdated={project.lastUpdated}
+                  notes={notes[index] || ""}
+                  onNoteChange={(event) => handleNoteChange(index, event)}
+                />
+                {/* </Link> */}
+              </div>
+            )
+          )}
+      </div>
+    </div>
+  );
 }
 
 export default MainContent;

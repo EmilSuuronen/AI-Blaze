@@ -12,8 +12,7 @@ const HeaderBar = () => {
   const locationName = location.pathname;
   const { logOut } = UserAuth();
   const [isCreateNewProjectModalOpen, setCreateNewProjectModalOpen] =
-      useState(false);
-
+    useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleSignOut = async () => {
@@ -88,8 +87,12 @@ const HeaderBar = () => {
         </button>
         {dropdownOpen && (
           <div className="dropdown-content">
-            <Link to="/galleryView">Gallery</Link>
-            <button onClick={openCreateNewProjectModal}>Create New Project</button>
+            <Link to="/galleryView" style={{ textDecoration: "none" }}>
+              <button>Gallery</button>
+            </Link>
+            <button onClick={openCreateNewProjectModal}>
+              Create New Project
+            </button>
             <button onClick={handleSignOut}>
               Signout <BiLogIn />
             </button>
@@ -97,10 +100,12 @@ const HeaderBar = () => {
         )}
       </div>
       <Modal
-          isOpen={isCreateNewProjectModalOpen}
-          closeModal={closeCreateNewProjectModal}
+        open={isCreateNewProjectModalOpen}
+        onClose={closeCreateNewProjectModal}
       >
-        <CreateNewProject />
+        <div className="modal-content">
+          <CreateNewProject />
+        </div>
       </Modal>
     </header>
   );
