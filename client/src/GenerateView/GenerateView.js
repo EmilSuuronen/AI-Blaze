@@ -281,9 +281,6 @@ export default function GenerateView() {
         const width = elementRef.offsetWidth;
         const height = elementRef.offsetHeight;
 
-        console.log('selected width:', width);
-        console.log('selected height:', height);
-
         // Update state variables
         setSelectedElementOriginWidth(width);
         setSelectedElementOriginHeight(height);
