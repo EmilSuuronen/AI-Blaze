@@ -252,9 +252,7 @@ export default function GenerateView() {
         if (contentData) {
             downloadProjectAsZip(
                 projectName, // Use the project name for the zip file
-                // if contentData, use contentDataSource
                 contentDataSource,
-                // contentData,
                 ""
             );
         } else if (htmlContent) {
@@ -269,25 +267,11 @@ export default function GenerateView() {
     useEffect(() => {
         // Set initial content for the iframe based on contentData or htmlContent
         if (!contentData) {
-            console.log("this is htmlContent: ", htmlContent);
             setEditingIframe(htmlContent);
         } else {
-            console.log("this is contentData: ", contentData);
             setEditingIframe(contentDataSource);
         }
     }, [contentData, htmlContent]);
-
-    // const getCurrentProjectData = () => {
-    //     if (!contentData) {
-    //         console.log("this is htmlContent: ", htmlContent);
-    //         // setEditingIframe(htmlContent);
-    //         return htmlContent;
-    //     } else {
-    //         console.log("this is contentData: ", contentData);
-    //         // setEditingIframe(contentData);
-    //         return contentData;
-    //     }
-    // }
 
     // Function to handle selection of an element and text displays in element sizing
     const handleElementSelection = (elementRef) => {
@@ -307,14 +291,11 @@ export default function GenerateView() {
         // set value to null for next element
         setSelectedElementUserWidth(null);
         setSelectedElementUserHeight(null);
-        
-        console.log('html: ', iframeRef.current.contentDocument.documentElement.outerHTML);
     };
 
     // Function to handle input change for width and height
     const handleInputChange = (type, value) => {
         const numericValue = parseInt(value);
-        console.log('numericValue: ', numericValue);
 
         if (type === 'width') {
             setSelectedElementUserWidth(numericValue);
@@ -445,8 +426,7 @@ export default function GenerateView() {
                             </div>
                             <iframe
                                 id="iframe-code-preview"
-                                // srcDoc={getCurrentProjectData()} // Use htmlContent or 'about:blank' if htmlContent is null
-                                srcDoc={editingIframe}
+                                srcDoc={editingIframe} // Use htmlContent or 'about:blank' if htmlContent is null
                                 frameBorder="0"
                                 sandbox="allow-scripts allow-same-origin"
                                 ref={iframeRef}
