@@ -11,7 +11,6 @@ import TextCompletionGenerator from "../components/TextCompletionGenerator/TextC
 import {downloadProjectAsZip} from "../DownLoadProject.js";
 import EditorOptionsExpandableDiv from "../components/EditorOptionsExpandableDiv/EditorOptionsExpandableDiv";
 import handleElementHoverChange from "../script/handleElementHoverChange";
-// import ElementSizing from "../components/ElementSizing/ElementSizing";
 
 export default function GenerateView() {
     // Location of the page and the data passed from the previous page
@@ -67,6 +66,9 @@ export default function GenerateView() {
     // set the user edited css and js
     const [userEditedCSS, setUserEditedCSS] = useState('');
     const [userEditedJS, setUserEditedJS] = useState('')
+
+    // set the editing iframe
+    const [editingIframe, setEditingIframe] = useState('');
 
     // Handle the preview navigate
     const handlePreviewNavigate = async () => {
@@ -204,6 +206,33 @@ export default function GenerateView() {
         userEditedJS
     ]);
 
+    // the iframe will be updated if the source is contentData
+    const contentDataSource = useMemo(()=> {
+        return `
+        ${contentData}
+        <style>
+        body {
+            display: flex;
+            align-content: center;
+            justify-content: space-evenly;
+            flex-direction: column;
+            background-color: ${previewBackgroundColor};
+            padding: 8px;
+        }
+        button{
+        background-color: ${previewButtonColor};
+        }
+        div{
+        background-color: ${previewDivColor};
+        }
+        ${userEditedCSS}
+        </style>
+        `
+    }, [previewBackgroundColor,
+        previewButtonColor,
+        previewDivColor,
+        userEditedCSS]);
+
     // Function to handle saving the project
     const handleSaveProject = async () => {
         if (documentId != null) {
@@ -223,7 +252,9 @@ export default function GenerateView() {
         if (contentData) {
             downloadProjectAsZip(
                 projectName, // Use the project name for the zip file
-                contentData,
+                // if contentData, use contentDataSource
+                contentDataSource,
+                // contentData,
                 ""
             );
         } else if (htmlContent) {
@@ -235,15 +266,28 @@ export default function GenerateView() {
         }
     };
 
-    const getCurrentProjectData = () => {
+    useEffect(() => {
+        // Set initial content for the iframe based on contentData or htmlContent
         if (!contentData) {
             console.log("this is htmlContent: ", htmlContent);
-            return htmlContent;
+            setEditingIframe(htmlContent);
         } else {
             console.log("this is contentData: ", contentData);
-            return contentData;
+            setEditingIframe(contentDataSource);
         }
-    }
+    }, [contentData, htmlContent]);
+
+    // const getCurrentProjectData = () => {
+    //     if (!contentData) {
+    //         console.log("this is htmlContent: ", htmlContent);
+    //         // setEditingIframe(htmlContent);
+    //         return htmlContent;
+    //     } else {
+    //         console.log("this is contentData: ", contentData);
+    //         // setEditingIframe(contentData);
+    //         return contentData;
+    //     }
+    // }
 
     // Function to handle selection of an element and text displays in element sizing
     const handleElementSelection = (elementRef) => {
@@ -285,7 +329,7 @@ export default function GenerateView() {
 
         const idName = elementRef.id;
         const adjustedWidth = selectedElementUserWidth !== null ? selectedElementUserWidth : selectedElementOriginWidth;
-        const adjustedHeight = selectedElementUserHeight !== null ? selectedElementUserHeight : selectedElementOriginWidth;
+        const adjustedHeight = selectedElementUserHeight !== null ? selectedElementUserHeight : selectedElementOriginHeight;
 
         const widthCSS = adjustedWidth ?
             `
@@ -401,7 +445,8 @@ export default function GenerateView() {
                             </div>
                             <iframe
                                 id="iframe-code-preview"
-                                srcDoc={getCurrentProjectData()} // Use htmlContent or 'about:blank' if htmlContent is null
+                                // srcDoc={getCurrentProjectData()} // Use htmlContent or 'about:blank' if htmlContent is null
+                                srcDoc={editingIframe}
                                 frameBorder="0"
                                 sandbox="allow-scripts allow-same-origin"
                                 ref={iframeRef}
