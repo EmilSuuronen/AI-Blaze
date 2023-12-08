@@ -36,10 +36,12 @@ const TextCompletionGenerator = ({iframeRef}) => {
         };
 
         // Add click event listener to the iframe content
-        iframeRef.current.contentWindow.document.body.addEventListener('click', handleClick);
+        // iframeRef.current.contentWindow.document.body.addEventListener('click', handleClick);
+        iframeRef.current.contentWindow.document.addEventListener('click', handleClick);
         return () => {
             if (iframeRef.current) {
-                iframeRef.current.contentWindow.document.body.removeEventListener('click', handleClick);
+                // iframeRef.current.contentWindow.document.body.removeEventListener('click', handleClick);
+                iframeRef.current.contentWindow.document.removeEventListener('click', handleClick);
             }
         };
     }, [iframeRef, selectedText, validTagNames]);
