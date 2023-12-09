@@ -20,7 +20,7 @@
 .dropdown-button {
   margin: 10px;
   padding: 5px 10px;
-  background-color: #007bff; /* Change to your desired button color */
+  background-color: #585493; /* Change to your desired button color */
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -29,7 +29,7 @@
 
 /* Button hover effect */
 .dropdown-button:hover {
-  background-color: #0056b3; /* Change to your desired hover color */
+  background-color: #12111e; /* Change to your desired hover color */
 }
 /* MainContent.css */
 
