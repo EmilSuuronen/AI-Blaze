@@ -29,7 +29,18 @@ function MainContent({ imageUrls }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setLatestProjects(imageUrls.slice(0, 3));
+    // Sort the imageUrls array based on the lastUpdated property
+    const sortedProjects = imageUrls.slice(0).sort((a, b) => {
+      const dateA = new Date(a.lastUpdated);
+      const dateB = new Date(b.lastUpdated);
+      return dateB - dateA; // Sort in descending order
+    });
+
+    // Take the first 3 projects from the sorted array
+    const latestProjects = sortedProjects.slice(0, 3);
+
+    // Set the state with the latestProjects
+    setLatestProjects(latestProjects);
   }, [imageUrls, setLatestProjects]);
 
   const handleNavigateToGenerateView = (contentData, documentId) => {
@@ -45,7 +56,7 @@ function MainContent({ imageUrls }) {
 
   return (
     <div>
-      <h3 className="recentProjectsText">Your Recent Projects</h3>
+      <h2 className="h2-main-content-title">Your Recent Projects</h2>
       <div className="galleryContainer">
         {latestProjects
           .slice() // Create a copy of the array
@@ -56,11 +67,12 @@ function MainContent({ imageUrls }) {
               index // Map each project to a div
             ) => (
               <div key={index} className="galleryItem">
-                {/* <Link
-                                    to="/generate"
-                                    state={{contentData: project.contentData, documentId: project.documentId}}
-                                    onClick={() => handleNavigateToGenerateView(project.contentData, project.documentId)}
-                                > */}
+                <Link
+                    to="/generate"
+                    state={{contentData: project.contentData, documentId: project.documentId}}
+                    onClick={() => handleNavigateToGenerateView(project.contentData, project.documentId)}
+                    style={{ textDecoration: 'none' }}
+                >
                 <ProjectCard
                   key={index}
                   projectName={project.projectName}
@@ -69,7 +81,7 @@ function MainContent({ imageUrls }) {
                   notes={notes[index] || ""}
                   onNoteChange={(event) => handleNoteChange(index, event)}
                 />
-                {/* </Link> */}
+                </Link>
               </div>
             )
           )}

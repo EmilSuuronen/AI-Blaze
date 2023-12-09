@@ -1,7 +1,8 @@
 import React, {useEffect, useRef, useState} from 'react';
 import { ChromePicker } from 'react-color';
+import './ColorPicker.css';
 
-function ColorPicker({ color, onColorChange }) {
+function ColorPicker({ color, onColorChange, title }) {
     const [pickerVisible, setPickerVisible] = useState(false);
     const [clickPosition, setClickPosition] = useState({ x: 0, y: 0 });
 
@@ -44,7 +45,8 @@ function ColorPicker({ color, onColorChange }) {
     };
 
     return (
-        <div>
+        <div className="div-color-picker-container">
+            <div className='color-picker-title'>{title}</div>
             {pickerVisible && (
                 <div style={pickerStyle} ref={colorPickerRef} >
                     <ChromePicker color={color} onChangeComplete={handleChangeComplete} disableAlpha={true}/>

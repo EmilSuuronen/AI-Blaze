@@ -28,6 +28,16 @@ function LoginView() {
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
 
+  useEffect(() => {
+    // Set the body id when the component mounts (view is entered)
+    document.body.id = 'landing-page-body';
+
+    // Clean up the body id when the component unmounts (view is exited)
+    return () => {
+      document.body.id = '';
+    };
+  }, []);
+
   const handleLogin = (event) => {
     event.preventDefault();
     setEmailError(false);

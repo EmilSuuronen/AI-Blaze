@@ -1,10 +1,15 @@
 .info_container {
   overflow: hidden;
   min-height: 45px; /* Adjust the height as needed */
-  border-radius: 10px;
-  border: 1px solid #333;
-  padding: 16px;
-  margin: 10px;
+  background-image: url('https://firebasestorage.googleapis.com/v0/b/snap-project-31726.appspot.com/o/res%2Fbackdrop-home-page-blur.png?alt=media&token=10ea2929-c8c4-47e4-babb-a48fa9b481ba');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  color: white;
+}
+
+.info-container-content {
+  background-color: rgba(14, 14, 14, 0.4);
 }
 
 .infoText {
@@ -12,9 +17,14 @@
   color: #333;
 }
 
+.paragraph-text {
+  font-size: 62px;
+  padding: 24px;
+  font-weight: bold;
+}
+
 .text-welcome-name {
-  font-size: 24px;
-  color: #333;
+  font-size: 28px;
   margin: 15px 2px;
   font-weight: bold;
 }
@@ -22,26 +32,49 @@
 .separator {
   height: 1px;
   background-color: #e0e0e0;
-  margin: 10px 0;
+  margin: 10px;
 }
 
 .separator2 {
   height: 1px;
 }
 
-.infoButtonContainer {
-  overflow: hidden;
-  display: inline;
-  flex-direction: column;
-  justify-content: space-evenly;
+.div-info-button-container {
+  display: flex;
+  flex-direction: row;
 }
 
-.infoBoxButton {
-  border-radius: 5px;
-  height: 120px;
-  width: 100%;
-  text-align: center;
+.div-info-box-button {
+  display: flex;
   cursor: pointer;
+  flex: 1;
+  margin: 24px;
+  height: 128px;
+  border-radius: 16px;
+  color: white;
+  background-color: #585493;
+  transition: 0.5s;
+}
+
+.div-info-box-button:hover {
+  flex: 1.2;
+  background-color: #2c2a4a;
+}
+
+.div-info-box-button-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin: auto;
+  text-align: center;
+}
+
+.text-info-box-button {
+  font-size: 14px;
+  margin: auto;
+}
+
+.text-info-box-button{
+  font-size: 14px;
 }
 
 @media only screen and (max-width: 600px) {
@@ -53,10 +86,4 @@
     height: 200px;
     width: 150px;
   }
-}
-.paragraph--text{
-  font-size: 48px;
-  color: #333;
-  margin: 15px 2px;
-  font-weight: bold;
 }

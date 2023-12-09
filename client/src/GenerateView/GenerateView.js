@@ -412,11 +412,10 @@ export default function GenerateView() {
                     <h3 className="h3-loading-title">Generating your website...</h3>
                 </div>
             ) : (
-                <div className="div-generation-editor">
                     <div className="div-editor-row">
                         <div className="div-preview-iframe-container">
                             <div
-                                className="title-editor-top-bar-container"
+                                className="title-editor-top-bar-container-colored"
                                 id="title-editor-top-bar-container-iframe"
                             >
                                 Preview
@@ -432,6 +431,12 @@ export default function GenerateView() {
                             </iframe>
                         </div>
                         <div className="div-editor-flex-column">
+                            <div
+                                className="title-editor-top-bar-container-colored"
+                                id="title-editor-top-bar-container-iframe"
+                            >
+                                Edit
+                            </div>
                             <EditorOptionsExpandableDiv
                                 title="Text Completion"
                                 content={
@@ -444,30 +449,23 @@ export default function GenerateView() {
                                 title="Edit colors"
                                 content={
                                     <div className="div-editor-options-content-container">
-                                        <div>
-                                            Background color
-                                            <ColorPicker
-                                                color={previewBackgroundColor}
-                                                onColorChange={setPreviewBackgroundColor}
-                                            />
-                                        </div>
-                                        <div>
-                                            Button color
-                                            <ColorPicker
-                                                color={previewButtonColor}
-                                                onColorChange={setPreviewButtonColor}
-                                            />
-                                        </div>
-                                        <div>
-                                            Div colors
-                                            <ColorPicker
-                                                color={previewDivColor}
-                                                onColorChange={setPreviewDivColor}
-                                            />
-                                        </div>
+                                        <ColorPicker
+                                            color={previewBackgroundColor}
+                                            onColorChange={setPreviewBackgroundColor}
+                                            title={'Background color'}
+                                        />
+                                        <ColorPicker
+                                            color={previewDivColor}
+                                            onColorChange={setPreviewDivColor}
+                                            title={'Div color'}
+                                        />
+                                        <ColorPicker
+                                            color={previewButtonColor}
+                                            onColorChange={setPreviewButtonColor}
+                                            title={'Button color'}
+                                        />
                                     </div>
                                 }
-
                             />
                             <EditorOptionsExpandableDiv
                                 title="Element sizing"
@@ -512,50 +510,53 @@ export default function GenerateView() {
                                 }
                             />
                             <div className="div-editor-options">
-                                <div className="title-editor-top-bar-container">
+                                <div className="title-editor-top-bar-container" id="editor-option-title">
                                     Save and regenerate
                                 </div>
                                 <div className="div-editor-options-content-container">
-                                    <Button
-                                        id="button-generate"
+                                    <button
+                                        className="button-editor"
+                                        id="button-regenerate"
                                         variant="outlined"
                                         onClick={handleRegenerate}
-                                    > Regenerate </Button>
-                                    <Button
-                                        id="button-generate"
+                                    > Regenerate </button>
+                                    <button
+                                        className="button-editor"
+                                        id="button-preview"
                                         variant="outlined"
                                         onClick={handlePreviewNavigate}
                                     >
                                         Preview
-                                    </Button>
-                                    <Button
-                                        id="button-generate"
+                                    </button>
+                                    <button
+                                        className="button-editor"
+                                        id="button-save"
                                         variant="contained"
                                         onClick={handleSaveProject}
                                     >
                                         Save
-                                    </Button>
+                                    </button>
                                 </div>
                             </div>
                             {/* Download as Zip button */}
                             <div className="div-editor-options">
-                                <div className="title-editor-top-bar-container">
+                                <div className="title-editor-top-bar-container" id="editor-option-title">
                                     Download as Zip
                                 </div>
                                 <div className="div-editor-options-content-container">
-                                    <Button
+                                    <button
+                                        className="button-editor"
                                         id="button-download-zip"
                                         variant="contained"
                                         onClick={handleDownloadAsZip}
                                     >
                                         Download as Zip
-                                    </Button>
+                                    </button>
                                 </div>
                             </div>
                             {/* End Download as Zip button */}
                         </div>
                     </div>
-                </div>
             )}
         </div>
     );

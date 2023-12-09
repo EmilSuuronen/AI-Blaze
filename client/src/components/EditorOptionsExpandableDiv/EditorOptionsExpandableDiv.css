@@ -5,6 +5,11 @@
     margin: 0;
 }
 
+#editor-option-title {
+    font-size: 16px;
+    font-weight: bold;
+}
+
 .editorOptionHidden {
     display: none;
     transition: opacity 1s ease-out;
@@ -18,6 +23,10 @@
     justify-content: center;
     text-align: center;
     background-color: #e3e3e3;
+}
+
+.div-toggle-button-container:hover {
+    background-color: #c6c6c6;
 }
 
 .button-editor-show-more {

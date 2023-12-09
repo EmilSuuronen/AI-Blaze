@@ -1,24 +1,7 @@
 .generate-view-main {
-    width: 100%;
-    height: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
     flex-direction: column;
-}
-
-.div-generation-editor {
-    margin: 12px;
-    width: 95%;
-    border: 1px #cdcdcd solid;
-    border-radius: 8px;
-    color: white;
-}
-
-.div-editor-info-text {
-    color: black;
-    width: 100%;
-    padding: 16px;
 }
 
 iframe {
@@ -28,16 +11,24 @@ iframe {
 }
 
 .div-preview-iframe-container {
-    margin: 8px;
     box-shadow: black 0px 0px 4px;
+    margin-right: 12px;
     background-color: white;
     flex: 1.5;
     border-radius: 8px;
 }
 
 .title-editor-top-bar-container {
+    color: #000000;
+    font-size: 18px;
+    border-bottom: #222222 1px solid;
+    padding: 12px;
+    border-radius: 8px 8px 0 0;
+}
+
+.title-editor-top-bar-container-colored {
     color: white;
-    background-color: #2C2A4A;
+    background-color: #2c2a4a;
     font-size: 18px;
     padding: 12px;
     border-radius: 8px 8px 0 0;
@@ -58,32 +49,32 @@ iframe {
 }
 
 .div-editor-row {
+    margin: 12px;
     display: flex;
-    width: 100%;
-    height: 100%;
+    width: 95%;
 }
 
 .div-editor-flex-column {
     display: flex;
     flex-direction: column;
     width: 50%;
-    margin: 4px;
     border-radius: 8px;
     flex: 1;
+    box-shadow: black 0px 0px 4px;
 }
 
 .div-editor-options {
     margin: 8px;
-    box-shadow: black 0px 0px 4px;
     background-color: white;
-    border-radius: 8px;
+    border: 1px #cbcbcb solid;
+    border-radius: 4px;
     color: black;
+    overflow: clip;
 }
 
 .div-editor-options-content-container {
     display: flex;
     flex-direction: row;
-    width: 100%;
     padding: 8px;
     justify-content: space-evenly;
 }
@@ -91,7 +82,6 @@ iframe {
 .div-editor-element-sizing-content-container {
     display: flex;
     flex-direction: column;
-    width: 100%;
     padding: 8px;
     justify-content: space-evenly;
 }
@@ -104,6 +94,30 @@ iframe {
     margin: 8px;
 }
 
+.button-editor {
+    padding: 12px;
+    border-radius: 24px;
+    border: none;
+    background-color: #2c2a4a;
+    color: white;
+}
+
+.button-editor:hover {
+    background-color: #585493;
+    color: white;
+}
+
+#button-regenerate, #button-preview {
+    background-color: #ffffff;
+    border: #2c2a4a 1px solid;
+    color: black;
+}
+
+#button-regenerate:hover, #button-preview:hover {
+    background-color: #585493;
+    border: #2c2a4a 1px solid;
+    color: white;
+}
 
 @media only screen and (max-width: 600px) {
     .div-generation-editor {

@@ -24,14 +24,16 @@ function ProjectCard({
 
   return (
     <div className="projectCard">
-      <p className="projectName">{projectName}</p>
-      <i className="projectDate">Edited: {lastUpdated}</i>
-      <iframe
-        srcDoc={contentData}
-        className="galleryProject"
-        frameBorder="0"
-        scrolling="no"
-      />
+      <div className="project-card-top-div">
+        <p className="text-project-name">{projectName}</p>
+        <i className="text-project-date">Edited: {lastUpdated}</i>
+      </div>
+        <iframe
+            srcDoc={contentData}
+            className="galleryProject"
+            frameBorder="0"
+            scrolling="no"
+        />
       {isEditing ? (
         <div>
           <textarea

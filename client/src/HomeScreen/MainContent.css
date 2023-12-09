@@ -1,7 +1,5 @@
 /* MainContent.css */
 
-/* ... (previous styles) */
-
 /* ProjectCard Component Styling */
 .notesTextArea {
   width: 100%;
@@ -19,10 +17,10 @@
 }
 
 /* Button to toggle notes */
-button {
-  margin-top: 10px;
+.dropdown-button {
+  margin: 10px;
   padding: 5px 10px;
-  background-color: #007bff; /* Change to your desired button color */
+  background-color: #585493; /* Change to your desired button color */
   color: #fff;
   border: none;
   border-radius: 5px;
@@ -30,8 +28,8 @@ button {
 }
 
 /* Button hover effect */
-button:hover {
-  background-color: #0056b3; /* Change to your desired hover color */
+.dropdown-button:hover {
+  background-color: #12111e; /* Change to your desired hover color */
 }
 /* MainContent.css */
 
@@ -44,6 +42,10 @@ button:hover {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.h2-main-content-title {
+  padding: 12px;
+}
+
 .recentsContainer {
   display: flex;
   flex-wrap: wrap;
@@ -51,4 +53,5 @@ button:hover {
   gap: 20px;
   margin: 0 5px; /* Add negative margin to offset the padding of mainContent */
 }
+
 
