@@ -113,6 +113,12 @@ iframe {
     color: black;
 }
 
+#button-regenerate:hover, #button-preview:hover {
+    background-color: #585493;
+    border: #2c2a4a 1px solid;
+    color: white;
+}
+
 @media only screen and (max-width: 600px) {
     .div-generation-editor {
         width: 100%;
