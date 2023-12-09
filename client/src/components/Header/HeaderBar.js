@@ -5,6 +5,7 @@ import { BiLogIn } from "react-icons/bi";
 import { UserAuth } from "../../context/AuthContext";
 import { FaBars } from "react-icons/fa";
 import Modal from "@mui/material/Modal";
+import logo from "./images/AI-Blaze.png";
 import CreateNewProject from "../../CreateNewProject/CreateNewProject"; // Import the icon
 
 const HeaderBar = () => {
@@ -73,8 +74,8 @@ const HeaderBar = () => {
   return (
     <header>
       <div className="header-item-main">
-        <Link to="/mainscreen" className="header-item-main-link">
-          AI-Blaze
+        <Link to="/mainscreen">
+          <img className="AI-BlazeLogo" src={logo} alt="AI-Blaze Logo"/>
         </Link>
       </div>
       <div className="header-item">{getHeaderText(locationName)}</div>
