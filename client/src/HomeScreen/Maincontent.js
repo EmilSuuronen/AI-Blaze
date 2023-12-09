@@ -29,7 +29,18 @@ function MainContent({ imageUrls }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    setLatestProjects(imageUrls.slice(0, 3));
+    // Sort the imageUrls array based on the lastUpdated property
+    const sortedProjects = imageUrls.slice(0).sort((a, b) => {
+      const dateA = new Date(a.lastUpdated);
+      const dateB = new Date(b.lastUpdated);
+      return dateB - dateA; // Sort in descending order
+    });
+
+    // Take the first 3 projects from the sorted array
+    const latestProjects = sortedProjects.slice(0, 3);
+
+    // Set the state with the latestProjects
+    setLatestProjects(latestProjects);
   }, [imageUrls, setLatestProjects]);
 
   const handleNavigateToGenerateView = (contentData, documentId) => {
@@ -60,6 +71,7 @@ function MainContent({ imageUrls }) {
                     to="/generate"
                     state={{contentData: project.contentData, documentId: project.documentId}}
                     onClick={() => handleNavigateToGenerateView(project.contentData, project.documentId)}
+                    style={{ textDecoration: 'none' }}
                 >
                 <ProjectCard
                   key={index}

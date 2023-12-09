@@ -99,6 +99,7 @@ function GalleryView() {
                                     to="/generate"
                                     state={{contentData: project.contentData, documentId: project.documentId}}
                                     onClick={() => handleNavigateToGenerateView(project.contentData, project.documentId)}
+                                    style={{ textDecoration: 'none' }}
                                 >
                                     <div className="projectCard">
                                         <p className="projectName">{project.projectName}</p>

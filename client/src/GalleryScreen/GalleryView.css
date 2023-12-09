@@ -56,7 +56,6 @@
 .projectCard {
   background-color: #fff;
   border-radius: 5px;
-  padding: 20px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   flex: 1;
@@ -86,8 +85,8 @@
   pointer-events: none;
   border: none;
   border-radius: 5px;
-  zoom: 0.55;
-  transform: scale(0.9);
+  zoom: 0.65;
+  transform: scale(1);
   transform-origin: 50% 50%;
   overflow: hidden;
 }

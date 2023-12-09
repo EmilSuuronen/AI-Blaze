@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   FormControl,
@@ -14,7 +14,7 @@ import { Link } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "@firebase/auth";
 import { auth } from "../firebaseConfig";
 import theme from "../theme"; 
-import "./Signup.css"; 
+import "./Signup.css";
 
 const SignupView = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -23,6 +23,16 @@ const SignupView = () => {
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+
+  useEffect(() => {
+    // Set the body id when the component mounts (view is entered)
+    document.body.id = 'landing-page-body';
+
+    // Clean up the body id when the component unmounts (view is exited)
+    return () => {
+      document.body.id = '';
+    };
+  }, []);
 
   const handleSignUp = (event) => {
     event.preventDefault();

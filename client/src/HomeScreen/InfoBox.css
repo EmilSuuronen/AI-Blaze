@@ -1,7 +1,6 @@
 .info_container {
   overflow: hidden;
   min-height: 45px; /* Adjust the height as needed */
-  padding: 16px;
   background-image: url('https://firebasestorage.googleapis.com/v0/b/snap-project-31726.appspot.com/o/res%2Fbackdrop-home-page-blur.png?alt=media&token=10ea2929-c8c4-47e4-babb-a48fa9b481ba');
   background-position: center;
   background-repeat: no-repeat;
@@ -10,8 +9,7 @@
 }
 
 .info-container-content {
-  background-color: rgba(9, 9, 9, 0.5);
-  border-radius: 8px;
+  background-color: rgba(14, 14, 14, 0.4);
 }
 
 .infoText {
@@ -22,7 +20,6 @@
 .paragraph-text {
   font-size: 62px;
   padding: 24px;
-  margin: 15px 2px;
   font-weight: bold;
 }
 
@@ -45,7 +42,6 @@
 .div-info-button-container {
   display: flex;
   flex-direction: row;
-  margin: 10px 0;
 }
 
 .div-info-box-button {

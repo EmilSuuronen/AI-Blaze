@@ -1,8 +1,21 @@
 import "./LandingPageStyles.css";
 import HeaderBar from "../components/Header/HeaderBar";
 import {Link} from "react-router-dom";
+import {useEffect} from "react";
 
 export default function LandingPage() {
+
+    //select body element and give it id of landing-page-body only in this view
+    useEffect(() => {
+        // Set the body id when the component mounts (view is entered)
+        document.body.id = 'landing-page-body';
+
+        // Clean up the body id when the component unmounts (view is exited)
+        return () => {
+            document.body.id = '';
+        };
+    }, []);
+
 
     return (
         <div className="div-main-landing-page">
