@@ -75,7 +75,7 @@ const HeaderBar = () => {
     <header>
       <div className="header-item-main">
         <Link to="/mainscreen">
-          <img className="AI-BlazeLogo" src={logo} alt="AI-Blaze Logo"/>
+          <img className="AI-BlazeLogo" src={logo} alt="AI-Blaze Logo" />
         </Link>
       </div>
       <div className="header-item">{getHeaderText(locationName)}</div>
@@ -84,7 +84,9 @@ const HeaderBar = () => {
           className="dropdown-button"
           onClick={() => setDropdownOpen(!dropdownOpen)}
         >
-          <FaBars /> {/* Icon here */}
+          <h2>
+            <FaBars />
+          </h2>
         </button>
         {dropdownOpen && (
           <div className="dropdown-content">
