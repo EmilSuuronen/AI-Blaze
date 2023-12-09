@@ -36,7 +36,7 @@ function InformationBox({ infoText }) {
   const navigate = useNavigate();
   const handleNavigateToGenerateView = () => {
     navigate({
-      pathname: "/generate",
+      pathname: "/galleryView",
     });
   }
 

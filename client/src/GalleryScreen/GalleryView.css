@@ -35,7 +35,7 @@
 
 .search-bar-gallery-container {
   display: flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   align-items: center;
   padding-left: 24px;
   padding-right: 24px;
