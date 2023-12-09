@@ -45,7 +45,7 @@ function MainContent({ imageUrls }) {
 
   return (
     <div>
-      <h3 className="recentProjectsText">Your Recent Projects</h3>
+      <h2 className="h2-main-content-title">Your Recent Projects</h2>
       <div className="galleryContainer">
         {latestProjects
           .slice() // Create a copy of the array
@@ -56,11 +56,11 @@ function MainContent({ imageUrls }) {
               index // Map each project to a div
             ) => (
               <div key={index} className="galleryItem">
-                {/* <Link
-                                    to="/generate"
-                                    state={{contentData: project.contentData, documentId: project.documentId}}
-                                    onClick={() => handleNavigateToGenerateView(project.contentData, project.documentId)}
-                                > */}
+                <Link
+                    to="/generate"
+                    state={{contentData: project.contentData, documentId: project.documentId}}
+                    onClick={() => handleNavigateToGenerateView(project.contentData, project.documentId)}
+                >
                 <ProjectCard
                   key={index}
                   projectName={project.projectName}
@@ -69,7 +69,7 @@ function MainContent({ imageUrls }) {
                   notes={notes[index] || ""}
                   onNoteChange={(event) => handleNoteChange(index, event)}
                 />
-                {/* </Link> */}
+                </Link>
               </div>
             )
           )}

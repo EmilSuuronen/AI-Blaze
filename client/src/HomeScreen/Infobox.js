@@ -21,7 +21,7 @@ function InformationBox({ infoText }) {
   // Function to extract the part of the email before "@"
   const getEmailPrefix = (email) => {
     if (email) {
-      const parts = email.split("@");
+      const parts = email.split("@")
       if (parts.length === 2) {
         return parts[0]; // Get the part before "@"
       }

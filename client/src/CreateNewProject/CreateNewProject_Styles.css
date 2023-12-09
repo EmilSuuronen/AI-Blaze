@@ -132,21 +132,3 @@ input[type="file"] {
     border-radius: 6px;
     cursor: pointer;
   }
-  
-/* Dark mode styles */
-.dark-mode {
-    background-color: #222; 
-    color: #fff; 
-
-    .div-new-project-main {
-        background-color: #111; 
-    }
-
-    .div-new-project-form-container {
-        background-color: #444; 
-        color: #fff; 
-        box-shadow: 0px 0px 12px 0px #fff; 
-    }
-
-
-}
