@@ -9,36 +9,24 @@ const PreviewView = () => {
     const htmlContent = location.state?.htmlContent;
     const iframeRef = useRef(null);
     const [isMobile, setIsMobile] = useState(false);
-    const [showDimensionsSelector, setShowDimensionsSelector] = useState(false);
 
     const handleSelectorChange = () => {
         // Toggle the state when the selector changes
         setIsMobile(prevState => !prevState);
     };
 
-    const handleShowDimensionsSelector = () => {
-        setShowDimensionsSelector(!showDimensionsSelector);
-    }
-
     return (
     <div className="preview-container-main">
         <HeaderBar/>
         <div className="preview-container-info">
-            <h2>Preview</h2>
+            <p id="preview-title-top-bar">Preview</p>
             <div className="div-floating-box">
-                {showDimensionsSelector ? (
                     <div className="floating-box-top-bar">
-                        <h4>Dimensions</h4>
-                        <button className="button-dimensions" onClick={handleShowDimensionsSelector}>X</button>
+                        <h4 className="dimensions-title">Dimensions</h4>
                     </div>
-                ) : (
-                    <div>
-                        <button className="button-dimensions" onClick={handleShowDimensionsSelector}>Dimensions</button>
-                    </div>
-                )}
-                <div className={`show-dimensions-container ${showDimensionsSelector ? 'visible' : 'hidden'}`}>
+                <div className="show-dimensions-container">
                     <div className="slider-container">
-                        <p>{isMobile ? 'Mobile' : 'Desktop'}</p>
+                        <p id="slider-title">{isMobile ? 'Mobile' : 'Desktop'}</p>
                         <label className="switch">
                             <input type="checkbox" checked={isMobile} onChange={handleSelectorChange} />
                             <span className="slider round"/>
