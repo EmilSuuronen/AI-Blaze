@@ -1,49 +1,62 @@
 .info_container {
   overflow: hidden;
-    height: 300px;
-    border-radius: 10px;
-    border: 1px solid #e0e0e0;
-    padding: 16px;
-    margin: 10px;
-  }
-  
-  .infoText {
-    font-size: 16px;
-    color: #333;
-  }
-  
-  .separator {
-    height: 1px;
-    background-color: #e0e0e0;
-    margin: 10px 0;
-  }
+  min-height: 45px; /* Adjust the height as needed */
+  border-radius: 10px;
+  border: 1px solid #333;
+  padding: 16px;
+  margin: 10px;
+}
 
-  .separator2 {
-    height: 1px;
-  }
+.infoText {
+  font-size: 16px;
+  color: #333;
+}
 
+.text-welcome-name {
+  font-size: 24px;
+  color: #333;
+  margin: 15px 2px;
+  font-weight: bold;
+}
+
+.separator {
+  height: 1px;
+  background-color: #e0e0e0;
+  margin: 10px 0;
+}
+
+.separator2 {
+  height: 1px;
+}
+
+.infoButtonContainer {
+  overflow: hidden;
+  display: inline;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.infoBoxButton {
+  border-radius: 5px;
+  height: 120px;
+  width: 100%;
+  text-align: center;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 600px) {
   .infoButtonContainer {
-    overflow: hidden;
-    display: inline;
-    flex-direction: column;
-    justify-content: space-evenly;
+    display: flex;
+    flex-direction: row;
   }
-
   .infoBoxButton {
-    border-radius: 5px;
-    height: 120px;
-    width: 100%;
-    text-align: center;
-    cursor: pointer;
+    height: 200px;
+    width: 150px;
   }
-
-  @media only screen and (max-width: 600px) {
-    .infoButtonContainer {
-      display: flex;
-      flex-direction: row;
-    }
-    .infoBoxButton {
-      height: 200px;
-      width: 150px;
-    }
-  }
+}
+.paragraph--text{
+  font-size: 48px;
+  color: #333;
+  margin: 15px 2px;
+  font-weight: bold;
+}

@@ -58,16 +58,22 @@ export default function GenerateView() {
 
     // State variable for the width and height input value of selected element
     const [selectedElementRef, setSelectedElementRef] = useState(null);
-    const [selectedElementWidth, setSelectedElementWidth] = useState('');
-    const [selectedElementHeight, setSelectedElementHeight] = useState('');
+    const [selectedElementUserWidth, setSelectedElementUserWidth] = useState(null);
+    const [selectedElementUserHeight, setSelectedElementUserHeight] = useState(null);
+    const [selectedElementOriginWidth, setSelectedElementOriginWidth] = useState('');
+    const [selectedElementOriginHeight, setSelectedElementOriginHeight] = useState('');
 
     // set the user edited css and js
     const [userEditedCSS, setUserEditedCSS] = useState('');
     const [userEditedJS, setUserEditedJS] = useState('')
 
+    // set the editing iframe
+    const [editingIframe, setEditingIframe] = useState('');
+
     // Handle the preview navigate
-    const handlePreviewNavigate = () => {
-        navigate("/preview", {state: {htmlContent: getCurrentProjectData()}});
+    const handlePreviewNavigate = async () => {
+        const currentIframeContent = await getCurrentIframeContent();
+        navigate("/preview", {state: {htmlContent: currentIframeContent}});
     };
 
     useEffect(() => {
@@ -200,6 +206,33 @@ export default function GenerateView() {
         userEditedJS
     ]);
 
+    // the iframe will be updated if the source is contentData
+    const contentDataSource = useMemo(()=> {
+        return `
+        ${contentData}
+        <style>
+        body {
+            display: flex;
+            align-content: center;
+            justify-content: space-evenly;
+            flex-direction: column;
+            background-color: ${previewBackgroundColor};
+            padding: 8px;
+        }
+        button{
+        background-color: ${previewButtonColor};
+        }
+        div{
+        background-color: ${previewDivColor};
+        }
+        ${userEditedCSS}
+        </style>
+        `
+    }, [previewBackgroundColor,
+        previewButtonColor,
+        previewDivColor,
+        userEditedCSS]);
+
     // Function to handle saving the project
     const handleSaveProject = async () => {
         if (documentId != null) {
@@ -219,7 +252,7 @@ export default function GenerateView() {
         if (contentData) {
             downloadProjectAsZip(
                 projectName, // Use the project name for the zip file
-                contentData,
+                contentDataSource,
                 ""
             );
         } else if (htmlContent) {
@@ -231,25 +264,40 @@ export default function GenerateView() {
         }
     };
 
-    const getCurrentProjectData = () => {
+    useEffect(() => {
+        // Set initial content for the iframe based on contentData or htmlContent
         if (!contentData) {
-            return htmlContent;
+            setEditingIframe(htmlContent);
         } else {
-            return contentData;
+            setEditingIframe(contentDataSource);
         }
-    }
+    }, [contentData, htmlContent]);
 
     // Function to handle selection of an element and text displays in element sizing
     const handleElementSelection = (elementRef) => {
         setSelectedElementRef(elementRef);
+
+        // Calculate width and height directly from elementRef
+        const width = elementRef.offsetWidth;
+        const height = elementRef.offsetHeight;
+
+        // Update state variables
+        setSelectedElementOriginWidth(width);
+        setSelectedElementOriginHeight(height);
+
+        // set value to null for next element
+        setSelectedElementUserWidth(null);
+        setSelectedElementUserHeight(null);
     };
 
     // Function to handle input change for width and height
     const handleInputChange = (type, value) => {
+        const numericValue = parseInt(value);
+
         if (type === 'width') {
-            setSelectedElementWidth(value);
+            setSelectedElementUserWidth(numericValue);
         } else if (type === 'height') {
-            setSelectedElementHeight(value);
+            setSelectedElementUserHeight(numericValue);
         }
     };
 
@@ -258,36 +306,38 @@ export default function GenerateView() {
         if (!elementRef || (!width && !height)) return '';
 
         const idName = elementRef.id;
-        const widthCSS = width ?
+        const adjustedWidth = selectedElementUserWidth !== null ? selectedElementUserWidth : selectedElementOriginWidth;
+        const adjustedHeight = selectedElementUserHeight !== null ? selectedElementUserHeight : selectedElementOriginHeight;
+
+        const widthCSS = adjustedWidth ?
             `
             #${idName} { 
-                width: ${width}px; 
+                width: ${adjustedWidth}px; 
             }
             ` : '';
-        const heightCSS = height ?
+        const heightCSS = adjustedHeight ?
             `
             #${idName} { 
-                height: ${height}px; 
+                height: ${adjustedHeight}px; 
             }
             ` : '';
 
         const combinedCSS = widthCSS + heightCSS;
 
         setUserEditedCSS(prevCSS => prevCSS + combinedCSS);
-
-        // set value to null for next element
-        setSelectedElementWidth(null);
-        setSelectedElementHeight(null);
     };
 
     // Function to set up event listener for applying size changes and delay 500 milliseconds
     useEffect(() => {
         const applyCssUpdate = setTimeout(() => {
-            generateUserEditedCSS(selectedElementRef, selectedElementWidth, selectedElementHeight);
+            generateUserEditedCSS(selectedElementRef, selectedElementUserWidth, selectedElementUserHeight);
+            if (iframeRef.current) {
+                iframeRef.current.contentWindow.location.reload(true);
+            }
         }, 500);
         return () => clearTimeout(applyCssUpdate);
 
-    }, [selectedElementWidth, selectedElementHeight, selectedElementRef]);
+    }, [selectedElementUserWidth, selectedElementUserHeight, selectedElementRef]);
 
     // set up click listener and assign the className to each element
     const setupEventListeners = (elements, prefix, handler) => {
@@ -323,7 +373,9 @@ export default function GenerateView() {
         const elementsToSize = ['button', 'input', 'img'];
         elementsToSize.forEach((elementType) => {
             const elements = iframe.contentDocument.getElementsByTagName(elementType);
-            setupEventListeners(elements, elementType, handleElementSelection);
+            if (elements) {
+                setupEventListeners(elements, elementType, handleElementSelection);
+            }
         })
 
         handleElementHoverChange(iframeRef);
@@ -370,9 +422,9 @@ export default function GenerateView() {
                             </div>
                             <iframe
                                 id="iframe-code-preview"
-                                srcDoc={getCurrentProjectData()} // Use htmlContent or 'about:blank' if htmlContent is null
+                                srcDoc={editingIframe} // Use htmlContent or 'about:blank' if htmlContent is null
                                 frameBorder="0"
-                                sandbox="allow-scripts allow-same-origin allow-forms"
+                                sandbox="allow-scripts allow-same-origin"
                                 ref={iframeRef}
                                 onLoad={handleIframeLoad}
                             >Iframe
@@ -426,27 +478,33 @@ export default function GenerateView() {
                                         </div>
                                         <div
                                             className="div-editor-element-sizing-content">
-                                            Width input:
+                                            Width:
                                             <input
                                                 className="div-editor-element-sizing-input"
-                                                type="number"
-                                                value={selectedElementWidth}
+                                                type="range"
+                                                // value={selectedElementWidth}
+                                                value={selectedElementUserWidth !== null ? selectedElementUserWidth : selectedElementOriginWidth}
                                                 onChange={(e) => handleInputChange('width', e.target.value)}
+                                                min="0"
+                                                max={selectedElementOriginWidth * 2}
                                                 placeholder="Enter width"
                                             />
-                                            px
+                                            {selectedElementUserWidth !== null ? `${selectedElementUserWidth}px` : `${selectedElementOriginWidth}px`}
                                         </div>
                                         <div
                                             className="div-editor-element-sizing-content">
-                                            Height input:
+                                            Height:
                                             <input
                                                 className="div-editor-element-sizing-input"
-                                                type="number"
-                                                value={selectedElementHeight}
+                                                type="range"
+                                                // value={selectedElementHeight}
+                                                value={selectedElementUserHeight !== null ? selectedElementUserHeight : selectedElementOriginHeight}
                                                 onChange={(e) => handleInputChange('height', e.target.value)}
+                                                min="0"
+                                                max={selectedElementOriginHeight * 2}
                                                 placeholder="Enter height"
                                             />
-                                            px
+                                            {selectedElementUserHeight !== null ? `${selectedElementUserHeight}px` : `${selectedElementOriginHeight}px`}
                                         </div>
                                     </div>
                                 }

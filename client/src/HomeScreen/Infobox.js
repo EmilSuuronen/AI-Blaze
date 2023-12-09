@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import "./InfoBox.css";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebaseConfig";
-import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 
 function InformationBox({ infoText }) {
@@ -19,42 +18,29 @@ function InformationBox({ infoText }) {
     return () => unsubscribe();
   }, []);
 
+  // Function to extract the part of the email before "@"
+  const getEmailPrefix = (email) => {
+    if (email) {
+      const parts = email.split("@");
+      if (parts.length === 2) {
+        return parts[0]; // Get the part before "@"
+      }
+    }
+    return "";
+  };
+
   return (
     <div className="info_container">
       {user && (
-        <p>
-          Welcome, {user.email} , id (dev purposes): {user.uid}!
+        <p className="paragraph--text">
+          Welcome,{" "}
+          <p className="text-welcome-name">{getEmailPrefix(user.email)} </p>
         </p>
       )}
       <div className="separator" />
       <div className="infoButtonContainer">
-        <Link to="/galleryView">
-          <Button
-            style={{
-              backgroundColor: "rgba(79,81,140,1)",
-              color: "#fffffa"
-            }}
-            className="infoBoxButton"
-            size="medium"
-            variant="contained"
-          >
-            Gallery
-          </Button>
-        </Link>
+        <Link to="/galleryView"></Link>
         <div className="separator2" />
-        <Link to="/createNewProject">
-          <Button
-            style={{
-              backgroundColor: "rgba(79,81,140,1)",
-              color: "#fffffa",
-            }}
-            className="infoBoxButton"
-            size="medium"
-            variant="contained"
-          >
-            New Project
-          </Button>
-        </Link>
       </div>
     </div>
   );

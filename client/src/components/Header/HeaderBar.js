@@ -1,13 +1,19 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import "./HeaderBar.css";
 import { BiLogIn } from "react-icons/bi";
 import { UserAuth } from "../../context/AuthContext";
+import { FaBars } from "react-icons/fa";
+import Modal from "@mui/material/Modal";
+import CreateNewProject from "../../CreateNewProject/CreateNewProject"; // Import the icon
 
 const HeaderBar = () => {
   const location = useLocation();
   const locationName = location.pathname;
   const { logOut } = UserAuth();
+  const [isCreateNewProjectModalOpen, setCreateNewProjectModalOpen] =
+    useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const handleSignOut = async () => {
     try {
@@ -24,6 +30,10 @@ const HeaderBar = () => {
     switch (pathname) {
       case "/":
         headerText = "";
+        break;
+
+      case "/mainscreen":
+        headerText = "Home";
         break;
       case "/loginView":
         headerText = "Login";
@@ -52,6 +62,14 @@ const HeaderBar = () => {
     return headerText;
   };
 
+  const openCreateNewProjectModal = () => {
+    setCreateNewProjectModalOpen(true);
+  };
+
+  const closeCreateNewProjectModal = () => {
+    setCreateNewProjectModalOpen(false);
+  };
+
   return (
     <header>
       <div className="header-item-main">
@@ -60,14 +78,35 @@ const HeaderBar = () => {
         </Link>
       </div>
       <div className="header-item">{getHeaderText(locationName)}</div>
-      <div className="header-item">
-        <Link to="/">
-          <button className="signoutButton" onClick={handleSignOut}>
-            Signout
-            <BiLogIn />
-          </button>
-        </Link>
+      <div className="header-dropdown">
+        <button
+          className="dropdown-button"
+          onClick={() => setDropdownOpen(!dropdownOpen)}
+        >
+          <FaBars /> {/* Icon here */}
+        </button>
+        {dropdownOpen && (
+          <div className="dropdown-content">
+            <Link to="/galleryView" style={{ textDecoration: "none" }}>
+              <button>Gallery</button>
+            </Link>
+            <button onClick={openCreateNewProjectModal}>
+              Create New Project
+            </button>
+            <button onClick={handleSignOut}>
+              Signout <BiLogIn />
+            </button>
+          </div>
+        )}
       </div>
+      <Modal
+        open={isCreateNewProjectModalOpen}
+        onClose={closeCreateNewProjectModal}
+      >
+        <div className="modal-content">
+          <CreateNewProject />
+        </div>
+      </Modal>
     </header>
   );
 };
