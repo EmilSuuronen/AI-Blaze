@@ -34,22 +34,6 @@ function ProjectCard({
             frameBorder="0"
             scrolling="no"
         />
-      {isEditing ? (
-        <div>
-          <textarea
-            placeholder="Enter notes here..."
-            value={projectNotes || ""}
-            onChange={(e) => setProjectNotes(e.target.value)}
-            className="notesTextArea"
-          />
-          <button onClick={handleSaveNote}>Save</button>
-        </div>
-      ) : (
-        <div>
-          <p>{projectNotes}</p>
-          <button onClick={() => setIsEditing(true)}>Edit Notes</button>
-        </div>
-      )}
     </div>
   );
 }

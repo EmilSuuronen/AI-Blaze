@@ -238,6 +238,7 @@ export default function GenerateView() {
         if (documentId != null) {
             console.log("Saving project" + documentId);
             await saveProject(documentId, getCurrentIframeContent().toString());
+            window.alert("Project saved");
         } else {
             console.log("docid" + docId);
             await saveProject(docId, getCurrentIframeContent());
