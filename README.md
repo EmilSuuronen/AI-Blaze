@@ -2,9 +2,9 @@
 AI-blaze is an web application built on React and designed to transform hand-drawn wireframes into editable HTML and CSS code. Leveraging the power of AI, it offers an interface for novice/non-techical users to see and edit instant recreations of their wireframe projects. This project integrates a Node.js backend, React frontend, Firebase database, and utilizes GPT-3.5 and GPT-4 Vision Preview for generation.
 
 ## Features
-- **Wireframe to Code Conversion**: Users can upload hand-drawn wireframe images, which are then converted into HTML and CSS code using ChatGPT 3.5 and GPT-4 Vision Preview.
+- **Wireframe to Code Conversion**: Users can upload hand-drawn wireframe images, which are converted into HTML and CSS code using ChatGPT 3.5 and GPT-4 Vision Preview.
 - **Generation**: Generation can be done automatically or by labeling elements in an image by hand.
-- **Editable Preview Interface**: Generated project is editable in an custom editor.
+- **Editable Preview Interface**: Edit generated project and auto generate text elements with AI.
 - **Firebase Database Integration**: Projects are saved and managed in a Firebase database.
 - **Secure Authentication**: Users can sign in using credentials or their Google account for a personal project storage.
 
